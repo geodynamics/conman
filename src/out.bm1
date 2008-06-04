@@ -1,0 +1,163 @@
+ 32 by 32 element input deck for Benchmark CVBM                                  
+
+ C o n t r o l   I n f o r m a t i o n                
+
+ number of nodal points  . . . . . . . . . . (numnp )=      1089
+
+ number of space dimensions  . . . . . . . . (nsd   )=         2
+
+ number of degrees of freedom per node . . . (ndof  )=         2
+
+ number of elements in the x1 direction. . . (nelx  )=        32
+
+ number of elements in the x2 direction. . . (nelz  )=        32
+
+ single or double precision  . . . . . . . . (mprec )=         2
+
+ execution code  . . . . . . . . . . . . . . (iflow )=         1
+
+    eq. 0, data check only                            
+
+    eq. 1, execution                                  
+
+ input echo parameter  . . . . . . . . . . . (necho )=         0
+
+ input restart parameter   . . . . . . . . . (inrstr)=         0
+
+ output restart parameter  . . . . . . . . . (iorstr)=         1
+
+ number of boundary nodes for nusselt smooth (nodebn)=        66
+
+ temperature dependent viscosity . . . . . . (ntimvs)=         1
+
+ number of time sequences  . . . . . . . . . (ntseq )=         1
+
+ number of element groups  . . . . . . . . . (numeg )=         1
+
+ flag for skyline or frontal solve . . . . . (isky  )=         1
+
+ number of nodes for wrap around boundary. . (nwrap )=         0
+
+
+ 32 by 32 element input deck for Benchmark CVBM                                  
+
+ T i m e   I n t e g r a t i o n   I n f o r m a t i o n
+
+       Nstep    Niter    Alpha     accel         Eps-tol
+
+       5000       2     0.50000      1.00000E+00     1.00000E-06
+
+
+ 32 by 32 element input deck for Benchmark CVBM                                  
+
+ O u t p u t   I n f o r m a t i o n                  
+
+ number of time steps per output disk. . . . (nsdout)=      5000
+
+ number of time steps per output velocity. . (nsvprt)=      5000
+
+ number of time steps per output temperature (nstprt)=      5000
+
+ number of time steps per output mean. . . . (nsmprt)=      5000
+
+
+ 32 by 32 element input deck for Benchmark CVBM                                  
+
+ E l e m e n t   G r o u p   C o n t r o l   P a r a m 
+
+ element type  . . . . . . . . . . . . . . . (ntype )=         2
+
+    eq. 2, 2D element                                 
+    eq. 3, 3D element                                 
+
+ number of elements  . . . . . . . . . . . . (numel )=      1024
+
+ number of materials . . . . . . . . . . . . (numat )=         1
+
+ number of surface forces  . . . . . . . . . (numsuf)=         0
+
+ number of element nodes . . . . . . . . . . (nen   )=         4
+
+ number of integration points  . . . . . . . (nipts )=         5
+
+ number of group nodal points  . . . . . . . (nEGnp )=      1089
+
+ number of group dofS  . . . . . . . . . . . (nEGdf )=      2178
+
+
+ 32 by 32 element input deck for Benchmark CVBM                                  
+
+ M a t e r i a l   P r o p e r t i e s                
+
+
+
+ viscosity . . . . . . . . . . . . . . . . (visc  )=    1.00000E+00
+
+ lambda  . . . . . . . . . . . . . . . . . (lamda )=    1.00000E+07
+
+ heat conductivity . . . . . . . . . . . . (diff  )=    1.00000E+00
+
+ rayleigh number . . . . . . . . . . . . . (ra    )=    7.79270E+03
+
+ internal heating parameter  . . . . . . . (dmhu  )=    0.00000E+00
+
+ activation energy for viscosity law . . . (tcon1 )=    3.00000E+02
+
+ offset for viscosity law  . . . . . . . . (tcon2 )=    1.00000E-01
+
+ shear Modulusscosity law  . . . . . . . . (tcon3 )=    1.00000E+02
+ 32 by 32 element input deck for Benchmark CVBM                                  
+
+ E x e c u t i o n   T i m e   S t a t i s t i c s    
+
+ name        CPU time  
+ input           0.00
+ process         0.00
+ factor          0.00
+ back-slv        0.00
+ output          0.00
+ pick_dt         0.00
+ f_vStiff        0.00
+ f_vRes          0.00
+ f_tRes          0.00
+ predict         0.00
+ total           0.00
+ M e m o r y   A l l o c a t i o n   S t a t i s t i c s
+
+
+ntotal   =       341105   Total Words of Memory Program 
+ndpbyte  =         1.36   Mb Memory Allocated
+
+INDEX  LENGTH  TYPE ADDRESS  NAME                             PARTITION
+  32     134255 2 0x******** V lhs                            mm                              
+  31       6534 2 0x******** stress                           mm                              
+  30       1089 2 0x******** dummy                            mm                              
+  29       1089 2 0x******** pmass                            mm                              
+  28       1089 2 0x******** T lhs e                          mm                              
+  27       1089 2 0x******** T rhs                            mm                              
+  26       2046 2 0x******** vbcr                             mm                              
+  25       2046 2 0x******** V RHS                            mm                              
+  24         20 2 0x******** shl                              mm                              
+  23         20 2 0x******** det                              mm                              
+  22         20 2 0x******** shdy                             mm                              
+  21         20 2 0x******** shdx                             mm                              
+  20       2046 1 0x******** idiag                            mm                              
+  19       4096 1 0x******** lmt                              mm                              
+  18       8192 1 0x******** lmv                              mm                              
+  17       4096 1 0x******** ien                              mm                              
+  16          3 2 0x******** tcon                             mm                              
+  15          1 2 0x******** mhu                              mm                              
+  14          1 2 0x******** ra                               mm                              
+  13          1 2 0x******** diff                             mm                              
+  12          1 2 0x******** alam                             mm                              
+  11          1 2 0x******** visc                             mm                              
+  10       1024 1 0x******** mat-no                           mm                              
+   9        132 1 0x******** nb                               mm                              
+   8       1089 2 0x******** tbc                              mm                              
+   7       2178 2 0x******** vbc                              mm                              
+   6       1089 1 0x******** idt                              mm                              
+   5       2178 1 0x******** idv                              mm                              
+   4       1089 2 0x******** tdot                             mm                              
+   3       1089 2 0x******** t                                mm                              
+   2       2178 2 0x******** v                                mm                              
+   1       2178 2 0x******** x                                mm                              
