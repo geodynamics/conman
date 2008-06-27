@@ -164,10 +164,10 @@ Abstract
 \end_layout
 
 \begin_layout Standard
-This documents serves as a users’ guide for ConMan, a vectorized finite
- element program for the solution of the equations of incompressible, infinite-P
-randtl number convection in twodimensions written by Arthur Raefsky and
- Scott King at Caltech.
+This manual serves as a user guide for ConMan, a vectorized finite element
+ program for the solution of the equations of incompressible, infinite-Prandtl
+ number convection in two dimensions written by Arthur Raefsky and Scott
+ King while at Caltech (Scott King is now at Virginia Tech).
  ConMan is a public domain program and is distributed free of charge to
  anyone who wishes to use it and may be freely copied and modified.
  ConMan is written in Standard Fortran 77 and runs under Unix and Unicos
@@ -190,7 +190,7 @@ This manual contains all of the necessary information for setting up input
  An excellent reference book for more detail on the finite element method
  is 
 \emph on
-The finite element method
+The Finite Element Method
 \emph default
  by T.J.R.
  Hughes.
@@ -231,7 +231,7 @@ italicized
 Questions and problems can be addressed to 
 \begin_inset LatexCommand url
 name "Scott King"
-target "scott@jsun.ucsd.edu"
+target "sdk@vt.edu"
 
 \end_inset
 
@@ -259,20 +259,7 @@ The code is based on the method described in
 \end_layout
 
 \begin_layout Itemize
-Moresi, L.N., F.
- Dufour, and H.-B.
- Mühlhaus (2003), A Lagrangian integration point finite element method for
- large deformation modeling of viscoelastic geomaterials, 
-\emph on
-J.
- Comp.
- Phys., 184
-\series bold
-,
-\series default
-\emph default
- 476-497.
- 
+todo -- which item from BIBLIOGRAPHY should go here, if any???
 \end_layout
 
 \begin_layout Standard
@@ -1501,9 +1488,9 @@ where
 \end_inset
 
  system) evaluated at the element center.
- This form of discretization has no crosswind diffusion because the “artificial
- diffusion” acts only in the direction of the flow (i.e., it follows the streamlin
-e), hence the name Streamline Upwind Petrov-Galerkin (SUPG).
+ This form of discretization has no crosswind diffusion because the ``artificial
+ diffusion'' acts only in the direction of the flow (i.e., it follows the
+ streamline), hence the name Streamline Upwind Petrov-Galerkin (SUPG).
  This makes it a better approximation than straight upwinding and it has
  been demonstrated to be more accurate than Galerkin or straight upwinding
  in advection dominated problems (Hughes and Brooks, 1977).
@@ -2388,12 +2375,12 @@ dsin
 \end_layout
 
 \begin_layout Section
-Building from Source
+Building from Source [WEI -- thought you might need this section.
+ Or else delete]
 \end_layout
 
 \begin_layout Subsection
-System Requirements [WEI -- thought you might need this.
- Or else delete]
+System Requirements
 \end_layout
 
 \begin_layout Standard
@@ -2444,18 +2431,7 @@ MPI
 \end_layout
 
 \begin_layout Itemize
-PETSc 2.3.2
-\end_layout
-
-\begin_layout Itemize
-libxml2
-\end_layout
-
-\begin_layout Standard
-You must also have python 2.2.1 or greater installed.
- If you do not already have MPI, then in many cases PETSc can install a
- version for you.
- Installing PETSc also requires a Blas/Lapack implementation.
+???
 \end_layout
 
 \begin_layout Subsection
@@ -2476,8 +2452,7 @@ target "geodynamics.org/cig/software/packages/mc/conman/"
 \end_inset
 
 .
- In that tarball is the file INSTALL.
- For some platforms, there are platform-specific instructions.
+ In that tarball is the file ???name???.
  
 \end_layout
 
@@ -2573,309 +2548,6 @@ to submit bugs and requests for new features.
 \end_layout
 
 \begin_layout Chapter
-Running ConMan
-\end_layout
-
-\begin_layout Section
-Basic Usage
-\end_layout
-
-\begin_layout Standard
-If you downloaded binaries for your platform, you can run the ConMan executable
- directly.
- For example,
-\end_layout
-
-\begin_layout LyX-Code
-./ConMan-1_2_2  input/cookbook/yielding.xml
-\end_layout
-
-\begin_layout Standard
-will output 
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 1, Start time = 0 + 0 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 2, Start time = 0 + 0.0107639 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 3, Start time = 0.0107639 + 0.0107105 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 4, Start time = 0.0214744 + 0.0106587 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 5, Start time = 0.0321332 + 0.0106059 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 6, Start time = 0.0427391 + 0.0105527 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 7, Start time = 0.0532918 + 0.0104996 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 8, Start time = 0.0637914 + 0.0104465 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 9, Start time = 0.0742378 + 0.0103941 prev timeStep dt
-\end_layout
-
-\begin_layout LyX-Code
-TimeStep = 10, Start time = 0.0846319 + 0.0103424 prev timeStep dt 
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Standard
-If you do not specify an input file, you will get an error like
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-Error in _AbstractContext_New: The dictionary is empty, meaning no input
- parameters have been feed
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-into your program.
- Perhaps you've forgot to pass any input files ( or command-line arguments
- ) in.
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-ConMan: build/StGermain/Base/IO/src/Journal.c:603: Journal_Firewall: Assertion
- `expression' failed.
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-p0_27845:  p4_error: interrupt SIGx: 6 
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Standard
-If ConMan cannot find the file, you will get a different error:
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-Error: File input/cookbook/yielding.xml doesn't exist, not readable, or not
- valid.
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-ConMan: build/StGermain/Base/IO/src/Journal.c:603: Journal_Firewall: Assertion
- `expression' failed.
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-p0_16810:  p4_error: interrupt SIGx: 6
-\end_layout
-
-\begin_layout Standard
-Due to quirks in some implementations of MPI, you may have to specify the
- complete path to the input file (e.g., 
-\family typewriter
-./ConMan-1_2_2 /home/juser/ConMan/input/cookbook/yielding.xml
-\family default
-).
-\end_layout
-
-\begin_layout Standard
-In general, ConMan does not have many defaults, so almost everything must
- be specified in the input file.
- For examples of how to create your own input files, see Chapter 
-\begin_inset LatexCommand ref
-reference "cha:Cookbooks"
-
-\end_inset
-
-.
- For a complete description of the input file format, see Appendix 
-\begin_inset LatexCommand ref
-reference "cha:Input-File-Format"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-If you compile ConMan yourself, you can run it from where you installed
- it.
- If running in parallel on your own machine, prepend 
-\family typewriter
-mpirun
-\family default
- or 
-\family typewriter
-mpiexec
-\family default
- (depending on your local implementation of MPI).
- For example, if your computer has two processors, then
-\end_layout
-
-\begin_layout LyX-Code
-mpirun -np 2 bin/ConMan /home/juser/ConMan/input/cookbook/yielding.xml
-\end_layout
-
-\begin_layout Standard
-will use both processors.
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-yielding.xml
-\family default
- example should run for 10 time steps and generate a great deal of output
- in the 
-\family typewriter
-output.template
-\family default
- directory.
-\end_layout
-
-\begin_layout Section
-Advanced Usage
-\end_layout
-
-\begin_layout Subsection
-Direct Solvers
-\end_layout
-
-\begin_layout Standard
-If you have a problem with strong viscosity gradients, the default solver
- (GMRES) may converge very slowly.
- Strong viscosity gradients occur when you start with materials with different
- viscosities (e.g., Appendix 
-\begin_inset LatexCommand ref
-reference "sec:Circular-Inclusion"
-
-\end_inset
-
-, 
-\begin_inset LatexCommand ref
-reference "sec:Falling-Sphere"
-
-\end_inset
-
-, and 
-\begin_inset LatexCommand ref
-reference "sec:Falling-Cylinder"
-
-\end_inset
-
-), or when materials yield (e.g., Appendix 
-\begin_inset LatexCommand ref
-reference "sec:Geomod-2004"
-
-\end_inset
-
-).
-\end_layout
-
-\begin_layout Standard
-One solution is to use a direct solver instead of GMRES.
- PETSc has a facility where you can use command-line arguments to change
- the solver.
- For example, on a single machine, to use a direct LU solve, you only need
- to append arguments to the command line
-\end_layout
-
-\begin_layout LyX-Code
-./ConMan-1_2_2  input/cookbook/yielding.xml -pc_type lu -ksp_type preonly
-\end_layout
-
-\begin_layout Standard
-In parallel, the analogous approach would be to use Mumps, a parallel direct
- solver.
- You first need to make sure that your version of PETSc was installed with
- Mumps.
- If you built PETSc yourself, you need to add the option 
-\begin_inset Quotes sld
-\end_inset
-
-
-\family typewriter
---download-mumps=yes
-\family default
-
-\begin_inset Quotes srd
-\end_inset
-
- when configuring.
- The PETSc installation on TACC Lonestar has been installed with Mumps.
-\end_layout
-
-\begin_layout Standard
-Once that is done, enabling it is again just appending a few arguments to
- the command line
-\end_layout
-
-\begin_layout LyX-Code
-./ConMan-1_2_2  input/cookbook/yielding.xml mat_type aijmumps -ksp_type pre
- only -pc_type lu
-\end_layout
-
-\begin_layout Subsection
-Command-Line Parameters
-\end_layout
-
-\begin_layout Standard
-You can also change the default values of the input file without modifying
- that file by appending arguments.
- For example, to only change the number of time steps from the default value
- 10 to value 20, use the following command
-\end_layout
-
-\begin_layout LyX-Code
-./ConMan-1_2_2  input/cookbook/yielding.xml --maxTimeSteps=20
-\end_layout
-
-\begin_layout Standard
-You can append any number of modified parameters in one unbroken line (here
- shown wrapped around)
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-./ConMan-1_2_2  input/cookbook/yielding.xml --maxTimeSteps=20 --dim=3 --elementRes
-I=64 
-\newline
---elementResJ=64 --elementResK=64 --particlesPerCell=60 --dumpEvery=10
-\end_layout
-
-\begin_layout Chapter
-\start_of_appendix
 Input Guide
 \end_layout
 
@@ -2893,7 +2565,7 @@ geom
 \series default
  and are described in this section.
  The third file is an output file showing all the input parameters in a
- nace [typo for nice?] fancy form.
+ nace [todo -- nace TYPO for nice?] fancy form.
  The fourth and fifth files are an input temperature file (optional) and
  an output temperature file.
  These are for starting a new run from a previous run.
@@ -4052,257 +3724,217 @@ conman
  The format of this section is the same as above.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Coordinate Group 
 \end_layout
 
+\begin_layout Description
+Absolute\InsetSpace ~
+Coordinate\InsetSpace ~
+Card 
+\emph on
+node gp (x(i,node) i=1,nsd) 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+node .
+ .
+ .
+ .
+ .
+ .
+ .
+ the node whose coordinates are to be specified 
+\end_layout
+
+\begin_layout Description
+gp .
+ .
+ .
+ .
+ .
+ .
+ .
+ .
+ generation parameter for automatic generation 
+\end_layout
+
+\begin_deeper
 \begin_layout Standard
-Absolute Coordinate Card node gp (x(i,node) i=1,nsd) node .
- .
- .
- .
- .
- .
- .
- the node whose coordinates are to be specified gp .
- .
- .
- .
- .
- .
- .
- .
- generation parameter for automatic generation 0 - no autogeneration 2 -
- generate a line using node as a starting point 4 - generate a box using
- node as the lower left corner x(i,node) .
- .
- .
- .
- .
- coordinate value in the ith spatial dimension Corner Generation Cards -
- gp-1 cards node mgen (x(i,node) i=1,nsd) node .
- .
- .
- .
- .
- .
- .
- node number mgen .
- .
- .
- .
- .
- .
- .
- generation parameter 0 - don’t use this as the start of a generation sequence
- 1 - use this as the start of a generation sequence x(i,node) .
- .
- .
- .
- .
- coordinate value in the ith spatial dimension Generation Increment Card
- ninc1 inc1 ninc2 inc2 ninc1 .
- .
- .
- .
- .
- .
- .
- number of additional nodes to generate in x1 direction inc1 .
- .
- .
- .
- .
- .
- .
- increment of nodes in x1 direction ninc2 .
- .
- .
- .
- .
- .
- .
- number of additional nodes to generate in x2 direction 0 - if gp equals
- 2 inc2 .
- .
- .
- .
- .
- .
- .
- increment of nodes in x2 direction 0 - if gp equals 2 0 0 0 0 to end coordinate
- group
+0 - no autogeneration
 \end_layout
 
 \begin_layout Standard
-Velocity Boundary Condition Group Absolute Velocity Card node gp (v(i,node)
- i=1,nsd) node .
- .
- .
- .
- .
- .
- .
- the node whose velocities are to be specified gp .
- .
- .
- .
- .
- .
- .
- .
- generation parameter for automatic generation 0 - no autogeneration 2 -
- generate a line using node as a starting point 4 - generate a box using
- node as the lower left corner v(i,node) .
- .
- .
- .
- .
- velocity value in the ith spatial dimension Corner Generation Cards - gp-1
- cards node mgen (v(i,node) i=1,nsd) node .
- .
- .
- .
- .
- .
- .
- node number mgen .
- .
- .
- .
- .
- .
- .
- generation parameter 0 - don’t use this as the start of a generation sequence
- 1 - use this as the start of a generation sequence v(i,node) .
- .
- .
- .
- .
- velocity value in the ith spatial dimension Generation Increment Card ninc1
- inc1 ninc2 inc2 ninc1 .
- .
- .
- .
- .
- .
- .
- number of additional nodes to generate in x1 direction inc1 .
- .
- .
- .
- .
- .
- .
- increment of nodes in x1 direction ninc2 .
- .
- .
- .
- .
- .
- .
- number of additional nodes to generate in x2 direction 0 - if gp equals
- 2 inc2 .
- .
- .
- .
- .
- .
- .
- increment of nodes in x2 direction 0 - if gp equals 2 0 0 0 0 to end velocity
- group
+2 - generate a line using node as a starting point 
 \end_layout
 
 \begin_layout Standard
-Temperature Boundary Condition Group Absolute Temperature Card node gp t(node)
- node .
+4 - generate a box using node as the lower left corner 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+x(i,node) .
+ .
+ .
+ .
+ .
+ coordinate value in the ith spatial dimension 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Corner\InsetSpace ~
+Generation\InsetSpace ~
+Cards - gp-1 cards 
+\emph on
+node mgen (x(i,node) i=1,nsd)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+node .
  .
  .
  .
  .
  .
  .
- the node whose velocities are to be specified gp .
+ node number 
+\end_layout
+
+\begin_layout Description
+mgen .
  .
  .
  .
  .
  .
  .
- .
- generation parameter for automatic generation 0 - no autogeneration 2 -
- generate a line using node as a starting point t(node) .
- .
- .
- .
- .
- .
- temperature value Corner Generation Cards - gp-1 cards node mgen t(node)
- node .
- .
- .
- .
- .
- .
- .
- node number mgen .
- .
- .
- .
- .
- .
- .
- generation parameter 0 - don’t use this as the start of a generation sequence
- 1 - use this as the start of a generation sequence t(node) .
- .
- .
- .
- .
- .
- temperature value Generation Increment Card ninc1 inc1 ninc2 inc2 ninc1
- .
- .
- .
- .
- .
- .
- .
- number of additional nodes to generate in x1 direction inc1 .
- .
- .
- .
- .
- .
- .
- increment of nodes in x1 direction ninc2 .
- .
- .
- .
- .
- .
- .
- number of additional nodes to generate in x2 direction 0 - if gp equals
- 2 inc2 .
- .
- .
- .
- .
- .
- .
- increment of nodes in x2 direction 0 - if gp equals 2 0 0 to end temperature
- group
+ generation parameter 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - don’t use this as the start of a generation sequence 
 \end_layout
 
 \begin_layout Standard
-Element Connectivity (ien) Generation Group Absolution Element Card elnu
- ng mat no (ien(elnu,i) i=1,nen) elnu .
+1 - use this as the start of a generation sequence 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+x(i,node) .
+ .
+ .
+ .
+ .
+ coordinate value in the ith spatial dimension 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Generation\InsetSpace ~
+Increment\InsetSpace ~
+Card 
+\emph on
+ninc1 inc1 ninc2 inc2
+\emph default
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+ninc1 .
  .
  .
  .
  .
  .
  .
- element number ng .
+ number of additional nodes to generate in x1 direction 
+\end_layout
+
+\begin_layout Description
+inc1 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x1 direction 
+\end_layout
+
+\begin_layout Description
+ninc2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ number of additional nodes to generate in x2 direction 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - if gp equals 2 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+inc2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x2 direction 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - if gp equals 2 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\emph on
+0 0 0 0 to end coordinate group
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Velocity Boundary Condition Group 
+\end_layout
+
+\begin_layout Description
+Absolute\InsetSpace ~
+Velocity\InsetSpace ~
+Card 
+\emph on
+node gp (v(i,node) i=1,nsd) 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+node .
+ .
+ .
+ .
+ .
+ .
+ .
+ the node whose velocities are to be specified 
+\end_layout
+
+\begin_layout Description
+gp .
  .
  .
  .
@@ -4310,85 +3942,686 @@ Element Connectivity (ien) Generation Group Absolution Element Card elnu
  .
  .
  .
- generation parameter 0 - no generation 1 - generate using increments from
- increment card mat no .
+ generation parameter for automatic generation 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - no autogeneration 
+\end_layout
+
+\begin_layout Standard
+2 - generate a line using node as a starting point 
+\end_layout
+
+\begin_layout Standard
+4 - generate a box using node as the lower left corner 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+v(i,node) .
+ .
+ .
+ .
+ .
+ velocity value in the ith spatial dimension 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Corner\InsetSpace ~
+Generation\InsetSpace ~
+Cards - gp-1 cards 
+\emph on
+node mgen (v(i,node) i=1,nsd) 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+node .
  .
  .
  .
  .
  .
- material number for this element ien(elnu,i) .
+ .
+ node number 
+\end_layout
+
+\begin_layout Description
+mgen .
+ .
+ .
+ .
+ .
+ .
+ .
+ generation parameter 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - don’t use this as the start of a generation sequence 
+\end_layout
+
+\begin_layout Standard
+1 - use this as the start of a generation sequence 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+v(i,node) .
+ .
+ .
+ .
+ .
+ velocity value in the ith spatial dimension 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Generation\InsetSpace ~
+Increment\InsetSpace ~
+Card 
+\emph on
+ninc1 inc1 ninc2 inc2 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+ninc1 .
+ .
+ .
+ .
+ .
+ .
+ .
+ number of additional nodes to generate in x1 direction 
+\end_layout
+
+\begin_layout Description
+inc1 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x1 direction 
+\end_layout
+
+\begin_layout Description
+ninc2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ number of additional nodes to generate in x2 direction 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+0 - if gp equals 2 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+inc2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x2 direction 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - if gp equals 2 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\emph on
+0 0 0 0 to end velocity group
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Temperature Boundary Condition Group 
+\end_layout
+
+\begin_layout Description
+Absolute\InsetSpace ~
+Temperature\InsetSpace ~
+Card 
+\emph on
+node gp t(node) 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+node .
+ .
+ .
+ .
+ .
+ .
+ .
+ the node whose velocities are to be specified 
+\end_layout
+
+\begin_layout Description
+gp .
+ .
+ .
+ .
+ .
+ .
+ .
+ .
+ generation parameter for automatic generation 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - no autogeneration 
+\end_layout
+
+\begin_layout Standard
+2 - generate a line using node as a starting point 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+t(node) .
+ .
+ .
+ .
+ .
+ .
+ temperature value 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Corner\InsetSpace ~
+Generation\InsetSpace ~
+Cards - gp-1 cards 
+\emph on
+node mgen t(node) 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+node .
+ .
+ .
+ .
+ .
+ .
+ .
+ node number 
+\end_layout
+
+\begin_layout Description
+mgen .
+ .
+ .
+ .
+ .
+ .
+ .
+ generation parameter 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - don’t use this as the start of a generation sequence 
+\end_layout
+
+\begin_layout Standard
+1 - use this as the start of a generation sequence 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+t(node) .
+ .
+ .
+ .
+ .
+ .
+ temperature value 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Generation\InsetSpace ~
+Increment\InsetSpace ~
+Card 
+\emph on
+ninc1 inc1 ninc2 inc2 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+ninc1 .
+ .
+ .
+ .
+ .
+ .
+ .
+ number of additional nodes to generate in x1 direction 
+\end_layout
+
+\begin_layout Description
+inc1 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x1 direction 
+\end_layout
+
+\begin_layout Description
+ninc2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ number of additional nodes to generate in x2 direction 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - if gp equals 2 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+inc2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x2 direction 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - if gp equals 2 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\emph on
+0 0 to end temperature group
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Element Connectivity (ien) Generation Group 
+\end_layout
+
+\begin_layout Description
+Absolution\InsetSpace ~
+Element\InsetSpace ~
+Card 
+\emph on
+elnu ng mat no (ien(elnu,i) i=1,nen) 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+elnu .
+ .
+ .
+ .
+ .
+ .
+ .
+ element number 
+\end_layout
+
+\begin_layout Description
+ng .
+ .
+ .
+ .
+ .
+ .
+ .
+ .
+ generation parameter 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+0 - no generation 
+\end_layout
+
+\begin_layout Standard
+1 - generate using increments from increment card 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+mat no .
+ .
+ .
+ .
+ .
+ .
+ material number for this element 
+\end_layout
+
+\begin_layout Description
+ien(elnu,i) .
  .
  .
  .
  .
  global node number for the ith local node of element counterclockwise from
- lower left corner Increment Card nel1 incel1 incn1 nel2 incel2 incn2 nel1
+ lower left corner 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Increment\InsetSpace ~
+Card 
+\emph on
+nel1 incel1 incn1 nel2 incel2 incn2 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+nel1 .
  .
  .
  .
  .
  .
  .
- .
- number of elements in x1 (horizontal) direction incel1 .
- .
- .
- .
- .
- .
- .
- increment of elements in x1 (horizontal) direction incn1 .
+ number of elements in x1 (horizontal) direction 
+\end_layout
+
+\begin_layout Description
+incel1 .
  .
  .
  .
  .
  .
  .
- increment of nodes in x1 (horizontal) direction nel2 .
+ increment of elements in x1 (horizontal) direction 
+\end_layout
+
+\begin_layout Description
+incn1 .
  .
  .
  .
  .
  .
  .
- number of elements in x2 (vertical) direction incel2 .
+ increment of nodes in x1 (horizontal) direction 
+\end_layout
+
+\begin_layout Description
+nel2 .
  .
  .
  .
  .
  .
  .
- increment of elements in x2 (vertical) direction incn2 .
+ number of elements in x2 (vertical) direction 
+\end_layout
+
+\begin_layout Description
+incel2 .
  .
  .
  .
  .
  .
  .
- increment of nodes in x2 (vertical) direction 0 0 0 0 0 0 to end element
- connectivity group
+ increment of elements in x2 (vertical) direction 
+\end_layout
+
+\begin_layout Description
+incn2 .
+ .
+ .
+ .
+ .
+ .
+ .
+ increment of nodes in x2 (vertical) direction 
 \end_layout
 
 \begin_layout Standard
-Sample Input Files The lins below are a sample 32 element by 32 element
- input deck for a 1 by 1 square.
- 32 by 32 element input deck 1089 2 2 32 32 1 1 0 0 1 66 1 1 1 1 0 50 2
- 0.5 0.0005 0.000001 50 50 50 50 1 1057 33 0 1 1057 1089 1 1 0 1 33 1 1 0 33
- 1089 33 0 1 1 1 1 1 1 33 33 1 1 1 1057 1057 1 1 1 1089 1089 1 1 1 0 0 0
- 0 0 1 1057 33 1 33 1089 33 1 0 0 0 0 1 1057 33 33 1089 33 0 0 0 2 1058
- 33 32 1088 33 0 0 0 0.001 1.0 1.0 2 1024 4 4 1 2 0 5 0 0 1.0 1.0e07 1.0 77927.0
- 0.0 0.0 0.0 0.0
+
+\emph on
+0 0 0 0 0 0 to end element connectivity group
+\end_layout
+
+\end_deeper
+\begin_layout Chapter
+Sample Input Files 
+\end_layout
+
+\begin_layout Standard
+The lines below are a sample 32 element by 32 element input deck for a 1
+ by 1 square.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+32 by 32 element input deck 
+\end_layout
+
+\begin_layout LyX-Code
+1089 2 2 32 32 1 1 0 0 1 66 1 1 1 1 0 
+\end_layout
+
+\begin_layout LyX-Code
+50 2 0.5 0.0005 0.000001 
+\end_layout
+
+\begin_layout LyX-Code
+50 50 50 50 
+\end_layout
+
+\begin_layout LyX-Code
+1 1057 33 0 1 
+\end_layout
+
+\begin_layout LyX-Code
+1057 1089 1 1 0 
+\end_layout
+
+\begin_layout LyX-Code
+1 33 1 1 0 
+\end_layout
+
+\begin_layout LyX-Code
+33 1089 33 0 1 
+\end_layout
+
+\begin_layout LyX-Code
+1 1 1 1 1 
+\end_layout
+
+\begin_layout LyX-Code
+33 33 1 1 1 
+\end_layout
+
+\begin_layout LyX-Code
+1057 1057 1 1 1 
+\end_layout
+
+\begin_layout LyX-Code
+1089 1089 1 1 1 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0 0 0 
+\end_layout
+
+\begin_layout LyX-Code
+1 1057 33 1 
+\end_layout
+
+\begin_layout LyX-Code
+33 1089 33 1 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0 0 
+\end_layout
+
+\begin_layout LyX-Code
+1 1057 33 
+\end_layout
+
+\begin_layout LyX-Code
+33 1089 33 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0 
+\end_layout
+
+\begin_layout LyX-Code
+2 1058 33 
+\end_layout
+
+\begin_layout LyX-Code
+32 1088 33 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0 
+\end_layout
+
+\begin_layout LyX-Code
+0.001 1.0 1.0 
+\end_layout
+
+\begin_layout LyX-Code
+2 1024 4 4 1 2 0 5 0 0 
+\end_layout
+
+\begin_layout LyX-Code
+1.0 
+\end_layout
+
+\begin_layout LyX-Code
+1.0e07 
+\end_layout
+
+\begin_layout LyX-Code
+1.0 
+\end_layout
+
+\begin_layout LyX-Code
+77927.0 
+\end_layout
+
+\begin_layout LyX-Code
+0.0 
+\end_layout
+
+\begin_layout LyX-Code
+0.0 
+\end_layout
+
+\begin_layout LyX-Code
+0.0 
+\end_layout
+
+\begin_layout LyX-Code
+0.0
 \end_layout
 
 \begin_layout Standard
 The lines below are a sample geometry file for the 32 by 32 element problem.
- 1 4 0.0 0.0 1057 1 1.0 0.0 1089 1 1.0 1.0 33 1 0.0 1.0 32 33 32 1 0 0 0.0 0.0 0 0
- 0.0 0.0 1 2 1.0 1057 0 1.0 32 33 0 0 0.0 0.0 1 1 1 1 34 35 2 32 1 33 32 32 1
- 0 0 0 0 0 0 0
+ 
+\end_layout
+
+\begin_layout LyX-Code
+1 4 0.0 0.0 
+\end_layout
+
+\begin_layout LyX-Code
+1057 1 1.0 0.0 
+\end_layout
+
+\begin_layout LyX-Code
+1089 1 1.0 1.0 
+\end_layout
+
+\begin_layout LyX-Code
+33 1 0.0 1.0 
+\end_layout
+
+\begin_layout LyX-Code
+32 33 32 1 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0.0 0.0 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0.0 0.0 
+\end_layout
+
+\begin_layout LyX-Code
+1 2 1.0 
+\end_layout
+
+\begin_layout LyX-Code
+1057 0 1.0 
+\end_layout
+
+\begin_layout LyX-Code
+32 33 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0.0 0.0 
+\end_layout
+
+\begin_layout LyX-Code
+1 1 1 1 34 35 2 
+\end_layout
+
+\begin_layout LyX-Code
+32 1 33 32 32 1 
+\end_layout
+
+\begin_layout LyX-Code
+0 0 0 0 0 0 0
 \end_layout
 
 \begin_layout Chapter
+\start_of_appendix
 License 
 \end_layout
 
@@ -5014,8 +5247,8 @@ key "Brooks 1981"
 
 Brooks, A., 1981.
  A Petrov-Galerkin finite-element formulation for convection dominated flows.
- Ph.d.
- Thesis, California Institute of Technology, Pasadena, Ca.
+ Ph.D.
+ Thesis, California Institute of Technology, Pasadena, CA.
  
 \end_layout
 
@@ -5026,18 +5259,19 @@ key "Brooks and Hughes"
 
 \end_inset
 
-Brooks, A.
- N.
- and Hughes, T.
- J.
- R., 1982.
+Brooks, A.N.
+ and Hughes, T.J.R., 1982.
  Streamline upwind/Petrov-Galerkin formulatins for convection dominated
  flows with particular emphasis on the inpompressible Navier-Stokes equations.
- Comp.
+ 
+\emph on
+Comp.
  Meth.
  in Appl.
  Mech.
- and Eng., 32, 199-259.
+ and Eng., 32,
+\emph default
+ 199-259.
  
 \end_layout
 
@@ -5049,7 +5283,11 @@ key "Hughes 1987"
 \end_inset
 
 Hughes, T.J.R., 1987.
- The finite element method.
+ 
+\emph on
+The finite element method.
+
+\emph default
  Prentice-Hall, Inc., Englewood Cliffs, New Jersey 
 \end_layout
 
@@ -5061,11 +5299,14 @@ key "Hughes and Brooks 1987"
 \end_inset
 
 Hughes, T.J.R.
- and Brookes, A.
- N., 1987.
+ and Brookes, A.N., 1987.
  A multi-dimensional upwind scheme with no crosswind diffusion.
  In: Finite element methods for convection dominated flows.
- ASME, New York, 34:19-35.
+ 
+\emph on
+ASME
+\emph default
+, New York, 34:19-35.
  
 \end_layout
 
@@ -5076,14 +5317,15 @@ key "Hughes et al 1988"
 
 \end_inset
 
-Hughes, T.J.R., Franca, L.
- P., Hulbert, G.
- M., Johan, Z., and Shakib, F., 1988.
+Hughes, T.J.R., Franca, L.P., Hulbert, G.M., Johan, Z., and Shakib, F., 1988.
  The Galerkin/least-squares method for advective-diffusive equations.
  In: Recent developments in computational fluid dynamics.
- T.
- E.
- Tezduyar (Editor), ASME, New York, 95:75-99.
+ T.E.
+ Tezduyar (Editor), 
+\emph on
+ASME,
+\emph default
+ New York, 95:75-99.
  
 \end_layout
 
@@ -5094,14 +5336,16 @@ key "Hughes et al 1979"
 
 \end_inset
 
-Hughes, T.J.R., Liu, W.
- K., and Brooks, A.
- N., 1979.
+Hughes, T.J.R., Liu, W.K., and Brooks, A.N., 1979.
  Finite element analysis of incompressible viscous flows by the penalty
  function formulation.
- J.
+ 
+\emph on
+J.
  Comput.
- Phys., 30: 19-35.
+ Phys., 
+\emph default
+30: 19-35.
  
 \end_layout
 
@@ -5112,18 +5356,19 @@ key "Malkus and Hughes 1978"
 
 \end_inset
 
-Malkus, D.
- S.
- and Hughes, T.
- J.
- R., 1978.
+Malkus, D.S.
+ and Hughes, T.J.R., 1978.
  Mixed finite element methods reduced and selective integration techniques:
  a unification of concepts.
- Comp.
+ 
+\emph on
+Comp.
  Meth.
  in Appl.
  Mech.
- and Eng., 15, 63-81.
+ and Eng.,
+\emph default
+ 15, 63-81.
  
 \end_layout
 
@@ -5148,22 +5393,23 @@ key "Travis et al 1991"
 
 \end_inset
 
-Travis, B.
- J., C.
+Travis, B.J., C.
  Anderson, J.
  Baumgardner, C.
- Gable, B.
- H.
+ Gable, B.H.
  Hager, P.
- Olson, R.
- J.
+ Olson, R.J.
  O’Connell, A.
  Raefsky, and G.
  Schubert, 1991.
  A benchmark comparison of numerical methods for infinite Prandtl number
- convection in two-dimensional Cartesian geometry, Geophys.
+ convection in two-dimensional Cartesian geometry, 
+\emph on
+Geophys.
  Astrophys.
- Fluid Dynamics, in press.
+ Fluid Dynamics,
+\emph default
+ in press.
 \end_layout
 
 \end_body
