@@ -31,7 +31,7 @@ c
      &                  neqt   ,  neqv   , itflag
 c
         common /io    / iin,    igeom, iout , itsout , itout , imout, 
-     &                  irsin , irsout
+     &                  irsin , irsout, igeoid
         common /ioc   / name5
 c
         common /title / ititle(80)

@@ -9,7 +9,7 @@ COMMON=ConMan.o adjbc.o eg2.o eglib.o elminp.o error.o \
         vadd.o mydate.o mytime.o projct.o prj4q.o print_reg.o prtstr_reg.o \
         batchelor.o 
 
-SRC_HOME=/home/scott/ConMan02
+SRC_HOME=$HOME/conman-svn
 
 IMPLICIT=f_tlhs.o f_trhsimp.o
 PICARD=f_tlhs.o f_trhsimp.o

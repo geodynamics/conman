@@ -134,6 +134,7 @@ c
       if (task .eq. 'prt_str ') then
         call stres ( x , v , t ) 
         call prtstr( x , stress )
+        call geoid ( x, t, stress)
 c
 c trhs is being used as a temp variable for the pressure at the node
 c

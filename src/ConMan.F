@@ -25,7 +25,7 @@ c
 c
 c.... remove above card for single-precision operation
 c
-        character*80 name1,name2,name3,name4,name6,name7,name8
+        character*80 name1,name2,name3,name4,name6,name7,name8,name9
         common /temp1 / x(50000)
         include 'common.h'
 c
@@ -39,6 +39,7 @@ c
         read(5,1001) name6
         read(5,1001) name7
         read(5,1001) name8
+        read(5,1001) name9
  1001   format( a80 )
         open (unit=iin,    file=name1 , status='old')
         open (unit=igeom,  file=name2 , status='old')
@@ -48,6 +49,7 @@ c       open (unit=irsout, file=name5 , status='unknown')
         open (unit=itsout, file=name6 , status='unknown' ) 
         open (unit=itout,  file=name7 , status='unknown')
         open (unit=imout,  file=name8 , status='unknown' ) 
+        open (unit=igeoid,  file=name9 , status='unknown' ) 
 c
 c.... Input phase
 c
@@ -99,7 +101,7 @@ c     common /point / mbeg,   mend,   mprec,  mdct,   ndict
 c
 c.... io channels
       common /io    / iin  ,    igeom,  iout  , itsout , itout ,
-     &                imout ,   irsin , irsout
+     &                imout ,   irsin , irsout, igeoid
 c
 c.... useful constants
       common /const / zero ,   pt25,     pt33,   pt5,    pt66,   one,
@@ -113,9 +115,9 @@ c     data      mbeg,    mend,    mprec,   mdct,    ndict
 c    &      /      1,130000000,        2,      1,        0 /
 c
       data       iin , igeom  , iout , itsout , itout , imout ,
-     &         irsin , irsout
+     &         irsin , irsout , igeoid
      &      /      10,     11 ,     12,     13,     14,     15,
-     &             16,     17 /
+     &             16,     17 ,     18/
 c
       data        zero,                  pt25,                 
      &            pt33,                  pt5,                  
