@@ -2,7 +2,7 @@
 # makefile for the program conman on the Sun
 # 
 COMMON=ConMan.o adjbc.o eg2.o eglib.o elminp.o error.o \
-        f_vstf.o f_vrres.o fluxke.o g2assm.o \
+        f_vstf.o f_vrres.o fluxke.o fftsubs.o g2assm.o geoid.o\
         genien.o genmat.o genshg.o genshp.o \
         input.o intemp.o pickdt.o print.o printd.o process.o \
         rdflux.o stress.o timer.o tmass.o \
