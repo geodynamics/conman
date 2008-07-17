@@ -104,7 +104,7 @@ status open
 \begin_layout Standard
  
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman_cover.pdf
+	filename images/conman_cover.pdf
 	width 75page%
 
 \end_inset
@@ -1316,7 +1316,7 @@ genshg
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset Caption
@@ -1341,7 +1341,7 @@ The mapping between the global domain (right) and the parent element domain
 \noindent
 \align center
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman-fig1.eps
+	filename images/conman-fig1.eps
 	scale 45
 
 \end_inset
@@ -1402,7 +1402,7 @@ The bilinear shape function for a single element (top) and the four elements
 \noindent
 \align center
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman-fig2.png
+	filename images/conman-fig2.png
 	scale 40
 
 \end_inset
@@ -1602,7 +1602,7 @@ Example relationship between global node numbers and local element numbers
 \noindent
 \align center
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman-fig4.eps
+	filename images/conman-fig4.eps
 	scale 40
 
 \end_inset
@@ -2313,7 +2313,7 @@ The element stiffness matrix for the 2D Cartesian stokes equation.
 \noindent
 \align center
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman-fig5.eps
+	filename images/conman-fig5.eps
 	scale 40
 
 \end_inset
@@ -2362,7 +2362,7 @@ f_vstf
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman-fig8.eps
+	filename images/conman-fig8.eps
 	scale 40
 
 \end_inset
