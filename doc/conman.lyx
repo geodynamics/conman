@@ -1542,7 +1542,7 @@ name "fig:Example-relationship-between"
 \noindent
 \align center
 \begin_inset Graphics
-	filename /Users/sue/conman/images/conman-fig3.eps
+	filename images/conman-fig3.eps
 	scale 40
 
 \end_inset
