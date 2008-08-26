@@ -26,8 +26,13 @@ c
       real    geoid1(NWAVE),rtzzt(NWAVE),rtzzb(NWAVE), geoid2(NWAVE)
 c
 c constants for dimensionalization (geoid and topography in meters)
-c  the values used for the Blankenback et al. Benchmark 1a
-c   (Ra=1.0e4, constant viscosity)
+c
+      pi = 3.14159272e0
+      aratio = x(1,numnp)
+c
+c  The values used for the Blankenback et al. Benchmark 1a, 1b, 1c
+c  remove the comments from the following eight lines of code and
+c  comment out the lines below for the Blankenbach benchmarks
 c
 c     d = 1.0e6
 c     g = 1.0e1
@@ -38,6 +43,14 @@ c     bigG = 6.673e-11
 c     alfa = 2.5e-5
 c     deltaT = 1.0e3
 c
+c  The values below are more representative of whole mantle convection
+c  values.  Notice that this combination of values assumes a specific
+c  values of the Rayleigh number.   If the input value of the Rayleigh
+c  number differs, then these values will not give meaningful geoid
+c  and topography values.
+c
+c  These lines should be commented out for the Blankenbach problems.
+c
       d = 3.000e6
       g = 1.0e1
       rho = 4.0e3
@@ -46,8 +59,8 @@ c
       bigG = 6.673e-11
       alfa = 2.0e-5
       deltaT = 2.000e3
-      pi = 3.14159272e0
-      aratio = x(1,numnp)
+c
+c  Below here nothing needs to be changed.
 c
 c if the problem uses reflecting boundary conditions, this is correct
 c  we also need to reflect the solution about the right boundary
