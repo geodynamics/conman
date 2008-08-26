@@ -6,17 +6,6 @@ c
 c  This routine calculates the viscosities which are passed to the
 c  stiffness matrix in f_vstf.f through the array local array evisc.
 c
-c  Code is still in developmental stage. Stress-dependent section has
-c    been successfully tested with a simple shear problem. Constant and 
-c    Temperature-dependent viscosity sections yield the same results as 
-c    previous versions of this subroutine. (SSS 6/93)
-c
-c  Stress-dependent section assumes that stress exponent n = 3.
-c
-c  Viscosity scaling for non_Newtonian section:
-c       low stress => Newtonian rheology
-c       high stress => non-Newtonian rheology
-c
 c----------------------------------------------------------------------
 c
       implicit double precision (a-h,o-z)
@@ -59,10 +48,10 @@ c
      &       + shl(4,intp) * xl(4)
           power = visexp(tq, tcon(1,mat(ivel)),
      &                   zq, tcon(2,mat(ivel)) )
-c         evisc(intp) = 1.0e-9*exp ( power ) 
           evisc(intp) = exp ( power ) 
-          if (evisc(intp) .gt. tcon(3,mat(ivel))) 
-     &           evisc(intp) = tcon(3,mat(ivel))
+c         if (evisc(intp) .gt. tcon(3,mat(ivel))) 
+c    &           evisc(intp) = tcon(3,mat(ivel))
+          if (evisc(intp) .gt. 1.0e7) evisc(intp) = 1.0e7
           if (evisc(intp) .lt. 1.0e-1) evisc(intp) = 1.0e-1
           evisc(intp) = visc(mat(ivel))*evisc(intp)
         enddo
@@ -92,15 +81,14 @@ c.... deactivate above card(s) for single precision operation
 c
       include 'common.h'
 c
-      tn   = 1100.0d0*t
-      Tmin = 773.0d0
+      tn   = 2000.0d0*t
+      Tmin = 273.0d0
       R    = 8.3154d0
       rho  = 3.3d3
       g    = 9.8
 c 1.0d-6 converts cm**3 to m**3
       dscale = rho * g * 1.0d-6
 c
-c     depth = (600.0 - z) * dscale * 2.89d6 
       depth = (1.0 - z) * dscale * 2.89d6 
       d0    = dscale * 2.89e6 
 c
@@ -109,7 +97,6 @@ c
       visexp = (estar*1.e3 + vstar*depth)/(R*(tn+Tmin))
      &       - (estar*1.e3 + vstar*depth)/(R*(1100.0+Tmin))
 c
-c     if (visexp .gt. 10.0) visexp = 10.0
       return
       end
 c
