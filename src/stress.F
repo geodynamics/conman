@@ -87,7 +87,6 @@ c
 	  strtmp(n) = strtmp(n)/volume
 	enddo
         strtmp(4) =-evisc(5)*alam(mat(ivel))*strtmp(4) 
-c       strtmp(4) =-evisc(5)* strtmp(4) 
         strtmp(5) = strtmp(2) - strtmp(4) 
         strtmp(6) = evisc(5) 
 c
@@ -123,9 +122,6 @@ c
         enddo
       enddo
 c
-c fix boundary according to Hager & King correction 8/24/89
-c   N.B. FIX ASSUMES CONSTANT RAYLEIGH NUMBER
-C
       do n=1,6
         do i=1,nodebn
 c Hughes for testing purposes
