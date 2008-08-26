@@ -29,37 +29,10 @@ c
 
 c
       eng=zero
-      work=zero
-      cwork = zero
-      phib = zero
-      tm = zero
-      area = zero
       do 10 i=1,numnp
         snnu(i)  = zero
         pmass(i) = zero
 10    continue
-      do ivel = 1 , numel
-        do node = 1, 4
-          tl(node)   = t(ien(ivel,node)) 
-          xl(1,node)   = x(1,ien(ivel,node) ) 
-          xl(2,node)   = x(2,ien(ivel,node) ) 
-        enddo
-        call genshg(shdx, shdy, det, xl, ivel)
-        volume=det(1)+det(2)+det(3)+det(4)
-        tme=zero
-        areae=zero
-        do intp = 1, 4
-          tme = tme 
-     &        + (shl(1,intp)*tl(1) + shl(2,intp)*tl(2)
-     &        +  shl(3,intp)*tl(3) + shl(4,intp)*tl(4))*det(intp)
-          areae = areae + det(intp)
-        enddo
-        area = area + areae/volume
-        tm = tm + tme/volume
-      enddo
-      tm = tm/area
-c
-c
 c
       do 1000 ivel = 1 , numel
 c
@@ -85,33 +58,7 @@ c
 c
         volume=det(1)+det(2)+det(3)+det(4)
         flux = zero
-        ework = zero
-        ephib = zero
-c
-        do intp = 1, 4
-          uxq = shdx(1,intp)*vl(1) + shdx(2,intp)*vl(3)
-     &        + shdx(3,intp)*vl(5) + shdx(4,intp)*vl(7)
-          uyq = shdy(1,intp)*vl(1) + shdy(2,intp)*vl(3)
-     &        + shdy(3,intp)*vl(5) + shdy(4,intp)*vl(7)
-          vxq = shdx(1,intp)*vl(2) + shdx(2,intp)*vl(4)
-     &        + shdx(3,intp)*vl(6) + shdx(4,intp)*vl(8)
-          uyq = shdy(1,intp)*vl(2) + shdy(2,intp)*vl(4)
-     &        + shdy(3,intp)*vl(6) + shdy(4,intp)*vl(8)
-        ework = ework + 0.5*(1.0e0*(uxq*uxq + uyq*uyq) +
-     &          (uyq+vxq)*(vxq+uyq))*det(intp)*evisc(intp)
-        ephib = ephib + (tm-
-     &       tl(1)*shl(1,intp)+tl(2)*shl(2,intp)
-     &      +tl(3)*shl(3,intp)+tl(4)*shl(4,intp))
-     &     *(vl(2)*shl(1,intp)+vl(4)*shl(2,intp)
-     &      +vl(6)*shl(3,intp)+vl(8)*shl(4,intp))*det(intp)
-c 1/2.000 is a scaling to make Ra come out to 10^5
-ccccccccc1ccccccccc2ccccccccc3ccccccccc4ccccccccc5ccccccccc6ccccccccc7cc
-        enddo
         eng = eng + eeng*volume
-c       work = work + 1.0e-2*ework/volume
-        if (mat(ivel) .gt. 1) work = work + ework/volume
-        if (mat(ivel) .gt. 1) phib = phib + ephib/volume
-        if(mat(ivel).eq.2) cwork=cwork+ework/volume
 c
         do intp=1, 4
           flux = flux - (shdy(1,intp)*tl(1) + shdy(2,intp)*tl(2)
@@ -174,43 +121,32 @@ c
       fluxb = 0
       pvelt = 0
       pvelb = 0
-c..... flux across the top
-c     fac = 3.0e3 * 1300.0 / 6.0e5
-      fac = 1.0
       do 1300 node=1, nodebn/2 - 1
         xtemp = x(1,nb(1,node) ) - x(1,nb(1,node+1) )
         vtemp = v(1,nb(1,node) ) + v(1,nb(1,node+1) )
         ttemp = snnu( nb(1,node) ) + snnu(  nb(1,node+1) )
-        xtott = xtott + xtemp
-        fluxt = fluxt + ttemp * xtemp * pt5
-        pvelt = pvelb + vtemp * xtemp * pt5
+        xtotb = xtotb + xtemp
+        fluxb = fluxb + ttemp * xtemp * pt5
 1300   continue
 c..... flux across the bottom
       do 1400 node=nodebn/2 + 1, nodebn -1
         xtemp = x(1,nb(1,node) ) - x(1,nb(1,node+1) )
         vtemp = v(1,nb(1,node) ) + v(1,nb(1,node+1) )
         ttemp = snnu( nb(1,node) ) + snnu( nb(1,node+1) )
-        xtotb = xtotb + xtemp
-        fluxb = fluxb + ttemp * xtemp * pt5
-        pvelb = pvelb + vtemp * xtemp * pt5
-c       write(80,*) x(1,nb(1,node)) , snnu(nb(1,node)) 
+        xtott = xtotb + xtemp
+        fluxt = fluxt + ttemp * xtemp * pt5
 1400   continue
-c      write(80,1002)(fac*snnu(nb(1,node)),node=nodebn/2+1,nodebn)
-1002   format(361(1pe14.7,1x))
 c
-      prtary(1) = fluxt/xtott
-      prtary(2) = fluxb/xtotb
+      prtary(1) = fluxb/xtotb
+      prtary(2) = fluxt/xtott
       prtary(3) = eng
       prtary(4) = time
-      prtary(5) = pvelt/xtott
-      prtary(6) = pvelb/xtotb
       write(itsout,1001) prtary(1),prtary(2),prtary(3),
-     &                   prtary(4),prtary(5),prtary(6),
-     &                   cwork, work, phib, tm, work/phib
+     &                   prtary(4)
 c
 c..... return
 c
-1001    format ( 11(e15.8,1x))
+1001    format ( 4(e15.8,1x))
 1006    format ( 5x, i5, 10x, f15.8)
       return
       end
