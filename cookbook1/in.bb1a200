@@ -1,11 +1,11 @@
- 200 x 200 el. plate problem from Lowman et al.   2001: IFCMT,DELNXTLN
+ 200 x 200 el. plate problem from Blankenbach et al., 1989
  #Nds  sdm dof   X    Z prc ck echo rrst wrst nus tdvf tseq nelg sky wr
   40401  2   2 200  200   2  1    0    0    1 402    0    1    1   1  0
  time step information
     100   1  1.0  1.0  0.100000
  output information
     100    100    100    100
- velocity boundary condition flags: IFCMT,DELNXTLN
+ velocity boundary condition flags
  bnode   enode   incr bcf1 bcf2
       1  40201    201    0    1
   40201  40401      1    1    0
