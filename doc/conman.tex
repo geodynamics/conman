@@ -8,7 +8,6 @@
 \setcounter{tocdepth}{3}
 \usepackage{float}
 \usepackage{textcomp}
-\usepackage{color}
 \usepackage{graphicx}
 \IfFileExists{url.sty}{\usepackage{url}}
                       {\newcommand{\url}{\texttt}}
@@ -35,7 +34,7 @@
 {\end{list}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-%% LyX 1.5.4 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 1.5.1 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 
 
@@ -47,7 +46,42 @@
 
 \usepackage{textcomp}
 
+\usepackage{color}
+
+
+\IfFileExists{url.sty}{\usepackage{url}
+}
+                      {\newcommand{\url}{\texttt}}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+
+
+%% Because html converters don't know tabularnewline
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%% LyX 1.5.4 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+
+
+
+
+
+
+\usepackage{float}
+
+
+\usepackage{textcomp}
+
+
 \usepackage{url}
+
 
 
 
@@ -72,6 +106,7 @@
 \usepackage{geometry}
 
 
+
 \geometry{verbose,letterpaper,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
 
 
@@ -79,10 +114,13 @@
 \usepackage{float}
 
 
+
 \usepackage{textcomp}
 
 
+
 \usepackage{url}
+
 
 
 
@@ -102,6 +140,7 @@
 
 
 
+
 \let\myUrl\url
 \renewcommand{\url}[1]{(\myUrl{#1})}
 
@@ -111,6 +150,11 @@
 
 \makeatother
 
+
+\makeatother
+
+
+
 \usepackage{babel}
 \makeatother
 
@@ -118,7 +162,7 @@
 \noindent \begin{center}
 \thispagestyle{empty}%
 \begin{figure}[H]
- \includegraphics[width=0.75\paperwidth]{images/conman_cover.pdf} 
+ \includegraphics[width=0.75\paperwidth]{images/conman_cover} 
 \end{figure}
 
 \par\end{center}
@@ -205,7 +249,7 @@ The code is based on the method described in
 \begin{itemize}
 \item King, S.D., A. Raefsky, and B.H. Hager (1990), ConMan: Vectorizing
 a finite element code for incompressible two-dimensional convection
-in the Earth's mantle, \emph{Phys. Earth Planet. Int., 59, }195-208. 
+in the Earth's mantle, \emph{Phys. Earth Planet. Int., 59,} 195-208. 
 \end{itemize}
 The code was originally developed by Scott King, Arthur Raefsky and
 Brad Hager, although many people have contributed improvements to
@@ -378,7 +422,7 @@ we get \[
 \sum_{B=1}^{n}\,\left(\int_{0}^{1}\frac{\partial N_{A}}{\partial x}\frac{\partial N_{B}}{\partial x}\, dx\right)\, d_{B}=\]
  \begin{equation}
 \int_{0}^{1}N_{A}\, f^{h}\, dx+N_{A}(0)h-g\,\int_{0}^{1}\frac{\partial N_{A}}{\partial x}\frac{\partial N_{n+1}}{\partial x}\, dx\label{eq:feform}\end{equation}
-Everything in Equation~\ref{eq:feform} is known except the $d_{B}$'s.
+ Everything in Equation~\ref{eq:feform} is known except the $d_{B}$'s.
 This constitutes a system of $n$ equations and $n$ unknowns. We
 can think of the left-hand side as a matrix, $K_{AB}$ whose entries
 are \begin{equation}
@@ -393,7 +437,7 @@ K_{11} & K_{12} & \cdots & K_{1n}\\
 K_{21} & K_{22} & \cdots & K_{2n}\\
 \vdots & \vdots &  & \vdots\\
 K_{n1} & K_{n2} & \cdots & K_{nn}\end{array}\right]\label{Kmatrix}\end{equation}
-By tradition, $\left[K\right]$ is the stiffness matrix, $\{f\}$
+ By tradition, $\left[K\right]$ is the stiffness matrix, $\{f\}$
 is the force vector, and $\{d\}$ is the displacement vector. When
 the problem under consideration pertains to a mechanical system, this
 makes the most sense, but even in heat conduction problems, or fluid
@@ -420,7 +464,7 @@ functions to have \begin{eqnarray}
 \sum_{A=1}^{4}N_{A}(X,Y) & = & 1\label{eq:normalize}\\
 \sum_{A=1}^{4}N_{A}(X,Y)\, X_{A} & = & X\label{eq:interpx}\\
 \sum_{A=1}^{4}N_{A}(X,Y)\, Y_{A} & = & Y\label{eq:interpy}\end{eqnarray}
-Equation~\ref{eq:normalize} says that they are normalized, so that
+ Equation~\ref{eq:normalize} says that they are normalized, so that
 they sum to one (everywhere on X,Y). Equations~\ref{eq:interpx}
 and~\ref{eq:interpy} state that the shape functions are also interpolation
 functions. Without doing a lot of derivation, I will claim that for
@@ -429,7 +473,7 @@ N_{1} & = & \frac{(a-x)(b-y)}{4ab}\\
 N_{2} & = & \frac{(a+x)(b-y)}{4ab}\\
 N_{3} & = & \frac{(a+x)(b+y)}{4ab}\\
 N_{4} & = & \frac{(a-x)(b+y)}{4ab}\end{eqnarray}
-these shape functions satisfy the conditions in Equation~\ref{eq:normalize}
+ these shape functions satisfy the conditions in Equation~\ref{eq:normalize}
 and Equations ~\ref{eq:interpx} and~\ref{eq:interpy}. A good exercise
 would be to show this is true. A visual representation of these shape
 functions is shown in Figure\ref{fig:The-bilinear-shape}.
@@ -444,7 +488,7 @@ from Hughes, Section 3.2.}
 
 
 \noindent \begin{centering}
-\includegraphics[scale=0.4]{images/conman-fig2.png} 
+\includegraphics[scale=0.4]{images/conman-fig2} 
 \par\end{centering}
 \end{figure}
 
@@ -473,10 +517,10 @@ convenient to split into a grid of 1 by 1 unit elements? We use an
 important principle of mathematics, the Jacobian of the transformation
 \begin{equation}
 K_{11}~=~\int_{A}^{B}N_{1,x}N_{1,x}\, dx~=~\int_{0}^{1}N_{1,x}N_{1,x}\, Jdx\end{equation}
-where $J$ is the Jacobian of the transformation. This is a very powerful
-point. When we are thinking of solving a regular Cartesian domain,
-this just corresponds to a stretching or a shrinking (notice we set
-$a=b=1$ above (see Figure \ref{fig:Figure-1}).
+ where $J$ is the Jacobian of the transformation. This is a very
+powerful point. When we are thinking of solving a regular Cartesian
+domain, this just corresponds to a stretching or a shrinking (notice
+we set $a=b=1$ above (see Figure \ref{fig:Figure-1}).
 
 \noindent \begin{center}
 %
@@ -487,7 +531,7 @@ taken from Hughes, Section 3.2.}
 
 
 \noindent \begin{centering}
-\includegraphics[scale=0.45]{images/conman-fig1.png} 
+\includegraphics[scale=0.45]{images/conman-fig1} 
 \par\end{centering}
 \end{figure}
 
@@ -502,7 +546,7 @@ element' centered at (0,0). Hughes also uses $\xi,\eta$ for the $X,Y$
 coordinate pair in the `parent element.' So we could write \begin{eqnarray}
 x & = & 0.1+{0.05}\xi+0.0\eta\\
 y & = & 0.2+{0.0}\xi+{0.10}\eta\end{eqnarray}
- or in matrix form we could write \begin{equation}\label{eq:transform}
+ or in matrix form we could write \begin{equation}
 \left\{ \begin{array}{c}
 x\\
 y\end{array}\right\} =\left[\begin{array}{cc}
@@ -511,15 +555,16 @@ y\end{array}\right\} =\left[\begin{array}{cc}
 \xi\\
 \eta\end{array}\right\} +\left\{ \begin{array}{c}
 0.1\\
-0.2\end{array}\right\} \end{equation}
-If the transformation was from an arbitratry shaped quadrilateral to the parent element,
-then the off diagonal terms in the matrix in equation~\ref{eq:transform} will not be zero. It is easy enough to
-show that \begin{equation}
+0.2\end{array}\right\} \label{eq:transform}\end{equation}
+ If the transformation was from an arbitratry shaped quadrilateral
+to the parent element, then the off diagonal terms in the matrix in
+equation~\ref{eq:transform} will not be zero. It is easy enough
+to show that \begin{equation}
 \int_{x_{1}}^{x_{2}}\int_{y_{1}}^{y_{2}}f(x,y)\, dx\, dy=\int_{-1}^{1}\int_{-1}^{1}f(\xi,\eta)\,{\rm det}[J]\, d\xi\, d\eta\end{equation}
-where $[J]$ is the Jacobian of the transformation. 
-It turns out, and it is also easy to show, that ${\rm det}[J]$ is
-the ratio of the areas when going from one rectangle to another (in
-fact any Cartesian to Cartesian transformation).
+ where $[J]$ is the Jacobian of the transformation. It turns out,
+and it is also easy to show, that ${\rm det}[J]$ is the ratio of
+the areas when going from one rectangle to another (in fact any Cartesian
+to Cartesian transformation).
 
 \textbf{Advanced Topic:} Now suppose we want to map a cylindrical
 domain to our `parent element.' We can use the same principle in this
@@ -547,7 +592,7 @@ into a summation. Let's begin with a 1D example, $f(x)=c$ \begin{equation}
 \int_{-1}^{1}(ax+b)\, dx=(\frac{ax^{2}}{2}+bx)|_{-1}^{1}=\frac{a}{2}+b-(\frac{a}{2}-b)=2b\end{equation}
  Gauss' way \begin{equation}
 \int_{-1}^{1}(ax+b)\, dx=a\frac{-1}{\sqrt{3}}+b+a\frac{1}{\sqrt{3}}+b=2b\end{equation}
-It turns out that $\frac{-1}{\sqrt{3}},\frac{1}{\sqrt{3}}$ are exact
+ It turns out that $\frac{-1}{\sqrt{3}},\frac{1}{\sqrt{3}}$ are exact
 for a linear equation, but from what I showed, so would any $-x,x$
 combination, but what Gauss showed was more powerful, that if the
 function is of higher order, the $\frac{-1}{\sqrt{3}},\frac{1}{\sqrt{3}}$
@@ -604,12 +649,12 @@ always begins with 1 in the lower left-hand corner. There is no special
 reason; you just have to choose a convention.
 
 \begin{description}
-\item [{{{id}}}] transforms global nodes to equation numbers (Figure
+\item [{{{{id}}}}] transforms global nodes to equation numbers (Figure
 \ref{fig:Example-relationship-between}). 
-\item [{{{ien}}}] transforms element local node numbers to global node
-numbers (Figure \ref{fig:4-Example-relationship-between}). 
-\item [{{{lm}}}] transforms element local node numbers to global equation
-numbers. 
+\item [{{{{ien}}}}] transforms element local node numbers to global
+node numbers (Figure \ref{fig:4-Example-relationship-between}). 
+\item [{{{{lm}}}}] transforms element local node numbers to global
+equation numbers. 
 \end{description}
 \noindent \begin{center}
 %
@@ -621,7 +666,7 @@ condition. Figure taken from Hughes, Section 3.2.}
 
 
 \noindent \begin{centering}
-\includegraphics[scale=0.4]{images/conman-fig3.png} 
+\includegraphics[scale=0.4]{images/conman-fig3} 
 \par\end{centering}
 \end{figure}
 
@@ -648,7 +693,7 @@ corner. Figure taken from Hughes, Section 3.2.}
 
 
 \noindent \begin{centering}
-\includegraphics[scale=0.4]{images/conman-fig4.png} 
+\includegraphics[scale=0.4]{images/conman-fig4} 
 \par\end{centering}
 \end{figure}
 
@@ -657,9 +702,9 @@ corner. Figure taken from Hughes, Section 3.2.}
 In the code, the data structures for these two arrays are
 
 \begin{description}
-\item [{{{id}}}] ( degree-of-freedom , global-node-number ) = equation-number 
-\item [{{{ien}}}] ( local-node-number, element-number ) = global-node-number 
-\item [{{{lm}}}] ( degree-of-freedom, local-node-number, element-number
+\item [{{{{id}}}}] ( degree-of-freedom , global-node-number ) = equation-number 
+\item [{{{{ien}}}}] ( local-node-number, element-number ) = global-node-number 
+\item [{{{{lm}}}}] ( degree-of-freedom, local-node-number, element-number
 ) = global-equation-number 
 \end{description}
 
@@ -708,7 +753,7 @@ u_{(i,j)}=(u_{i,j}+u_{j,i})/2\end{equation}
 \begin{eqnarray}
 \tau_{ij}=-p^{\lambda}\delta_{ij}+2\mu u_{(i,j)}\label{eq:constit-lam}\\
 0=u_{i,i}+p^{\lambda}/\lambda.\label{eq:constit-lam2}\end{eqnarray}
-As $\lambda$ approaches infinity, these relations approach the incompressible
+ As $\lambda$ approaches infinity, these relations approach the incompressible
 solution. Also, as $\lambda$ approaches infinity, $p^{\lambda}$
 approaches the hydrostatic pressure in the incompressible case. In
 general, the hydrostatic pressure is $-\tau_{ii}/3$. Substituting
@@ -721,7 +766,7 @@ Equation~\ref{eq:constit-lam2} into~\ref{eq:constit-lam} we get
 \tau_{ii}/3=-p=(\lambda+2/3\mu)u_{i,i}\end{equation}
  but we also have \begin{equation}
 -p^{\lambda}=\lambda u_{i,i}\end{equation}
-from Equation~\ref{eq:constit-lam2}. Clearly in the incompressible
+ from Equation~\ref{eq:constit-lam2}. Clearly in the incompressible
 limit $\lambda\gg\mu$ then $\lambda+2/3\mu\rightarrow\lambda$ and
 $p^{\lambda}\rightarrow p$. Also note that the continuity equation
 is satisfied.
@@ -763,12 +808,12 @@ find (after a little algebra)
 \int\int_{\Omega}f_{x}\, w\, d\Omega=b.c.~terms\\
 \int\int_{\Omega}\frac{\partial w}{\partial x}\{2\mu(\frac{\partial u}{\partial z}+\frac{\partial v}{\partial x})/2\}+\frac{\partial w}{\partial z}\{\lambda(\frac{\partial u}{\partial x}+\frac{\partial v}{\partial z})+2\mu\frac{\partial v}{\partial z}\}\, d\Omega+\nonumber \\
 \int\int_{\Omega}f_{z}\, w\, d\Omega=b.c.~terms\end{eqnarray}
-Note that we don't get something for nothing; this shortcut does not
-give us the boundary condition terms (velocity or flux). These would
-fall out of the integration by parts. Recall, \begin{equation}
+ Note that we don't get something for nothing; this shortcut does
+not give us the boundary condition terms (velocity or flux). These
+would fall out of the integration by parts. Recall, \begin{equation}
 \int_{a}^{b}w\, dv=w\, v|_{a}^{b}-\int_{a}^{b}v\, dw\end{equation}
-where in our case $w$ is the weighting function and $v$ is the second
-derivative term. The first term gives us the flux (first derivative)
+ where in our case $w$ is the weighting function and $v$ is the
+second derivative term. The first term gives us the flux (first derivative)
 boundary conditions. In the case of the momentum equations, that is
 the applied tractions (or stress boundary conditions).
 
@@ -882,7 +927,7 @@ used in routine \textbf{f\_vstf}.}
 
 
 \begin{centering}
-\includegraphics[scale=0.4]{images/conman-fig8.png} 
+\includegraphics[scale=0.4]{images/conman-fig8} 
 \par\end{centering}
 \end{figure}
 
@@ -953,10 +998,10 @@ adding an artificial diffusivity of the form
 and $u_{\xi}$ and $u_{\eta}$ are the velocities in the local element
 coordinate system ($\xi$ $\eta$ system) evaluated at the element
 center. This form of discretization has no crosswind diffusion because
-the ``artificial diffusion'' acts only in the direction of the flow
-(i.e., it follows the streamline), hence the name Streamline Upwind
-Petrov-Galerkin (SUPG). This makes it a better approximation than
-straight upwinding, and it has been demonstrated to be more accurate
+the {}``artificial diffusion'' acts only in the direction of the
+flow (i.e., it follows the streamline), hence the name Streamline
+Upwind Petrov-Galerkin (SUPG). This makes it a better approximation
+than straight upwinding, and it has been demonstrated to be more accurate
 than Galerkin or straight upwinding in advection dominated problems
 \cite{Hughes and Brooks 1979}. It has recently been shown that the
 SUPG method is one of a broader class of methods for advection-diffusion
@@ -1075,8 +1120,8 @@ as well as a routine to calculate the energy equation matrix and right-hand
 side vectors (\textbf{f\_trhsimp.F}). To use Picard iteration you
 change the variable $\alpha$ in the Time Sequence card (second line
 of the input file) from 0.5 to 1.0 and change the iterations from
-2 to 1 (same line). You need to ``make clean'' and remake with the
-target Picard, to generate a new executable (conman.pic). A future
+2 to 1 (same line). You need to {}``make clean'' and remake with
+the target Picard, to generate a new executable (conman.pic). A future
 revision may merge these energy equation solvers into a single code
 and hide the need to change the iteration steps from the user. When
 you have a steady-state solution, Picard iteration usually converges
@@ -1275,91 +1320,95 @@ grid generation ConMan does is linear or bilinear interpolation which
 is described in the appropriate sections of this guide.
 
 The following sixteen cards or groups of cards are read from the \textbf{iin}
-unit (throughout this guide a ``card'' will mean one line of an ASCII
-text file). These constitute the parameter part of the input ``deck''
-for the program ConMan. The format for this guide is a \textbf{bold}
-title line giving the card title followed by an \emph{italicized}
+unit (throughout this guide a {}``card'' will mean one line of an
+ASCII text file). These constitute the parameter part of the input
+{}``deck'' for the program ConMan. The format for this guide is
+a \textbf{bold} title line giving the card title followed by an \emph{italicized}
 line showing the order of the parameters and a listing of the parameters
 (with a brief explanation).
 
 \begin{description}
-\item [{{{Title~Card}}}] \emph{Any descriptive character string up
-to 80 characters long} 
-\item [{{{Global~Constants~Card}}}] \emph{numnp nsd ndof nelx nelz
-mprec iflow necho inrsts iorstr nodebn ntimvs ntseq numeg isky nwrap}
+\item [{{{{Title~Card}}}}] \emph{Any descriptive character string
+up to 80 characters long} 
+\item [{{{{Global~Constants~Card}}}}] \emph{numnp nsd ndof nelx
+nelz mprec iflow necho inrsts iorstr nodebn ntimvs ntseq numeg isky
+nwrap}
 
 \begin{description}
-\item [{{{numnp}}}] . . . . . . total number of nodal points 
-\item [{{{nsd}}}] . . . . . . . . number of spatial dimensions (always
+\item [{{{{numnp}}}}] . . . . . . total number of nodal points 
+\item [{{{{nsd}}}}] . . . . . . . . number of spatial dimensions
+(always 2) 
+\item [{{{{ndof}}}}] . . . . . . . number of degrees of freedom (always
 2) 
-\item [{{{ndof}}}] . . . . . . . number of degrees of freedom (always
-2) 
-\item [{{{nelx}}}] . . . . . . . number of elements in the x1 (horizontal)
+\item [{{{{nelx}}}}] . . . . . . . number of elements in the x1 (horizontal)
 direction 
-\item [{{{nelz}}}] . . . . . . . number of elements in the x2 (vertical)
+\item [{{{{nelz}}}}] . . . . . . . number of elements in the x2 (vertical)
 direction 
-\item [{{{mprec}}}] . . . . . . precision flag (always use double)
+\item [{{{{mprec}}}}] . . . . . . precision flag (always use double)
 
 
 1 - single
 
 2 - double
 
-\item [{{{iflow}}}] . . . . . . . data check flag
+\item [{{{{iflow}}}}] . . . . . . . data check flag
 
 
 0 - check data only
 
 1 - execute code
 
-\item [{{{necho}}}] . . . . . . echo data flag
+\item [{{{{necho}}}}] . . . . . . echo data flag
 
 
 0 - minimum data echo (terse)
 
 1 - echo data to output file (verbose)
 
-\item [{{{inrstr}}}] . . . . . . . read restart file flag
+\item [{{{{inrstr}}}}] . . . . . . . read restart file flag
 
 
 0 - use default start (conductive)
 
 1 - read restart file from unit 16
 
-\item [{{{iorstr}}}] . . . . . . . write restart file flag
+\item [{{{{iorstr}}}}] . . . . . . . write restart file flag
 
 
 0 - don\textquoteright{}t write restart file
 
 1 - write restart file to unit 17
 
-\item [{{{nodebn}}}] . . . . . . number of edge nodes for nusselt smoother 
-\item [{{{ntimvs}}}] . . . . . . temperature dependent viscosity flag
+\item [{{{{nodebn}}}}] . . . . . . number of edge nodes for nusselt
+smoother 
+\item [{{{{ntimvs}}}}] . . . . . . temperature dependent viscosity
+flag
 
 
 0 - stiffness matrix factored once
 
 1 - stiffness matrix factored every time step
 
-\item [{{{ntseq}}}] . . . . . . . number of time sequences (always
+\item [{{{{ntseq}}}}] . . . . . . . number of time sequences (always
 1)
 
 
 currently only one supported
 
-\item [{{{numeg}}}] . . . . . . number of element groups (always 1)
+\item [{{{{numeg}}}}] . . . . . . number of element groups (always
+1)
 
 
 currently only one supported
 
-\item [{{{isky}}}] . . . . . . . flag for skyline factor
+\item [{{{{isky}}}}] . . . . . . . flag for skyline factor
 
 
 0 - regular skyline
 
 1 - vectorized skyline
 
-\item [{{{nwrap}}}] . . . . . . number of nodes to wrap
+\item [{{{{nwrap}}}}] . . . . . . number of nodes to wrap
 
 
 equal to number of elements in vertical
@@ -1369,50 +1418,51 @@ to use nodes must be numbered increasing
 fastest in vertical direction
 
 \end{description}
-\item [{{{Time~Sequence~Cards}}}] - ntseq cards
+\item [{{{{Time~Sequence~Cards}}}}] - ntseq cards
 
 
 \emph{nstep niter alpha delt epstol}
 
 \begin{description}
-\item [{{{nstep}}}] . . . . . . . number of time steps 
-\item [{{{niter}}}] . . . . . . . number of multicorrector iterations
+\item [{{{{nstep}}}}] . . . . . . . number of time steps 
+\item [{{{{niter}}}}] . . . . . . . number of multicorrector iterations
 
 
 2 - second-order expicit
 
 1 - picard
 
-\item [{{{alpha}}}] . . . . . . . multicorrector parameter
+\item [{{{{alpha}}}}] . . . . . . . multicorrector parameter
 
 
 0.5 for explicit 2nd order
 
 1.0 for picard
 
-\item [{{{delt}}}] . . . . . . . time step (not used) 
-\item [{{{epstol}}}] . . . . . . tolerance for hybrid method (not used) 
+\item [{{{{delt}}}}] . . . . . . . time step (not used) 
+\item [{{{{epstol}}}}] . . . . . . tolerance for hybrid method (not
+used) 
 \end{description}
-\item [{{{Output~Step~Card}}}] \emph{nsdprt nsvprt nstprt nsmprt}
+\item [{{{{Output~Step~Card}}}}] \emph{nsdprt nsvprt nstprt nsmprt}
 
 \begin{description}
-\item [{{{nsdprt}}}] . . . . . . steps between disk output 
-\item [{{{nsvprt}}}] . . . . . . steps between velocity output (not
-used) 
-\item [{{{nstprt}}}] . . . . . . steps between temperature, velocity
+\item [{{{{nsdprt}}}}] . . . . . . steps between disk output 
+\item [{{{{nsvprt}}}}] . . . . . . steps between velocity output
+(not used) 
+\item [{{{{nstprt}}}}] . . . . . . steps between temperature, velocity
 \& stress output 
-\item [{{{nsmprt}}}] . . . . . . steps between stress field output
+\item [{{{{nsmprt}}}}] . . . . . . steps between stress field output
 (not used) 
 \end{description}
-\item [{{{Velocity~Boundary~Condition~Flag~Cards}}}] \emph{bnode
+\item [{{{{Velocity~Boundary~Condition~Flag~Cards}}}}] \emph{bnode
 enode incr (bcf(i), i=1,ndof)}
 
 \begin{description}
-\item [{{{bnode}}}] . . . . . . beginning node 
-\item [{{{enode}}}] . . . . . . ending node 
-\item [{{{incr}}}] . . . . . . . node increment 
-\item [{{{bcf(i)}}}] . . . . . . . boundary condition flag for ith
-degree of freedom
+\item [{{{{bnode}}}}] . . . . . . beginning node 
+\item [{{{{enode}}}}] . . . . . . ending node 
+\item [{{{{incr}}}}] . . . . . . . node increment 
+\item [{{{{bcf(i)}}}}] . . . . . . . boundary condition flag for
+ith degree of freedom
 
 
 0 - free slip
@@ -1424,14 +1474,14 @@ degree of freedom
 \emph{0 0 0 0 0 to end VBCF cards}
 
 \begin{description}
-\item [{{{Temperature~Boundary~Condition~Flag~Cards}}}] \emph{bnode
+\item [{{{{Temperature~Boundary~Condition~Flag~Cards}}}}] \emph{bnode
 enode incr bcf}
 
 \begin{description}
-\item [{{{bnode}}}] . . . . . . beginning node 
-\item [{{{enode}}}] . . . . . . ending node 
-\item [{{{incr}}}] . . . . . . . node increment 
-\item [{{{bcf}}}] . . . . . . . . boundary condition flag for temperature
+\item [{{{{bnode}}}}] . . . . . . beginning node 
+\item [{{{{enode}}}}] . . . . . . ending node 
+\item [{{{{incr}}}}] . . . . . . . node increment 
+\item [{{{{bcf}}}}] . . . . . . . . boundary condition flag for temperature
 
 
 1- fixed temperature
@@ -1439,109 +1489,113 @@ enode incr bcf}
 \end{description}
 \emph{0 0 0 0 to end TBCF cards}
 
-\item [{{{Nusselt~Number~Boundary~Condition~Flag~Cards~-~Edge~Nodes}}}] top
+\item [{{{{Nusselt~Number~Boundary~Condition~Flag~Cards~-~Edge~Nodes}}}}] top
 and bottom rows of nodes \emph{bnode enode incr}
 
 \begin{description}
-\item [{{{bnode}}}] . . . . . . beginning node 
-\item [{{{enode}}}] . . . . . . ending node 
-\item [{{{incr}}}] . . . . . . . node increment 
+\item [{{{{bnode}}}}] . . . . . . beginning node 
+\item [{{{{enode}}}}] . . . . . . ending node 
+\item [{{{{incr}}}}] . . . . . . . node increment 
 \end{description}
 \emph{0 0 0 to end NNBCF (type a) cards}
 
-\item [{{{Nusselt~Number~Boundary~Condition~Flag~Cards~-~Second~Row~Nodes}}}] second
+\item [{{{{Nusselt~Number~Boundary~Condition~Flag~Cards~-~Second~Row~Nodes}}}}] second
 from top and bottom rows of nodes \emph{bnode enode incr}
 
 \begin{description}
-\item [{{{bnode}}}] . . . . . . beginning node 
-\item [{{{enode}}}] . . . . . . ending node 
-\item [{{{incr}}}] . . . . . . . node increment 
+\item [{{{{bnode}}}}] . . . . . . beginning node 
+\item [{{{{enode}}}}] . . . . . . ending node 
+\item [{{{{incr}}}}] . . . . . . . node increment 
 \end{description}
 \emph{0 0 0 to end NNBCF (type b) cards}
 
-\item [{{{Initial~Temperature~Card}}}] \emph{pert xsize zsize}
+\item [{{{{Initial~Temperature~Card}}}}] \emph{pert xsize zsize}
 
 \begin{description}
-\item [{{{pert}}}] . . . . . . . perturbation from conductive state 
-\item [{{{xsize}}}] . . . . . . . nondimensional length (x1 direction)
+\item [{{{{pert}}}}] . . . . . . . perturbation from conductive state 
+\item [{{{{xsize}}}}] . . . . . . . nondimensional length (x1 direction)
 of box 
-\item [{{{zsize}}}] . . . . . . . nondimensional height (x2 direction)
+\item [{{{{zsize}}}}] . . . . . . . nondimensional height (x2 direction)
 of box 
 \end{description}
-\item [{{{Element~Parameter~Cards}}}] - numeg cards \emph{ntype numel
-nen nenl numat nedof numsuf nipt implv implt}
+\item [{{{{Element~Parameter~Cards}}}}] - numeg cards \emph{ntype
+numel nen nenl numat nedof numsuf nipt implv implt}
 
 \begin{description}
-\item [{{{ntype}}}] . . . . . . . element type
+\item [{{{{ntype}}}}] . . . . . . . element type
 
 
 2 - two dimensional elements
 
-\item [{{{numel}}}] . . . . . . total number of elements 
-\item [{{{nen}}}] . . . . . . . . number of element nodes (always 4) 
-\item [{{{nenl}}}] . . . . . . . number of local element nodes (always
+\item [{{{{numel}}}}] . . . . . . total number of elements 
+\item [{{{{nen}}}}] . . . . . . . . number of element nodes (always
 4) 
-\item [{{{numat}}}] . . . . . . number of material groups 
-\item [{{{nedof}}}] . . . . . . . number of element degrees of freedom
-(always 2) 
-\item [{{{numsuf}}}] . . . . . . number of imposed stress/flux cards 
-\item [{{{nipt}}}] . . . . . . . number of integration points per element
-(always 5) 
-\item [{{{implv}}}] . . . . . . . currently unused 
-\item [{{{implt}}}] . . . . . . . currently unused 
+\item [{{{{nenl}}}}] . . . . . . . number of local element nodes
+(always 4) 
+\item [{{{{numat}}}}] . . . . . . number of material groups 
+\item [{{{{nedof}}}}] . . . . . . . number of element degrees of
+freedom (always 2) 
+\item [{{{{numsuf}}}}] . . . . . . number of imposed stress/flux
+cards 
+\item [{{{{nipt}}}}] . . . . . . . number of integration points per
+element (always 5) 
+\item [{{{{implv}}}}] . . . . . . . currently unused 
+\item [{{{{implt}}}}] . . . . . . . currently unused 
 \end{description}
-\item [{{{Viscosity~Card}}}] \emph{visc(i), i=1,numat}
+\item [{{{{Viscosity~Card}}}}] \emph{visc(i), i=1,numat}
 
 \begin{description}
-\item [{{{visc(i)}}}] . . . . . . preexponential viscosity coefficient
+\item [{{{{visc(i)}}}}] . . . . . . preexponential viscosity coefficient
 for ith element 
 \end{description}
-\item [{{{Penalty~Card}}}] \emph{alam(i), i=1,numat}
+\item [{{{{Penalty~Card}}}}] \emph{alam(i), i=1,numat}
 
 \begin{description}
-\item [{{{alam(i)}}}] . . . . . . penalty parameter for ith element 
+\item [{{{{alam(i)}}}}] . . . . . . penalty parameter for ith element 
 \end{description}
-\item [{{{Diffusivity~Card}}}] \emph{diff(i), i=1,numat}
+\item [{{{{Diffusivity~Card}}}}] \emph{diff(i), i=1,numat}
 
 \begin{description}
-\item [{{{diff(i)}}}] . . . . . . . thermal diffusivity for ith element 
+\item [{{{{diff(i)}}}}] . . . . . . . thermal diffusivity for ith
+element 
 \end{description}
-\item [{{{Buoyancy~Rayleigh~Number~Card}}}] \emph{Ra(i), i=1,numat}
+\item [{{{{Buoyancy~Rayleigh~Number~Card}}}}] \emph{Ra(i), i=1,numat}
 
 \begin{description}
-\item [{{{Ra(i)}}}] . . . . . . . bouyancy part of Rayleigh number
+\item [{{{{Ra(i)}}}}] . . . . . . . bouyancy part of Rayleigh number
 for ith element 
 \end{description}
-\item [{{{Internal~Heating~Parameter~Card}}}] \emph{dmhu(i), i=1,numat}
+\item [{{{{Internal~Heating~Parameter~Card}}}}] \emph{dmhu(i),
+i=1,numat}
 
 \begin{description}
-\item [{{{dmhu(i)}}}] . . . . . . internal heat source for ith material
-group 
+\item [{{{{dmhu(i)}}}}] . . . . . . internal heat source for ith
+material group 
 \end{description}
-\item [{{{Activation~Energy~Card}}}] \emph{tcon(1,i), i=1,numat} 
+\item [{{{{Activation~Energy~Card}}}}] \emph{tcon(1,i), i=1,numat}
 
 \begin{description}
-\item [{{{tcon(1,i)}}}] . . . . . activation energy for ith material
+\item [{{{{tcon(1,i)}}}}] . . . . . activation energy for ith material
 group for temperature dependent viscosity (kJ/mole) 
 \end{description}
-\item [{{{Activation~Volume~Card}}}] \emph{tcon(2,i), i=1,numat}
+\item [{{{{Activation~Volume~Card}}}}] \emph{tcon(2,i), i=1,numat}
 
 \begin{description}
-\item [{{{tcon(2,i)}}}] . . . . . activation volume for ith material
-group for temperature dependent viscosity (cm$^{3}$/mole)
+\item [{{{{tcon(2,i)}}}}] . . . . . activation volume for ith material
+group for temperature dependent viscosity (cm$^{3}$/mole) 
 \end{description}
-\item [{{{Viscosity~Cutoff~Card}}}] \emph{tcon(3,i), i=1,numat}
+\item [{{{{Viscosity~Cutoff~Card}}}}] \emph{tcon(3,i), i=1,numat}
 
 \begin{description}
-\item [{{{tcon(3,i)}}}] . . . . . maximum value of the viscosity for
-the ith material group 
+\item [{{{{tcon(3,i)}}}}] . . . . . maximum value of the viscosity
+for the ith material group 
 \end{description}
-\item [{{{Surface~Force/Flux~Cards}}}] - numsuf cards \emph{nel side
-fnorm ftan flux}
+\item [{{{{Surface~Force/Flux~Cards}}}}] - numsuf cards \emph{nel
+side fnorm ftan flux}
 
 \begin{description}
-\item [{{{nel}}}] . . . . . . . . element number 
-\item [{{{side}}}] . . . . . . . side to apply force and flux
+\item [{{{{nel}}}}] . . . . . . . . element number 
+\item [{{{{side}}}}] . . . . . . . side to apply force and flux
 
 
 1 - bottom
@@ -1552,26 +1606,27 @@ fnorm ftan flux}
 
 4 - left side
 
-\item [{{{fnorm}}}] . . . . . . . normal surface force 
-\item [{{{ftan}}}] . . . . . . . tangential surface force 
-\item [{{{flux}}}] . . . . . . . . heat flux 
+\item [{{{{fnorm}}}}] . . . . . . . normal surface force 
+\item [{{{{ftan}}}}] . . . . . . . tangential surface force 
+\item [{{{{flux}}}}] . . . . . . . . heat flux 
 \end{description}
 \end{description}
 The following four groups of cards are read from the \textbf{igeom}
-unit. These constitute the geometry part of the input ``deck'' for
-the program \texttt{conman}. The format of this section is the same
-as above.
+unit. These constitute the geometry part of the input {}``deck''
+for the program \texttt{conman}. The format of this section is the
+same as above.
 
 
 \section{Coordinate Group }
 
 \begin{description}
-\item [{{{Absolute~Coordinate~Card}}}] \emph{node gp (x(i,node) i=1,nsd)}
+\item [{{{{Absolute~Coordinate~Card}}}}] \emph{node gp (x(i,node)
+i=1,nsd)}
 
 \begin{description}
-\item [{{{node}}}] . . . . . . . the node whose coordinates are to
-be specified 
-\item [{{{gp}}}] . . . . . . . . generation parameter for automatic
+\item [{{{{node}}}}] . . . . . . . the node whose coordinates are
+to be specified 
+\item [{{{{gp}}}}] . . . . . . . . generation parameter for automatic
 generation
 
 
@@ -1581,15 +1636,15 @@ generation
 
 4 - generate a box using node as the lower left corner
 
-\item [{{{x(i,node)}}}] . . . . . coordinate value in the ith spatial
+\item [{{{{x(i,node)}}}}] . . . . . coordinate value in the ith spatial
 dimension 
 \end{description}
-\item [{{{Corner~Generation~Cards}}}] - gp-1 cards \emph{node mgen
-(x(i,node) i=1,nsd)}
+\item [{{{{Corner~Generation~Cards}}}}] - gp-1 cards \emph{node
+mgen (x(i,node) i=1,nsd)}
 
 \begin{description}
-\item [{{{node}}}] . . . . . . . node number 
-\item [{{{mgen}}}] . . . . . . . generation parameter
+\item [{{{{node}}}}] . . . . . . . node number 
+\item [{{{{mgen}}}}] . . . . . . . generation parameter
 
 
 0 - don\textquoteright{}t use this as the start of a generation
@@ -1597,22 +1652,23 @@ sequence
 
 1 - use this as the start of a generation sequence
 
-\item [{{{x(i,node)}}}] . . . . . coordinate value in the ith spatial
+\item [{{{{x(i,node)}}}}] . . . . . coordinate value in the ith spatial
 dimension 
 \end{description}
-\item [{{{Generation~Increment~Card}}}] \emph{ninc1 inc1 ninc2 inc2}
+\item [{{{{Generation~Increment~Card}}}}] \emph{ninc1 inc1 ninc2
+inc2}
 
 \begin{description}
-\item [{{{ninc1}}}] . . . . . . . number of additional nodes to generate
-in x1 direction 
-\item [{{{inc1}}}] . . . . . . . increment of nodes in x1 direction 
-\item [{{{ninc2}}}] . . . . . . . number of additional nodes to generate
-in x2 direction
+\item [{{{{ninc1}}}}] . . . . . . . number of additional nodes to
+generate in x1 direction 
+\item [{{{{inc1}}}}] . . . . . . . increment of nodes in x1 direction 
+\item [{{{{ninc2}}}}] . . . . . . . number of additional nodes to
+generate in x2 direction
 
 
 0 - if gp equals 2
 
-\item [{{{inc2}}}] . . . . . . . increment of nodes in x2 direction
+\item [{{{{inc2}}}}] . . . . . . . increment of nodes in x2 direction
 
 
 0 - if gp equals 2
@@ -1625,12 +1681,13 @@ in x2 direction
 \section{Velocity Boundary Condition Group }
 
 \begin{description}
-\item [{{{Absolute~Velocity~Card}}}] \emph{node gp (v(i,node) i=1,nsd)}
+\item [{{{{Absolute~Velocity~Card}}}}] \emph{node gp (v(i,node)
+i=1,nsd)}
 
 \begin{description}
-\item [{{{node}}}] . . . . . . . the node whose velocities are to be
-specified 
-\item [{{{gp}}}] . . . . . . . . generation parameter for automatic
+\item [{{{{node}}}}] . . . . . . . the node whose velocities are
+to be specified 
+\item [{{{{gp}}}}] . . . . . . . . generation parameter for automatic
 generation
 
 
@@ -1640,15 +1697,15 @@ generation
 
 4 - generate a box using node as the lower left corner
 
-\item [{{{v(i,node)}}}] . . . . . velocity value in the ith spatial
+\item [{{{{v(i,node)}}}}] . . . . . velocity value in the ith spatial
 dimension 
 \end{description}
-\item [{{{Corner~Generation~Cards}}}] - gp-1 cards \emph{node mgen
-(v(i,node) i=1,nsd)}
+\item [{{{{Corner~Generation~Cards}}}}] - gp-1 cards \emph{node
+mgen (v(i,node) i=1,nsd)}
 
 \begin{description}
-\item [{{{node}}}] . . . . . . . node number 
-\item [{{{mgen}}}] . . . . . . . generation parameter
+\item [{{{{node}}}}] . . . . . . . node number 
+\item [{{{{mgen}}}}] . . . . . . . generation parameter
 
 
 0 - don\textquoteright{}t use this as the start of a generation
@@ -1656,22 +1713,23 @@ sequence
 
 1 - use this as the start of a generation sequence
 
-\item [{{{v(i,node)}}}] . . . . . velocity value in the ith spatial
+\item [{{{{v(i,node)}}}}] . . . . . velocity value in the ith spatial
 dimension 
 \end{description}
-\item [{{{Generation~Increment~Card}}}] \emph{ninc1 inc1 ninc2 inc2}
+\item [{{{{Generation~Increment~Card}}}}] \emph{ninc1 inc1 ninc2
+inc2}
 
 \begin{description}
-\item [{{{ninc1}}}] . . . . . . . number of additional nodes to generate
-in x1 direction 
-\item [{{{inc1}}}] . . . . . . . increment of nodes in x1 direction 
-\item [{{{ninc2}}}] . . . . . . . number of additional nodes to generate
-in x2 direction
+\item [{{{{ninc1}}}}] . . . . . . . number of additional nodes to
+generate in x1 direction 
+\item [{{{{inc1}}}}] . . . . . . . increment of nodes in x1 direction 
+\item [{{{{ninc2}}}}] . . . . . . . number of additional nodes to
+generate in x2 direction
 
 \begin{description}
-\item [{{{0}}}] - if gp equals 2 
+\item [{{{{0}}}}] - if gp equals 2 
 \end{description}
-\item [{{{inc2}}}] . . . . . . . increment of nodes in x2 direction
+\item [{{{{inc2}}}}] . . . . . . . increment of nodes in x2 direction
 
 
 0 - if gp equals 2
@@ -1684,12 +1742,12 @@ in x2 direction
 \section{Temperature Boundary Condition Group }
 
 \begin{description}
-\item [{{{Absolute~Temperature~Card}}}] \emph{node gp t(node)}
+\item [{{{{Absolute~Temperature~Card}}}}] \emph{node gp t(node)}
 
 \begin{description}
-\item [{{{node}}}] . . . . . . . the node whose velocities are to be
-specified 
-\item [{{{gp}}}] . . . . . . . . generation parameter for automatic
+\item [{{{{node}}}}] . . . . . . . the node whose velocities are
+to be specified 
+\item [{{{{gp}}}}] . . . . . . . . generation parameter for automatic
 generation
 
 
@@ -1697,14 +1755,14 @@ generation
 
 2 - generate a line using node as a starting point
 
-\item [{{{t(node)}}}] . . . . . . temperature value 
+\item [{{{{t(node)}}}}] . . . . . . temperature value 
 \end{description}
-\item [{{{Corner~Generation~Cards}}}] - gp-1 cards \emph{node mgen
-t(node)}
+\item [{{{{Corner~Generation~Cards}}}}] - gp-1 cards \emph{node
+mgen t(node)}
 
 \begin{description}
-\item [{{{node}}}] . . . . . . . node number 
-\item [{{{mgen}}}] . . . . . . . generation parameter
+\item [{{{{node}}}}] . . . . . . . node number 
+\item [{{{{mgen}}}}] . . . . . . . generation parameter
 
 
 0 - don\textquoteright{}t use this as the start of a generation
@@ -1712,21 +1770,22 @@ sequence
 
 1 - use this as the start of a generation sequence
 
-\item [{{{t(node)}}}] . . . . . . temperature value 
+\item [{{{{t(node)}}}}] . . . . . . temperature value 
 \end{description}
-\item [{{{Generation~Increment~Card}}}] \emph{ninc1 inc1 ninc2 inc2}
+\item [{{{{Generation~Increment~Card}}}}] \emph{ninc1 inc1 ninc2
+inc2}
 
 \begin{description}
-\item [{{{ninc1}}}] . . . . . . . number of additional nodes to generate
-in x1 direction 
-\item [{{{inc1}}}] . . . . . . . increment of nodes in x1 direction 
-\item [{{{ninc2}}}] . . . . . . . number of additional nodes to generate
-in x2 direction
+\item [{{{{ninc1}}}}] . . . . . . . number of additional nodes to
+generate in x1 direction 
+\item [{{{{inc1}}}}] . . . . . . . increment of nodes in x1 direction 
+\item [{{{{ninc2}}}}] . . . . . . . number of additional nodes to
+generate in x2 direction
 
 
 0 - if gp equals 2
 
-\item [{{{inc2}}}] . . . . . . . increment of nodes in x2 direction
+\item [{{{{inc2}}}}] . . . . . . . increment of nodes in x2 direction
 
 
 0 - if gp equals 2
@@ -1739,36 +1798,37 @@ in x2 direction
 \section{Element Connectivity (ien) Generation Group }
 
 \begin{description}
-\item [{{{Absolution~Element~Card}}}] \emph{elnu ng mat no (ien(elnu,i)
+\item [{{{{Absolution~Element~Card}}}}] \emph{elnu ng mat no (ien(elnu,i)
 i=1,nen)}
 
 \begin{description}
-\item [{{{elnu}}}] . . . . . . . element number 
-\item [{{{ng}}}] . . . . . . . . generation parameter
+\item [{{{{elnu}}}}] . . . . . . . element number 
+\item [{{{{ng}}}}] . . . . . . . . generation parameter
 
 
 0 - no generation
 
 1 - generate using increments from increment card
 
-\item [{{{mat}}}] no . . . . . . material number for this element 
-\item [{{{ien(elnu,i)}}}] . . . . . global node number for the ith
-local node of element counterclockwise from lower left corner 
+\item [{{{{mat}}}}] no . . . . . . material number for this element 
+\item [{{{{ien(elnu,i)}}}}] . . . . . global node number for the
+ith local node of element counterclockwise from lower left corner 
 \end{description}
-\item [{{{Increment~Card}}}] \emph{nel1 incel1 incn1 nel2 incel2 incn2}
+\item [{{{{Increment~Card}}}}] \emph{nel1 incel1 incn1 nel2 incel2
+incn2}
 
 \begin{description}
-\item [{{{nel1}}}] . . . . . . . number of elements in x1 (horizontal)
+\item [{{{{nel1}}}}] . . . . . . . number of elements in x1 (horizontal)
 direction 
-\item [{{{incel1}}}] . . . . . . . increment of elements in x1 (horizontal)
+\item [{{{{incel1}}}}] . . . . . . . increment of elements in x1
+(horizontal) direction 
+\item [{{{{incn1}}}}] . . . . . . . increment of nodes in x1 (horizontal)
 direction 
-\item [{{{incn1}}}] . . . . . . . increment of nodes in x1 (horizontal)
+\item [{{{{nel2}}}}] . . . . . . . number of elements in x2 (vertical)
 direction 
-\item [{{{nel2}}}] . . . . . . . number of elements in x2 (vertical)
-direction 
-\item [{{{incel2}}}] . . . . . . . increment of elements in x2 (vertical)
-direction 
-\item [{{{incn2}}}] . . . . . . . increment of nodes in x2 (vertical)
+\item [{{{{incel2}}}}] . . . . . . . increment of elements in x2
+(vertical) direction 
+\item [{{{{incn2}}}}] . . . . . . . increment of nodes in x2 (vertical)
 direction 
 \end{description}
 \emph{0 0 0 0 0 0 to end element connectivity group}
@@ -1779,30 +1839,143 @@ direction
 
 The lines below are a sample 50 element by 50 element input deck for
 a 1 by 1 square, constant viscosity with the Picard method. This is
-Blankenbach 1a
+Blankenbach 1a:
 
-\begin{verbatim} 50 x 50 el. problem for Blankenbach Benchmark numnp
-nsd ndof nelx nelz prc ck iecho rrst wrst nus tdvf tseq nelg sky wr
-2601 2 2 50 50 2 1 0 0 1 102 0 1 1 1 0 time step information 100 1
-1.0 1.0 0.50000 output information 100 100 100 100 velocity boundary
-condition flags bnode enode incr bcf1 bcf2 1 2551 51 0 1 2551 2601
-1 1 0 1 51 1 1 0 51 2601 51 0 1 1 1 1 1 1 51 51 1 1 1 2551 2551 1
-1 1 2601 2601 1 1 1 0 0 0 0 0 temperature boundary condition flags
-1 2551 51 1 51 2601 51 1 0 0 0 0 bndy info (top - bottom rows) 1 2551
-51 51 2601 51 0 0 0 bndy info (2nd from top - 2nd from bottom rows)
-2 2552 51 50 2600 51 0 0 0 initial condition information 0.1 1.0 1.0
-1.0 element information 2 2500 4 4 1 2 0 5 0 0 viscosity 1.0e0 penalty
-number 0.1E+08 diffusivity (always one) 1.0 Rayleigh number 1.0e+04
-internal heating parameter 0.0 activation energy 0.0 activation volume
-0.0 viscosity cutoff 1.0e7 \end{verbatim} The lines below are a sample
-geometry file for the 50 by 50 element problem.
+\begin{lyxcode}
+50~x~50~el.~plate~problem~from~Blankenbach~et~al.,~1989
 
-\begin{verbatim} coordinates 1 4 0.0 0.0 2551 1 1.0 0.0 2601 1 1.0
-1.0 51 1 0.0 1.0 50 51 50 1 0 0 0.0 0.0 velocity boundary conditions
-(non-zero) 0 0 0.0 0.0 temperature boundary conditions (non-zero)
-1 2 1.0 2551 0 1.0 50 51 0 0 0.0 element connectivity and material
-groups 1 1 1 1 52 53 2 50 50 51 50 1 1 0 0 0 0 0 0 0 \end{verbatim}
+~\#Nds~~sdm~dof~~~X~~~~Z~prc~ck~echo~rrst~wrst~nus~tdvf~tseq~nelg~sky~wr
 
+~~2601~~2~~~2~50~~50~~~2~~1~~~~0~~~~0~~~~1~102~~~~0~~~~1~~~~1~~~1~~0
+
+~time~step~information
+
+~~~~100~~~1~~1.0~~1.0~~0.50000
+
+~output~information
+
+~~~~100~~~~100~~~~100~~~~100
+
+~velocity~boundary~condition~flags:~IFCMT,DELNXTLN
+
+~bnode~~~enode~~~incr~bcf1~bcf2
+
+~~~~~1~~2551~~~~~51~~~~0~~~~1
+
+~~2551~~2601~~~~~~1~~~~1~~~~0
+
+~~~~~~1~~~51~~~~~~1~~~~1~~~~0
+
+~~~~51~~2601~~~~~51~~~~0~~~~1
+
+~~~~~1~~~~~1~~~~~~1~~~~1~~~~1
+
+~~~~51~~~~51~~~~~~1~~~~1~~~~1
+
+~~2551~~2551~~~~~~1~~~~1~~~~1
+
+~~2601~~2601~~~~~~1~~~~1~~~~1
+
+~~~~~~0~~~~~~0~~~~~~0~~~~0~~~~0
+
+~temperature~boundary~condition~flags
+
+~~~~~1~~2551~~~~51~~~~1
+
+~~~~51~~2601~~~~51~~~~1
+
+~~~~~~0~~~~~~0~~~~~~0~~~~0
+
+~bndy~info~(top~-~bottom~rows)
+
+~~~~~1~~2551~~~~51
+
+~~~~51~~2601~~~~51
+
+~~~~~~0~~~~~~0~~~~~~0
+
+~bndy~info~(2nd~from~top~-~2nd~from~bottom~rows)
+
+~~~~~~2~~2552~~~~51
+
+~~~~~50~~2600~~~~51
+
+~~~~~~0~~~~~~0~~~~~~0
+
+~initial~condition~information
+
+~~~~0.1~~~~1.0~~~~1.0~~~~1.0
+
+~element~information
+
+~2~~2500~4~4~1~2~0~5~0~0
+
+~viscosity
+
+~~1.0e0~~
+
+~penalty~number
+
+~~0.1E+08~
+
+~diffusivity~(always~one)
+
+~~~~1.0~~~
+
+~Rayleigh~number
+
+~~1.0e+04~~
+
+~internal~heating~parameter
+
+~~~~0.0
+
+~~~~0.0
+
+~~~~0.0~~~
+
+~~~~1.0e7~~~
+\end{lyxcode}
+The lines below are a sample geometry file for the 50 by 50 element
+problem.
+
+\begin{lyxcode}
+coordinates
+
+~~~~~~1~~~~4~~0.0~~0.0
+
+~~~2551~~~~1~~1.0~~0.0
+
+~~~2601~~~~1~~1.0~~1.0
+
+~~~~~51~~~~1~~0.0~~1.0
+
+~~~~~50~~~51~~~50~~~~1
+
+~~~~~~0~~~~0~~0.0~~0.0
+
+~velocity~boundary~conditions~(non-zero)
+
+~~~~~~0~~~~0~~0.0~~0.0
+
+~temperature~boundary~conditions~(non-zero)
+
+~~~~~~1~~~~2~~1.0
+
+~~~2551~~~~0~~1.0
+
+~~~~~50~~~51
+
+~~~~~~0~~~~0~~0.0
+
+~element~connectivity~and~material~groups
+
+~~~~~~1~~~~~~1~~~~~~1~~~~~~1~~~~~52~~~~~53~~~~~~2
+
+~~~~~50~~~~~50~~~~~51~~~~~50~~~~~~1~~~~~~1
+
+~~~~~~0~~~~~~0~~~~~~0~~~~~~0~~~~~~0~~~~~~0~~~~~~0
+\end{lyxcode}
 
 \chapter{\label{cha:Output-Guide}Output Guide}
 
@@ -1817,10 +1990,25 @@ long.
 \noindent The names in the runfile are attached to the following input
 or output files.
 
-\begin{verbatim} input geometry output restart input restart output
-time series output temperature (and velocity) field output stress
-(and viscosity) field output geoid output \end{verbatim}
+\begin{lyxcode}
+input~
 
+geometry~
+
+output~
+
+restart~input~
+
+restart~output~
+
+time~series~output~
+
+temperature~(and~velocity)~
+
+field~output~stress~(and~viscosity)~
+
+field~output~geoid~output~
+\end{lyxcode}
 All files are ASCII files. The {\em input} and {\em geometry}
 files are as described in the previous section.
 
@@ -1926,6 +2114,8 @@ all values converge to Christensen's extrapolated results.
 
 %
 \begin{table}[htdp]
+ 
+
 \begin{centering}
 \begin{tabular}{lccc}
 \hline 
@@ -2030,7 +2220,7 @@ viscosity in a unit-aspect ratio domain, with free-slip boundary conditions,
 heated from below and cooled from above (case 2a). For this problem,
 the temperature-dependence of viscosity is given by \begin{equation}
 \eta(T)=\eta_{o}\exp\left[{-\ln\{1000\}}\frac{{T}}{{\Delta T}}\right]\end{equation}
-where $\eta_{o}=2.9\times10^{19}$ and $\Delta T=1000.0$. The other
+ where $\eta_{o}=2.9\times10^{19}$ and $\Delta T=1000.0$. The other
 scaling parameters are the same as Table~\ref{tab:Mantle-parameters-for}.
 The results for a Rayleigh number of $10^{4}$ are presented in Table~\ref{tab:Blankenbach-(1989)-Benchmark-2a}.
 Here once again the global properties of Nusselt number and root-mean-square
@@ -2089,13 +2279,14 @@ The resulting thermal structure should look like Figure~\ref{fig:wedge}.
 
 
 \begin{centering}
-\includegraphics[scale=0.6]{images/wedge.pdf} 
+\includegraphics[scale=0.6]{images/wedge} 
 \par\end{centering}
 \end{figure}
 
 \par\end{center}
 
 \appendix
+%dummy comment inserted by tex2lyx to ensure that this paragraph is not empty
 %dummy comment inserted by tex2lyx to ensure that this paragraph is not empty
 %dummy comment inserted by tex2lyx to ensure that this paragraph is not empty
 
@@ -2451,10 +2642,12 @@ you may consider it more useful to permit linking proprietary applications
 with the library. If this is what you want to do, use the GNU Library
 General Public License instead of this License.
 
-\begin{thebibliography}{1}
-
-\bibitem[1]{Blankenbach et al, 1989}Blankenbach, B., F. Busse, U. Christensen, L. Cserepes, D. Gunkel, U. Hansen, H. Harder, G. Jarvis, M. Koch, G. Marquart, D. Moore, P. Olson, H. Schmeling and T. Schnaubelt (1989) A Benchmark comparison for mantle convection codes,  
-\emph{Geophys. J. Int.}, 98, 23-38.
+\begin{thebibliography}{10}
+\bibitem[1]{Blankenbach et al, 1989}Blankenbach, B., F. Busse, U.
+Christensen, L. Cserepes, D. Gunkel, U. Hansen, H. Harder, G. Jarvis,
+M. Koch, G. Marquart, D. Moore, P. Olson, H. Schmeling and T. Schnaubelt
+(1989) A Benchmark comparison for mantle convection codes, \emph{Geophys.
+J. Int.}, 98, 23-38.
 
 \bibitem[2]{Brooks 1981}Brooks, A.N. \emph{A Petrov-Galerkin finite-element
 formulation for convection dominated flows.} Unpublished doctoral
@@ -2500,13 +2693,14 @@ geometry, \emph{Geophys. Astrophys. Fluid Dynamics,} \emph{55}, 137-160,
 doi: 10.1080/03091929008204111
 
 \bibitem[11]{van Keken 1993}van Keken, P. E. (1993) Numerical modeling
-of thermochemically driven fluid flow with non-Newtonian rheology: Applied
-to the Earth's lithosphere and mantle, Ph.D. Thesis, Utrecht University.
+of thermochemically driven fluid flow with non-Newtonian rheology:
+Applied to the Earth's lithosphere and mantle, Ph.D. Thesis, Utrecht
+University.
 
 \bibitem[12]{van Keken et al 2008} van Keken, P.E., Currie, C., King,
 S.D., Behn, M.D., Canioncle, A., He, J., Katz, R.F., Lin, S.-C., Parmentier,
 E.M., Spiegelman, M., and Wang, K. (2008), A community benchmark for
-subduction zone modeling, \emph{Phys. Earth Planet. Int.}, in press.
+subduction zone modeling, \emph{Phys. Earth Planet. Int.}, in press. 
 \end{thebibliography}
 
 \end{document}
