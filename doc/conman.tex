@@ -502,7 +502,7 @@ element' centered at (0,0). Hughes also uses $\xi,\eta$ for the $X,Y$
 coordinate pair in the `parent element.' So we could write \begin{eqnarray}
 x & = & 0.1+{0.05}\xi+0.0\eta\\
 y & = & 0.2+{0.0}\xi+{0.10}\eta\end{eqnarray}
- or in matrix form we could write \begin{equation}
+ or in matrix form we could write \begin{equation}\label{eq:transform}
 \left\{ \begin{array}{c}
 x\\
 y\end{array}\right\} =\left[\begin{array}{cc}
@@ -512,11 +512,11 @@ y\end{array}\right\} =\left[\begin{array}{cc}
 \eta\end{array}\right\} +\left\{ \begin{array}{c}
 0.1\\
 0.2\end{array}\right\} \end{equation}
-Where $[J]$ is the Jacobian of the transformation, if the transformation
-was from an arbitratry shaped quadrilateral to the parent element,
-then the off diagonal terms will not be zero. It is easy enough to
+If the transformation was from an arbitratry shaped quadrilateral to the parent element,
+then the off diagonal terms in the mateix in equation~\ref{eq:transform} will not be zero. It is easy enough to
 show that \begin{equation}
 \int_{x_{1}}^{x_{2}}\int_{y_{1}}^{y_{2}}f(x,y)\, dx\, dy=\int_{-1}^{1}\int_{-1}^{1}f(\xi,\eta)\,{\rm det}[J]\, d\xi\, d\eta\end{equation}
+where $[J]$ is the Jacobian of the transformation. 
 It turns out, and it is also easy to show, that ${\rm det}[J]$ is
 the ratio of the areas when going from one rectangle to another (in
 fact any Cartesian to Cartesian transformation).
@@ -2452,50 +2452,58 @@ with the library. If this is what you want to do, use the GNU Library
 General Public License instead of this License.
 
 \begin{thebibliography}{1}
-\bibitem[1]{Brooks 1981}Brooks, A.N. \emph{A Petrov-Galerkin finite-element
+
+\bibitem[1]{Blankenbach et al, 1989}Blankenbach, B., F. Busse, U. Christensen, L. Cserepes, D. Gunkel, U. Hansen, H. Harder, G. Jarvis, M. Koch, G. Marquart, D. Moore, P. Olson, H. Schmeling and T. Schnaubelt (1989) A Benchmark comparison for mantle convection codes,  
+\emph{Geophys. J. Int.}, 98, 23-38.
+
+\bibitem[2]{Brooks 1981}Brooks, A.N. \emph{A Petrov-Galerkin finite-element
 formulation for convection dominated flows.} Unpublished doctoral
 thesis, California Institute of Technology, Pasadena, CA, 1981.
 
-\bibitem[2]{Brooks and Hughes 1990}Brooks, A.N. and Hughes, T.J.R.
+\bibitem[3]{Brooks and Hughes 1990}Brooks, A.N. and Hughes, T.J.R.
 (1990), Streamline upwind/Petrov-Galerkin formulations for convection
 dominated flows with particular emphasis on the incompressible Navier-Stokes
 equations. \emph{Comp. Meth. in Appl. Mech. and Eng., 81(3),} 199-259.
 
-\bibitem[3]{Hughes 1987}Hughes, T.J.R. \emph{The finite element method.}
+\bibitem[4]{Hughes 1987}Hughes, T.J.R. \emph{The finite element method.}
 Prentice-Hall, Inc., Englewood Cliffs, New Jersey, 1987.
 
-\bibitem[4]{Hughes and Brooks 1979}Hughes, T.J.R. and Brooks, A.N.
+\bibitem[5]{Hughes and Brooks 1979}Hughes, T.J.R. and Brooks, A.N.
 (1979), A multi-dimensional upwind scheme with no crosswind diffusion.
 In: Finite element methods for convection dominated flows (T.J.R.
 Hughes, ed.), \emph{ASME,} \emph{34}, 19-35.
 
-\bibitem[5]{Hughes et al 1988}Hughes, T.J.R., Franca, L.P., Hulbert,
+\bibitem[6]{Hughes et al 1988}Hughes, T.J.R., Franca, L.P., Hulbert,
 G.M., Johan, Z., and Shakib, F. (1988), The Galerkin/least-squares
 method for advective-diffusive equations, in \emph{Recent developments
 in computational fluid dynamics} (T.E. Tezduyar, ed.), \emph{ASME,}
 \emph{95}, 75-99.
 
-\bibitem[6]{Hughes et al 1979}Hughes, T.J.R., Liu, W.K., and Brooks,
+\bibitem[7]{Hughes et al 1979}Hughes, T.J.R., Liu, W.K., and Brooks,
 A.N. (1979), Finite element analysis of incompressible viscous flows
 by the penalty function formulation. \emph{J. Comput. Phys.,} \emph{30},
 1-60.
 
-\bibitem[7]{Malkus and Hughes 1978}Malkus, D.S. and Hughes, T.J.R.
+\bibitem[8]{Malkus and Hughes 1978}Malkus, D.S. and Hughes, T.J.R.
 (1978), Mixed finite element methods reduced and selective integration
 techniques: a unification of concepts. \emph{Comp. Meth. in Appl.
 Mech. and Eng.,} \emph{15}, 63-81.
 
-\bibitem[8]{Temam 1977}Temam, R. \emph{Navier-Stokes equations: theory
+\bibitem[9]{Temam 1977}Temam, R. \emph{Navier-Stokes equations: theory
 and numerical analysis}. North-Holland. Amsterdam, 1977.
 
-\bibitem[9]{Travis et al 1990}Travis, B.J., Anderson, C., Baumgardner,
+\bibitem[10]{Travis et al 1990}Travis, B.J., Anderson, C., Baumgardner,
 J., Gable, C.W., Hager, B.H., O'Connell, R.J., Olson, P., Raefsky,
 A. and Schubert, G. (1990), A benchmark comparison of numerical methods
 for infinite Prandtl number convection in two-dimensional Cartesian
 geometry, \emph{Geophys. Astrophys. Fluid Dynamics,} \emph{55}, 137-160,
 doi: 10.1080/03091929008204111
 
-\bibitem[9]{van Keken et al 2008} van Keken, P.E., Currie, C., King,
+\bibitem[11]{van Keken 1993}van Keken, P. E. (1993) Numerical modeling
+of thermochemically driven fluid flow with non-Newtonian rheology: Applied
+to the Earth's lithosphere and mantle, Ph.D. Thesis, Utrecht University.
+
+\bibitem[12]{van Keken et al 2008} van Keken, P.E., Currie, C., King,
 S.D., Behn, M.D., Canioncle, A., He, J., Katz, R.F., Lin, S.-C., Parmentier,
 E.M., Spiegelman, M., and Wang, K. (2008), A community benchmark for
 subduction zone modeling, \emph{Phys. Earth Planet. Int.}, in press.
