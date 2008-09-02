@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -153,6 +153,7 @@
 \paperpagestyle headings
 \tracking_changes false
 \output_changes false
+\author "" 
 \author "" 
 \end_header
 
@@ -3713,33 +3714,12 @@ where
  properties.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Installation
 \end_layout
 
-\begin_layout Standard
-ConMan comes ready to run with a Unicos makefile.
- The file 
-\series bold
-Makefile
-\series default
- contains the system calls for the compiler and the loader, FC and LD respective
-ly.
- These need to be changed for your machine.
- Also the calls to 
-\series bold
-second
-\series default
-, a Cray timing routine, will have to be changed in routine 
-\series bold
-timer
-\series default
-.
-\end_layout
-
 \begin_layout Section
-Building from Source [TODO WEI -- thought you might need this section.
- Or else delete]
+Building from Source
 \end_layout
 
 \begin_layout Subsection
@@ -3748,15 +3728,11 @@ System Requirements
 
 \begin_layout Standard
 ConMan works on a variety of computational platforms and has been tested
- on workstations running
+ on workstations running:
 \end_layout
 
 \begin_layout Itemize
-Mac OS X 10.4.6 (G4, G5, and Intel) 
-\end_layout
-
-\begin_layout Itemize
-Windows 2000 and XP SP2 
+Mac OS X 10.4.11 (G4, G5, and 64-bit Intel) 
 \end_layout
 
 \begin_layout Itemize
@@ -3772,12 +3748,8 @@ Gentoo (x86)
 \end_layout
 
 \begin_layout Itemize
-Debian stable (x86 and AMD64), testing (x86), and unstable (x86) 
-\end_layout
-
-\begin_layout Standard
-ConMan has also been tested on clusters running Redhat 7.2 (x86) and RedHat
- Enterprise Linux 3 (EM64T).
+Debian stable (32-bit x86 and 64-bit AMD64), Debian testing (x86), and Debian
+ unstable (x86) 
 \end_layout
 
 \begin_layout Subsection
@@ -3805,11 +3777,15 @@ target "geodynamics.org/cig/software/packages/mc/conman/"
 \end_inset
 
 .
- In that tarball is the file ???name???.
+ Download the source archive and unpack it using the 
+\family typewriter
+tar
+\family default
+ command:
 \end_layout
 
-\begin_layout Subsubsection
-Source Code Repository (Experts Only)
+\begin_layout LyX-Code
+$ tar xzf ConMan-2.0.tar.gz
 \end_layout
 
 \begin_layout Standard
@@ -3846,6 +3822,136 @@ target "subversion.tigris.org/project_packages.html"
 
 \begin_layout LyX-Code
 svn checkout http://geodynamics.org/svn/cig/mc/3D/ConMan/trunk ConMan
+\end_layout
+
+\begin_layout Subsection
+Compiling and Running ConMan
+\end_layout
+
+\begin_layout Standard
+ConMan comes ready to run with a Unicos makefile.
+ The file 
+\series bold
+Makefile
+\series default
+ contains the system calls for the compiler and the loader, FC and LD respective
+ly.
+ These need to be changed for your machine.
+ Also the calls to 
+\series bold
+second
+\series default
+, a Cray timing routine, will have to be changed in routine 
+\series bold
+timer
+\series default
+.
+ This version of ConMan has been tested with Intel Fortran comiler 
+\shape italic
+ifort
+\shape default
+ and GNU Fortran compiler 
+\shape italic
+gfortran
+\shape default
+ (version 4.3.0).
+ The ConMan source code provides two sample make files: Makefile-ifort and
+ Makefile-gfort.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+Makefile-ifort
+\begin_inset Quotes erd
+\end_inset
+
+ is a sample makefile using intel Fortran compiler with the 64-bit processor,
+ and the 
+\begin_inset Quotes eld
+\end_inset
+
+Makefile-gfort
+\begin_inset Quotes erd
+\end_inset
+
+ is a sample makefile using GNU Fortran compiler 
+\shape italic
+gfortran 
+\shape default
+with the 32-bit processor.
+ Intel Fortran compiler is a lisenced commercial compiler available at 
+\begin_inset LatexCommand url
+target "http://support.intel.com/support/performancetools/fortran/index.htm"
+
+\end_inset
+
+.
+ Gfortran is a free software and available at 
+\begin_inset LatexCommand url
+target "http://gcc.gnu.org/wiki/GFortranBinaries"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Before compiling ConMan, user should identify the system processor speed
+ and which compiler to use.
+ For an example, to run ConMan on a 64-bit system with Intel Fortran compiler,
+ user should to the following:
+\end_layout
+
+\begin_layout Itemize
+Construct the local Makefile.
+ In this case copy sample Makefile-ifort to Makefile: 
+\end_layout
+
+\begin_layout LyX-Code
+$cp Makefile-ifort Makefile
+\end_layout
+
+\begin_layout Standard
+and edit the Makefile with your local setting and varibles, such as your
+ local ConMan source directory name, etc.
+\end_layout
+
+\begin_layout Itemize
+Compile the ConMan code:
+\end_layout
+
+\begin_layout LyX-Code
+$make
+\end_layout
+
+\begin_layout Standard
+This will produce the ConMan excutable: 
+\shape italic
+conman.exp.
+\end_layout
+
+\begin_layout Itemize
+To run ConMan:
+\end_layout
+
+\begin_layout LyX-Code
+$ conman.exp < runfile
+\end_layout
+
+\begin_layout Standard
+where 
+\shape italic
+runfile
+\shape default
+ is a text file has a list of filenames that can be up to 80 characters
+ long, pleae see Chapter 
+\begin_inset LatexCommand ref
+reference "cha:Output-Guide"
+
+\end_inset
+
+ for details on runfile.
 \end_layout
 
 \begin_layout Section
@@ -14780,7 +14886,7 @@ The lines below are a sample 50 element by 50 element input deck for a 1
 \end_layout
 
 \begin_layout LyX-Code
-  2601  2   2 50  50   2  1    0    0    1 102    0    1    1   1  0
+  2601  2   2    50  50   2  1    0    0    1 102    0    1    1   1  0
 \end_layout
 
 \begin_layout LyX-Code
