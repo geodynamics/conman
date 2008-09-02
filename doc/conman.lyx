@@ -1,4 +1,4 @@
-#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -3846,7 +3846,7 @@ second
 timer
 \series default
 .
- This version of ConMan has been tested with Intel Fortran comiler 
+ This version of ConMan has been tested with the Intel Fortran comiler 
 \shape italic
 ifort
 \shape default
@@ -3855,40 +3855,26 @@ ifort
 gfortran
 \shape default
  (version 4.3.0).
- The ConMan source code provides two sample make files: Makefile-ifort and
+ The ConMan source code provides two sample makefiles: Makefile-ifort and
  Makefile-gfort.
- The 
-\begin_inset Quotes eld
-\end_inset
-
-Makefile-ifort
-\begin_inset Quotes erd
-\end_inset
-
- is a sample makefile using intel Fortran compiler with the 64-bit processor,
- and the 
-\begin_inset Quotes eld
-\end_inset
-
-Makefile-gfort
-\begin_inset Quotes erd
-\end_inset
-
- is a sample makefile using GNU Fortran compiler 
+ The ``Makefile-ifort'' is a sample makefile using intel Fortran compiler
+ with the 64-bit processor, and the ``Makefile-gfort'' is a sample makefile
+ using GNU Fortran compiler 
 \shape italic
 gfortran 
 \shape default
 with the 32-bit processor.
- Intel Fortran compiler is a lisenced commercial compiler available at 
-\begin_inset LatexCommand url
-target "http://support.intel.com/support/performancetools/fortran/index.htm"
+ The Intel Fortran compiler is a licensed commercial compiler available
+ at 
+\begin_inset LatexCommand htmlurl
+target "support.intel.com/support/performancetools/fortran/index.htm"
 
 \end_inset
 
 .
- Gfortran is a free software and available at 
-\begin_inset LatexCommand url
-target "http://gcc.gnu.org/wiki/GFortranBinaries"
+ Gfortran is free software and available at 
+\begin_inset LatexCommand htmlurl
+target "gcc.gnu.org/wiki/GFortranBinaries"
 
 \end_inset
 
@@ -3897,63 +3883,89 @@ target "http://gcc.gnu.org/wiki/GFortranBinaries"
 \end_layout
 
 \begin_layout Standard
-Before compiling ConMan, user should identify the system processor speed
+Before compiling ConMan, the user should identify the system processor speed
  and which compiler to use.
- For an example, to run ConMan on a 64-bit system with Intel Fortran compiler,
- user should to the following:
+ For example, if you run ConMan on a 64-bit system with an Intel Fortran
+ compiler, you would do the following:
 \end_layout
 
-\begin_layout Itemize
-Construct the local Makefile.
- In this case copy sample Makefile-ifort to Makefile: 
+\begin_layout Enumerate
+Construct the local makefile.
+ In this case, copy the sample 
+\family typewriter
+Makefile-ifort
+\family default
+ to 
+\family typewriter
+Makefile
+\family default
+: 
 \end_layout
 
+\begin_deeper
 \begin_layout LyX-Code
-$cp Makefile-ifort Makefile
+$ cp Makefile-ifort Makefile
 \end_layout
 
 \begin_layout Standard
-and edit the Makefile with your local setting and varibles, such as your
- local ConMan source directory name, etc.
+and edit the 
+\family typewriter
+Makefile
+\family default
+ with your local settings and variables, such as your local ConMan source
+ directory name, etc.
 \end_layout
 
-\begin_layout Itemize
+\end_deeper
+\begin_layout Enumerate
 Compile the ConMan code:
 \end_layout
 
+\begin_deeper
 \begin_layout LyX-Code
-$make
+$ make
 \end_layout
 
 \begin_layout Standard
-This will produce the ConMan excutable: 
+This will produce the ConMan executable 
+\family typewriter
+conman.exp
+\family default
 \shape italic
-conman.exp.
+.
 \end_layout
 
-\begin_layout Itemize
+\end_deeper
+\begin_layout Enumerate
 To run ConMan:
 \end_layout
 
+\begin_deeper
 \begin_layout LyX-Code
 $ conman.exp < runfile
 \end_layout
 
 \begin_layout Standard
 where 
-\shape italic
+\family typewriter
 runfile
-\shape default
- is a text file has a list of filenames that can be up to 80 characters
- long, pleae see Chapter 
+\family default
+ is a text file that has a list of filenames that can be up to 80 characters
+ long.
+ For more details on 
+\family typewriter
+runfile
+\family default
+, see Chapter 
 \begin_inset LatexCommand ref
 reference "cha:Output-Guide"
 
 \end_inset
 
- for details on runfile.
+.
 \end_layout
 
+\end_deeper
 \begin_layout Section
 \begin_inset LatexCommand label
 name "sec:Support"
