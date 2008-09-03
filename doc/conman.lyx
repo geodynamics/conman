@@ -1,4 +1,4 @@
-#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -279,7 +279,7 @@ This manual serves as a user guide for ConMan, a vectorized finite element
  ConMan is a public domain program and is distributed free of charge to
  anyone who wishes to use it and may be freely copied and modified.
  ConMan is written in Standard Fortran 77 with cray pointers and runs on
- most UnixLinux systems with many Fortran compilers.
+ most Unix/Linux systems with many Fortran compilers.
  This version of ConMan has been tested with the Intel Fortran compiler
  and the GNU Fortran compiler.
  Porting it to other systems should be straightforward.
@@ -3822,7 +3822,7 @@ svn checkout http://geodynamics.org/svn/cig/mc/3D/ConMan/trunk ConMan
 \end_layout
 
 \begin_layout Standard
-The ConMan software package contain the follow directories:
+The ConMan software package contains the follow directories:
 \end_layout
 
 \begin_layout Description
@@ -3830,7 +3830,7 @@ The ConMan software package contain the follow directories:
 \end_layout
 
 \begin_layout Description
-~/doc ConMan manual and other documentations can be found here.
+~/doc ConMan manual and other documentation can be found here.
 \end_layout
 
 \begin_layout Description
