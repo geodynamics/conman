@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -279,12 +279,9 @@ This manual serves as a user guide for ConMan, a vectorized finite element
  ConMan is a public domain program and is distributed free of charge to
  anyone who wishes to use it and may be freely copied and modified.
  ConMan is written in Standard Fortran 77 with cray pointers and runs on
- most Unix systems with many Fortran compilers (see Section 3.4 
-\series bold
-[TODO -- 3.4 is placeholder section.
- Is this correct? Need label to put cross ref here]
-\series default
-).
+ most UnixLinux systems with many Fortran compilers.
+ This version of ConMan has been tested with the Intel Fortran compiler
+ and the GNU Fortran compiler.
  Porting it to other systems should be straightforward.
  As with anything free it comes with no guarantees, but it has been benchmarked
  against other existing codes (see Chapter 
@@ -3766,7 +3763,7 @@ name "sec:Downloading-the-Code"
 
 \end_inset
 
-Downloading the Code
+Downloading and Unpacking the ConMan Code
 \end_layout
 
 \begin_layout Standard
@@ -3822,6 +3819,33 @@ target "subversion.tigris.org/project_packages.html"
 
 \begin_layout LyX-Code
 svn checkout http://geodynamics.org/svn/cig/mc/3D/ConMan/trunk ConMan
+\end_layout
+
+\begin_layout Standard
+The ConMan software package contain the follow directories:
+\end_layout
+
+\begin_layout Description
+~/src ConMan source code directory.
+\end_layout
+
+\begin_layout Description
+~/doc ConMan manual and other documentations can be found here.
+\end_layout
+
+\begin_layout Description
+~/cookbook1 input and geometry files for the Constant Viscosity Benchmark
+ case.
+\end_layout
+
+\begin_layout Description
+~/cookbook2 input and geometry files for the Temperature-Dependent Viscosity
+ Benchmark case.
+\end_layout
+
+\begin_layout Description
+~/cookbook3 input and geometry files for the Constant Viscosity Driven Slab
+ Problem.
 \end_layout
 
 \begin_layout Subsection
@@ -3918,6 +3942,31 @@ Makefile
 
 \end_deeper
 \begin_layout Enumerate
+Link the corresponding header file in 
+\family typewriter
+\shape italic
+mm.src
+\family default
+\shape default
+ directory.
+ For the 64-bit memory addressing:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+$ ln -s mm2000_64.h mm2000.h
+\end_layout
+
+\begin_layout Standard
+The header file 
+\shape italic
+mm2000_32.h
+\shape default
+ is to be for the 32-bit case.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
 Compile the ConMan code:
 \end_layout
 
@@ -3930,9 +3979,6 @@ $ make
 This will produce the ConMan executable 
 \family typewriter
 conman.exp
-\family default
-\shape italic
-.
 \end_layout
 
 \end_deeper
@@ -16291,11 +16337,11 @@ The Benchmark Cases
 We provide input and geometry files for the benchmark cases described below
  in the directories 
 \family typewriter
-cookbook1
+cookbook1, cookbook2
 \family default
  and 
 \family typewriter
-cookbook2
+cookbook3
 \family default
 .
 \end_layout
