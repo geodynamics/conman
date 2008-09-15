@@ -225,6 +225,28 @@ today
 
 \end_layout
 
+\begin_layout Paragraph*
+About the cover:
+\end_layout
+
+\begin_layout Standard
+Pictured is the temperature field from a modified Cookbook 1 example [Blankenbac
+k et al, 1989], but with a higher 
+\begin_inset Formula $Ra=10^{6},$
+\end_inset
+
+ and longer 4 
+\begin_inset Formula $\times$
+\end_inset
+
+ 1 aspect ratio (256 
+\begin_inset Formula $\times$
+\end_inset
+
+64 elements).
+ 
+\end_layout
+
 \begin_layout Standard
 \begin_inset LatexCommand tableofcontents
 
