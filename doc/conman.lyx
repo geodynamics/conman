@@ -3397,13 +3397,13 @@ f_tmres.F
 
 \begin_layout Standard
 The second major change is that we have implemented a Picard iteration algorithm
- for steady-state problems (c.f.
- van Keken - thesis 
-\series bold
-[TODO: This sounds different from the van Keken bib entry we have now.
- What thesis?]
-\series default
-).
+ for steady-state problems 
+\begin_inset LatexCommand cite
+key "van Keken 1993"
+
+\end_inset
+
+.
  Currently, this is implemented by changing compiler flags in the Makefile.
  Picard iteration is an implicit solution to the energy equation (as opposed
  to the predictor-corrector method described above); hence, non-symmetric
@@ -16373,11 +16373,12 @@ Cookbook 1: Constant Viscosity Benchmark for ConMan
 \end_layout
 
 \begin_layout Standard
-Here we reproduce the results from Blankenbach et al.
- (1989) 
-\series bold
-[TODO need reference for bibliography]
-\series default
+Here we reproduce the results from Blankenbach 
+\begin_inset LatexCommand cite
+key "Blankenbach et al, 1989"
+
+\end_inset
+
  for constant viscosity in a unit-aspect ratio domain, with free-slip boundary
  conditions, heated from below and cooled from above.
  The user should note that to run this problem, you will need to modify
