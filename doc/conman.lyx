@@ -230,20 +230,25 @@ About the cover:
 \end_layout
 
 \begin_layout Standard
-Pictured is the temperature field from a modified Cookbook 1 example [Blankenbac
-k et al, 1989], but with a higher 
-\begin_inset Formula $Ra=10^{6},$
-\end_inset
-
- and longer 4 
+Pictured is a thermal convection model with fully developed downwellings
+ and upwellings.
+ The computation is performed on a 4
 \begin_inset Formula $\times$
 \end_inset
 
- 1 aspect ratio (256 
+1 rectangular domain with 256
 \begin_inset Formula $\times$
 \end_inset
 
- 64 elements).
+64 uniform square elements.
+ Only part of the domain is shown.
+ This convection model uses a Rayleigh number of 
+\begin_inset Formula $10^{6}$
+\end_inset
+
+ and constant viscosity, with free slip velocity boundary conditions applied
+ on all sides and constant temperature boundary conditions on the bottom
+ and top layers.
  
 \end_layout
 
