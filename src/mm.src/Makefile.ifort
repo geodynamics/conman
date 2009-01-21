@@ -7,6 +7,11 @@ CFLAGS=
 CC=gcc 
 
 MEMORY_MANAGER=mmsc.o mm2000.o driver.o
+../libs/libmm.a: $(MEMORY_MANAGER)
+	$(AR) cr ../libs/libmm.a  $(MEMORY_MANAGER) 
+
+../libs/libmm.a: $(MEMORY_MANAGER)
+
 
 driver: $(MEMORY_MANAGER)
 	$(FC) $(MEMORY_MANAGER) -o driver
