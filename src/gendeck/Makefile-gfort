@@ -17,12 +17,8 @@ SUBS=  \
 	yes.f
 
 SOURCES= $(MAIN) $(SUBS)
-
-#FFLAGS= -O -extend_source
-FFLAGS=  -extend_source
-#FC= $(F77)
-FC = ifort
-#FFLAGS = 
+FFLAGS = 
+FC = gfortran
 
 OBJECTS= $(SOURCES:.f=.o)
 DEBUG= $(PROGRAM:%=debug/%)

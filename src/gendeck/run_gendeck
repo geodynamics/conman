@@ -9,7 +9,7 @@ nsteps=${4-1000}		# number of timesteps
 aspect=${5-1}			# aspect ratio, determines x width
 heating=${6-0}			# internal heating
 activationE=${7-0}		# activation energy
-
+gdbin=${8-~becker/progs/src/cig/ConMan/src/gendeck/} # gendeck binary location
 
 nelx=`echo $nelz $aspect | gawk '{x=int($1*$2);if(x%2!=0)x--;print(x)}'` # number of elements in x
 
@@ -102,4 +102,5 @@ $tbot
 $ttop
 EOF
 
-./GenDeck < gendeck.in
+$gdbin/GenDeck < gendeck.in
+

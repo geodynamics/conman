@@ -1297,6 +1297,7 @@ c
       else
       end if
 c
+      write(gunit,*)
       close (gunit)
       close (grefu)
       if (lmovie) then
