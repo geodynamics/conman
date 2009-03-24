@@ -1,6 +1,6 @@
  50 x 50 el. plate problem from Blankenbach et al., 1989
- #Nds  sdm dof   X    Z prc ck echo rrst wrst nus tdvf tseq nelg sky wr
-  2601  2   2 50  50   2  1    0    0    1 102    0    1    1   1  0
+ #Nds  sdm dof X    Z prc ck echo rrst wrst nus tdvf tseq nelg sky wr
+  2601  2   2  50  50   2  1    0    0    1 102    0    1    1   1  0
  time step information
     100   1  1.0  1.0  0.50000
  output information

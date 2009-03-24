@@ -2,7 +2,8 @@
 # makefile for the memory manager library
 # 
 FC=ifort
-FFLAGS=-O2 -m64 -r8 -i8
+#FFLAGS=-O2 -m64 -r8 -i8
+FFLAGS=-g -m64 -r8 -i8
 CFLAGS= 
 CC=gcc -m64  -DMMSC_INT_TYPE=int64_t
 

@@ -81,7 +81,7 @@ while [ $oc -lt $total_step ];do
 done
 
 if [ $plot -eq 3 ];then		# combine to movie
-    gifsicle $op.*.gif $model.movie.gif
+    gifsicle $op.*.gif > $model.movie.gif
     rm $op.*.gif
     echo $pname: output in $model.movie.gif
 
