@@ -25,8 +25,8 @@ PROGRAM=conman
 FC=ifort
 #FFLAGS = -O2 -DIMPLICIT -I.  -m64 -r8 -i8
 #FFLAGS = -O2 -DIMPLICIT -DPICARD -I. -m64 -r8 -i8
-#FFLAGS = -O2 -I. -m64 -r8 -i8
-FFLAGS = -g -I. -m64 -r8 -i8
+FFLAGS = -O2 -I. -m64 -r8 -i8
+#FFLAGS = -g -I. -m64 -r8 -i8
 
 
 #
