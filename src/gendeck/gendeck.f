@@ -547,11 +547,12 @@ c
       write (istdo, *)
       nsdprt = getint ('Enter steps between restart dumps:      ', 
      &                  nsdprt)
-      nsvprt = getint ('Enter steps between time series outputs:',
-     &                  nsvprt)
-      nstprt = getint ('Enter steps between field outputs:      ',   
+      nstprt = getint ('Enter steps between velocity and temp outputs:',
      &                  nstprt)
+      nsmprt = getint ('Enter steps between stress field outputs:      ',   
+     &                  nsmprt)
 c
+      nsvprt = nstprt
       if(addcomment)write (iunit,*) 'output information'
       write (iunit, "(4i6)") nsdprt, nsvprt, nstprt, nsmprt
 c

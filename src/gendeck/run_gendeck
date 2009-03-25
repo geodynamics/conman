@@ -4,7 +4,7 @@
 #
 model=${1-new} 			# model name
 rayleigh=${2-1e5}		# Rayleigh number
-nelz=${3-50}			# number of elements in z
+nelz=${3-30}			# number of elements in z
 nsteps=${4-1000}		# number of timesteps
 aspect=${5-1}			# aspect ratio, determines x width
 heating=${6-0}			# internal heating
@@ -20,8 +20,8 @@ refactor_stiffness="y"		# allow for changes in viscosity
 wrap_around_bc="n"
 
 nstep_restart=`echo $nsteps | gawk '{print(int($1/3))}'` # when to print restart files?
-nstep_timeseries=50				    # for timeseries output
-nstep_field=`echo $nsteps | gawk '{print(int($1/30))}'`  # for field output
+nstep_field=`echo $nsteps | gawk '{print(int($1/30))}'`  # for velocity and temp field output
+nstep_stress=10000				    # for stress field output
 
 ndtime_print=1.0		# non-dim time to print results
 
@@ -70,8 +70,8 @@ $nsteps
 $ndtime_print
 1.0
 $nstep_restart
-$nstep_timeseries
 $nstep_field
+$nstep_stress
 y
 y
 y

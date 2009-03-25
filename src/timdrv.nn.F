@@ -116,7 +116,6 @@ c.... print out temperature and velocity fields
 c
       if (mod(lstep, nstprt) .eq. 0) then
         call print(x,v,t,ndof,nelx,nelz,numnp,lstep,time)
-        call EGlib ('prt_str ')
 c       do i=1,numnp
 c        t(i) = t(i)*1300.0
 c       enddo
@@ -133,6 +132,13 @@ c       enddo
 c       call projct(t, psol )
 c       call print_reg(psol)
       endif
+c
+c... print out stress fields
+c      
+      if (mod(lstep, nsmprt) .eq. 0)then
+        call EGlib ('prt_str ')
+      endif
+
 c
 c.... overwrite restart output file every nsdout timesteps      
 c
