@@ -9,6 +9,8 @@ plot=${2-3}			# 0: produce grids 1: grids and plot 2: plot and remove grids 3: c
 if=field.$model			# input file
 op=grd.$model			# output prefix
 
+#scale=2000			# for velocities
+scale=1500			# for velocities
 
 tmpn=/tmp/$USER.$HOST.$$.torque_tmp # temp storage
 trap "rm -f $tmpn.* ; exit" 0 1 2 15
@@ -21,18 +23,24 @@ if [ ! -s $if ];then
     echo $pname: cannot find conman field output $if
     exit
 fi
-
+#
+# extract parameters
+#
 head -1 $if > $tmpn.dat
 read nsd nx nz np nstep time < $tmpn.dat
 
+#
+# split the output file into separate files
+#
 ((nline=np+2))
-
 split -d --suffix-length=5 --lines $nline $if $tmpn.t.
 
 total_step=`ls $tmpn.t.* | wc -l`
 echo $pname: determined $nstep timesteps in model $model
+
 oc=0
-while [ $oc -lt $total_step ];do
+while [ $oc -lt $total_step ];do		   # loop through timesteps
+    
     tlabel=`echo $oc | gawk '{printf("%05i",$1)}'` # timelabel
     fname=$tmpn.t.$tlabel
     #echo $pname: working on $fname
@@ -48,7 +56,9 @@ while [ $oc -lt $total_step ];do
 	reg=-R$xmin/$xmax/$ymin/$ymax
 	inc=`echo $xmin $xmax $nelx $ymin $ymax $nely | gawk '{printf("-I%.6f/%.6f",($2-$1)/($3),($5-$4)/($6))}'`
     fi
+    #
     # extract grids
+    #
     tc=4
     for t in vx vy t;do
 	ofile=$op.$t.$tlabel
@@ -58,17 +68,21 @@ while [ $oc -lt $total_step ];do
     done
     if [ $plot -gt 1 ];then
 	if [ $oc -eq 0 ];then
-	    makecpt -Cpolar -T0/1/.1 > $tmpn.cpt
+#	    makecpt -Cpolar -T0/1/.1 > $tmpn.cpt
+	    makecpt -Cpolar -T0/1/.1 -Z > $tmpn.cpt
 	    proj=-Jx3
 	fi
-
+	#
+	# create a plot with temperatures and velocities
+	#
 	ofile=$op.$tlabel.ps
-	grdimage -C$tmpn.cpt $op.t.$tlabel -P $proj $reg -Ba.5f.05:"x":/a.5f.05:"z":WesN -K > $ofile
-	grdvector $op.vx.$tlabel  $op.vy.$tlabel  $proj $reg -Q0.015/0.06/0.045 -N \
-	    -I0.2 -S2000 -O -K -Ggray -W0.5 >> $ofile
-	psscale -N50 -D0.2/-.2/2/.2h -C$tmpn.cpt -B.25/:"T": -O  >> $ofile
+	grdimage -C$tmpn.cpt $op.t.$tlabel -P $proj $reg -Ba.5f.05:"x":/a.5f.05:"z":wESn -K > $ofile
+	grdvector $op.vx.$tlabel  $op.vy.$tlabel  $proj $reg -Q0.03/0.06/0.045n.05 -N \
+	    -I0.2 -S$scale -O -K -Ggray -W0.5 >> $ofile
+	psscale -N50 -D-0.85/1.4/2.5/.2 -C$tmpn.cpt -B.25/:"T": -O  >> $ofile
 	echo $pname: written to $ofile
 	if [ $plot -eq 3 ];then	# convert
+#	    gv $ofile
 	    echo $pname: converting to $op.$tlabel.gif, deleting PS
 	    /usr/bin/convert $ofile $op.$tlabel.gif
 	    rm $ofile
@@ -80,7 +94,8 @@ while [ $oc -lt $total_step ];do
     ((oc=oc+1))
 done
 
-if [ $plot -eq 3 ];then		# combine to movie
+if [ $plot -eq 3 ];then		# combine several GIF files to a movie
+    xv *.gif
     gifsicle $op.*.gif > $model.movie.gif
     rm $op.*.gif
     echo $pname: output in $model.movie.gif
