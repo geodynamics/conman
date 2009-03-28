@@ -23,11 +23,11 @@ PROGRAM=conman
 # use -m64 -r8 -i8 for 64-bit architecture (also see changed in mm.src)
 #
 FC=ifort
-#FFLAGS = -O2 -DIMPLICIT -I.  -m64 -r8 -i8
-#FFLAGS = -O2 -DIMPLICIT -DPICARD -I. -m64 -r8 -i8
 FFLAGS = -O2 -I. -m64 -r8 -i8
 #FFLAGS = -g -I. -m64 -r8 -i8
 
+
+all: explicit gendeck
 
 #
 explicit: $(COMMON) $(EXPLICIT) rheol.newt.o timdrv.o
@@ -55,11 +55,18 @@ implicit: $(COMMON) $(IMPLICIT)
 	(cd grid.src ; make -f Makefile.ifort64)
 	$(FC) -o conman.imp  $(COMMON) $(IMPLICIT) $(LIBS)
 
+gendeck: gendeck/gendeck.o
+	cd gendeck ; make -f Makefile-ifort64
+
+
+
+
 clean:
 	rm -rf core $(COMMON) $(PICARD) $(EXPLICIT) $(IMPLICIT) rheol.newt.o timdrv.o libs/lib*
 	(cd solver.src ; make  -f Makefile.ifort64 clean)
 	(cd mm.src ; make  -f Makefile.ifort64 clean)
 	(cd grid.src ; make  -f Makefile.ifort64 clean)
+	(cd gendeck ; make  -f Makefile-ifort64 clean)
 
 veryclean:
 	rm -rf core $(COMMON) $(PICARD) $(EXPLICIT) $(IMPLICIT) conman.???

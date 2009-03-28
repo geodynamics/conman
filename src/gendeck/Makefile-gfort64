@@ -17,8 +17,7 @@ SUBS=  \
 	yes.f
 
 SOURCES= $(MAIN) $(SUBS)
-FFLAGS = 
-FC = gfortran
+include ../include.gfort64
 
 OBJECTS= $(SOURCES:.f=.o)
 DEBUG= $(PROGRAM:%=debug/%)
@@ -29,6 +28,8 @@ VARIANTS.o= $(OBJECTS)
 	-mkdir debug
 
 all: $(PROGRAM)
+
+
 debug: $(DEBUG)
 
 $(DEBUG) := FFLAGS= -g
