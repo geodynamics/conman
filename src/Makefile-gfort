@@ -23,8 +23,8 @@ PROGRAM=conman
 # use -m64 -r8 -i8 for 64-bit architecture (also see changed in mm.src)
 #
 FC=gfortran
-FFLAGS = -O2 -DIMPLICIT -I. -fcray-pointer
-FFLAGS = -O2 -DIMPLICIT -DPICARD -I. -fcray-pointer 
+#FFLAGS = -O2 -DIMPLICIT -I. -fcray-pointer
+#FFLAGS = -O2 -DIMPLICIT -DPICARD -I. -fcray-pointer 
 FFLAGS = -O2 -I. -fcray-pointer 
 
 #

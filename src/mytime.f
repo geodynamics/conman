@@ -1,5 +1,5 @@
       real function mytime ()
-      real tarray(2),  tmp
+      real*4 tarray(2),  tmp
 c Cray version
 c     mytime = second (tmp)
 c Convex version
