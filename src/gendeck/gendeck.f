@@ -549,7 +549,7 @@ c
      &                  nsdprt)
       nstprt = getint ('Enter steps between velocity and temp outputs:',
      &                  nstprt)
-      nsmprt = getint ('Enter steps between stress field outputs:      ',   
+      nsmprt = getint ('Enter steps between stress field outputs:     ',   
      &                  nsmprt)
 c
       nsvprt = nstprt
