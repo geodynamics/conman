@@ -67,8 +67,14 @@ c
 ccccccccc1ccccccccc2ccccccccc3ccccccccc4ccccccccc5ccccccccc6ccccccccc7cc
       program gendeck
 c
+c
+c   ifort didn't think that xmin,xmax,zmin,zmax and such were real
+c
+      implicit real(a-h, o-z), integer(i-n)
+
       real*8 pi
 c
+
       character*56 ititle
 c  title excluding date and time
 
