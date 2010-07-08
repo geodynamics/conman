@@ -4,7 +4,8 @@
 FC=ifort
 FFLAGS=-O2 
 CFLAGS= 
-CC=gcc 
+#CC=gcc 
+CC=icc
 
 MEMORY_MANAGER=mmsc.o mm2000.o driver.o
 ../libs/libmm.a: $(MEMORY_MANAGER)
