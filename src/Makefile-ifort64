@@ -23,8 +23,8 @@ PROGRAM=conman
 # use -m64 -r8 -i8 for 64-bit architecture (also see changed in mm.src)
 #
 FC=ifort
-FFLAGS = -O2 -I. -m64 -r8 -i8
-#FFLAGS = -g -I. -m64 -r8 -i8
+#FFLAGS = -O2 -I. -m64 -r8 -i8
+FFLAGS = -g -I. -m64 -r8 -i8
 
 
 all: explicit gendeck
