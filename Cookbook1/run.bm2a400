@@ -1,0 +1,10 @@
+in.bm2a400
+geom.400
+out.bm2a400
+r.12out
+r.outbm2a400
+tser.bm2a400
+temp.bm2a400
+stress.bm2a400
+comp.bm2a400
+geoid.bm2a400

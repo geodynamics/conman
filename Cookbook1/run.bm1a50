@@ -1,0 +1,10 @@
+in.bm1a50
+geom.50
+out.bm1a50
+r.in
+r.outbm1a50
+tser.bm1a50
+temp.bm1a50
+stress.bm1a50
+comp.bm1a50
+geoid.bm1a50

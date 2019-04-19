@@ -1,0 +1,141 @@
+ 64 by 64 element input deck for testing (Blankenback 1aWed Jul  5 13:57:15 2017 
+
+ C o n t r o l__ I n f o r m a t i o n                
+
+ number_of_nodal_points .....................(numnp_)=      4225
+
+ number_of_space_dimensions..................(nsd___)=         2
+
+ number_of_degrees_of_freedom_per_node.......(ndof__)=         2
+
+ number_of_elements_in_the_x1_direction......(nelx__)=        64
+
+ number_of_elements_in_the_x2_direction......(nelz__)=        64
+
+ single_or_double_precision..................(mprec_)=         2
+
+ execution_code..............................(iflow_)=         1
+
+    eq. 0, data_check_only                            
+
+    eq. 1, execution                                  
+
+ input_echo_parameter........................(necho_)=         0
+
+ input_restart_parameter.....................(inrstr)=         0
+
+ output_restart_parameter....................(iorstr)=         1
+
+ number_of_boundary_nodes_for_nusselt_smooth.(nodebn)=       130
+
+ temperature_dependent_viscosity.............(ntimvs)=         0
+
+ number_of_time_sequences....................(ntseq_)=         1
+
+ number_of_element_groups....................(numeg_)=         1
+
+ flag_for_skyline_or_frontal_solve...........(idmf__)=         1
+
+ number_of_nodes_for_wrap_around_boundary....(nwrap_)=         0
+
+
+ 64 by 64 element input deck for testing (Blankenback 1aWed Jul  5 13:57:15 2017 
+
+ T i m e__I n t e g r a t i o n__I n f o r m a t i o n
+
+______Nstep______Niter______Alpha______accel______Eps-tol
+
+    6000000       2     0.50000      1.00000E+00     1.00000E-06
+
+
+ 64 by 64 element input deck for testing (Blankenback 1aWed Jul  5 13:57:15 2017 
+
+ O u t p u t___I n f o r m a t i o n                  
+
+ time___of_time_steps_per_output_disk........(tsdout)=6.0000000000E+06
+
+ number_of_time_steps_per_output_velocity....(nsvprt)=   6000000
+
+ number_of_time_steps_per_output_temperature.(nstprt)=   6000000
+
+ number_of_time_steps_per_output_mean........(nsmprt)=   6000000
+
+ time_of_the_experiment_runs.................(tmax__)=6.10000000E-01
+
+ interval_for_flux_and_compressible data.....(datasv)=6.00000000E-01
+
+ interval_of_time_output_for_GMT_processing..(tsave_)=6.00000000E-01
+
+ interval_for_movie_generation...............(tmovis)=6.00000000E-01
+
+
+ 64 by 64 element input deck for testing (Blankenback 1aWed Jul  5 13:57:15 2017 
+
+ E l e m e n t__G r o u p__C o n t r o l__P a r a m 
+
+ element_type................................(ntype )=         2
+
+    eq. 2, 2D element                                 
+    eq. 3, 3D element                                 
+
+ number_of_elements..........................(numel_)=      4096
+
+ number_of_materials.........................(numat_)=         1
+
+ number_of_surface_forces....................(numsuf)=         0
+
+ number_of_element_nodes.....................(nen___)=         4
+
+ number_of_integration_points................(nipts_)=         5
+
+
+ 64 by 64 element input deck for testing (Blankenback 1aWed Jul  5 13:57:15 2017 
+
+ M a t e r i a l____P r o p e r t i e s                
+
+
+
+ viscosity_(non_dimensionalized)...........(visc__)= 1.00000000E+00
+
+ lambda_(penalty_number)...................(lamda_)= 1.00000000E+07
+
+ heat_conductivity_(non_dimensionalized)...(diff__)= 1.00000000E+00
+
+ rayleigh_number...........................(ra____)= 1.00000000E+04
+
+ internal_heating_parameter_(J/Kg.s).......(dmhu__)= 0.00000000E+00
+
+ activation_energy_for_viscosity_(J/mol)...(tcon1_)= 0.00000000E+00
+
+ activation_volume_for_viscosity_(m3/mol)..(tcon2_)= 0.00000000E+00
+
+ dissipation_number........................(Di____)= 0.00000000E+00
+
+ different_temperature_top_to_bottom (k)...(diff_T)= 1.00000000E+03
+
+ Gruneisen's_parameter....................(gamma_)= 1.00000000E+00
+
+ reference_density_(non-dimensionalized)...(rho0__)= 1.00000000E+00
+
+ surface_temperature_(K)...................(T0____)= 2.73000000E+02
+ 64 by 64 element input deck for testing (Blankenback 1aWed Jul  5 13:57:15 2017 
+
+ E x e c u t i o n   T i m e   S t a t i s t i c s    
+
+ name        CPU time  
+ input           0.01
+ chol            0.00
+ factor          0.13
+ back-slv        9.57
+ output          0.66
+ pick_dt         0.48
+ f_vStiff        0.00
+ f_vRes          1.49
+ f_tRes         13.72
+ predict         0.02
+ total          26.08
+ M e m o r y___ A l l o c a t i o n___ S t a t i s t i c s
+
+
+ntotal__=      2383113___Total_Words_of_Memory_Program 
+ndpbyte_=        19.06___Mb_Memory_Allocated

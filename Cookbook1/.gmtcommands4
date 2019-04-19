@@ -1,0 +1,10 @@
+# GMT common arguments shelf
+-B.2:Distance :/.2:Depth :WSen
+-JX16.0/-16.000
+-R0/1/0/1
+-X4.0
+-x0.0
+-Y6.0
+-y0.0
+-jX16.0/-16.000
+EOF

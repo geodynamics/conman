@@ -1,0 +1,10 @@
+in.bm1c100
+geom.100
+out.bm1c100
+r.12out
+r.outbm1c100
+tser.bm1c100
+temp.bm1c100
+str.bm1c100
+comp.bm1c100
+geoid.bm1c100

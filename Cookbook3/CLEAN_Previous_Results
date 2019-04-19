@@ -1,0 +1,10 @@
+#!/bin/csh -f
+foreach dir (test_*)
+   cd $dir
+   echo Running test problem:  $dir
+   cd test_dir
+   rm -f *
+   cd ..
+   cd ..
+end
+

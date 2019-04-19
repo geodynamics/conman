@@ -1,0 +1,14 @@
+RUN_TEST_SUITE runs the tests in each directory using the source in 
+ the directory above (../conman)
+
+RUN_PARALLEL.sh runs the tests in each directory using the source in 
+ the directory above (../conman).  It assumes a multi-threaded machine and
+ it's not very cleaver.  It launches the first CPU jobs, then when the last
+ of those ends, it starts the next CPU jobs.  This assumes the last job started
+ takes the longest.
+
+CLEAN_TEST_SUITE deletes the output programs (should be unnnecessary but safe)
+
+Make_table.sh - reads the output and create a latex file (blankenbach.tex), 
+ then compile it and creates a postscript file: blankenbach.ps  You may need to 
+ edit the locations of latex and dvips.
