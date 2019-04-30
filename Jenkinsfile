@@ -20,4 +20,6 @@ pipeline {
       '''
     }
   }
+  
+  post { always { cleanWs() } }
 }
