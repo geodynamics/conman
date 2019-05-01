@@ -17,7 +17,7 @@ pipeline {
       steps {
         sh '''
           cd src
-          make
+          make -f Makefile-gfort64
         '''
       }
     }
