@@ -14,10 +14,12 @@ pipeline {
 
   stages {
     stage('Build') {
-      sh '''
-        cd src
-        make
-      '''
+      steps {
+        sh '''
+          cd src
+          make -f Makefile-gfort64
+        '''
+      }
     }
   }
   
