@@ -14,4 +14,4 @@ For more information about citation, installation, and usage please see the incl
 License
 -------
 
-ASPECT is published under [GPL v2 or newer](LICENSE).
+ConMan is published under [GPL v2 or newer](LICENSE).
