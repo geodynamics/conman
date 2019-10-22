@@ -1,0 +1,17 @@
+{
+    "creators": [
+	{
+	    "name": "Scott King",
+	    "affiliation": "Virginia Tech University",
+	    "orcid": "0000-0002-9564-5164"
+	},
+	{
+	    "name": "Arthur Raefsky"
+	},
+	{
+            "name": "Brad H. Hager",
+            "affiliation": "MIT",
+            "orcid": "0000-0002-5643-1374"
+        }
+    ]
+}
