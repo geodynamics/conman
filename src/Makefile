@@ -5,7 +5,7 @@
 COMMON=ConMan.o adjust_velocity_rhs_for_bc.o elminp.o error.o \
 	form_temp_matrix.o form_velocity_rhs.o \
 	form_temp_rhs_explicit.o form_velocity_stiffness_matrix.o \
-	form_temp_rhs_impicit.o velo_stiff_matrix_assemble.o \
+	form_temp_rhs_implicit.o velo_stiff_matrix_assemble.o \
 	form_temp_mass_matrix.o \
         time_driver.o dyna_P.o genien.o genienIP.o \
         genmat.o genshg.o genshp.o input.o pickdt.o printd.o \
