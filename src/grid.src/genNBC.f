@@ -19,16 +19,19 @@ c             -->  .----.----.----. <-- type b nodes
 c                  |    |    |    |
 c                  |    |    |    |
 c 
+c   e.g.  32 by 32 elements input
+c   nb(1,*)   1, 34, 67, .... , 1057, 33, 66, .... , 1089  : type a nodes
+c   nb(2,*)   2, 35, 68, .... , 1058, 32, 65, .... , 1088  : type b nodes
 c-----------------------------------------------------------------------
-c
+c 
 c
       implicit double precision (a-h,o-z)
 c
 c.... deactivate above card(s) for single precision operation
 c
-      include '../common.h'
+      include 'common.h'
 c
-      dimension nb(2,1)
+      dimension nb(2,*)
 c
 c.... type a nodes
 c
@@ -73,8 +76,5 @@ c
 999   call error('genNBC  ','end file',iin)
 1000  format(' smooth boundary nodes ',//,10x,'  #  ',10x,
      &       'nodea',10x,'nodeb')
-1001  format(3(10x,i5))
-2000  format(' smooth corner nodes ',//,10x,'  #  ',10x,
-     &       'nodea',10x,'nodeb',10x,'nodec',10x,'noded')
-2001  format(5(10x,i5))
+1001  format(3(10x,i7))
       end

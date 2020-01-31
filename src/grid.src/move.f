@@ -14,8 +14,7 @@ c----------------------------------------------------------------------
 c
 c     implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c.... nb this needs single precision move
+c.... nb this needs to be commented out for single precision move
 c
       dimension destin(*), source(*)
 c

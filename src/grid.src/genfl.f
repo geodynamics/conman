@@ -15,12 +15,10 @@ c
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
-      include '../common.h'
+      include 'common.h'
 c
       dimension temp(12,20), ninc(3), inc(3)
-      dimension dest(ndest,1)
+      dimension dest(ndest,*)
 c
 c.... read the first card (if node.eq.0 terminate the generation)
 c

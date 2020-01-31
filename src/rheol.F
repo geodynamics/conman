@@ -1,77 +1,298 @@
-      subroutine rheol( x , v , t , ivel , evisc)  
-c
-c
-c----------------------------------------------------------------------
-c
-c  This routine calculates the viscosities which are passed to the
-c  stiffness matrix in f_vstf.f through the array local array evisc.
-c
-c  Code is still in developmental stage. Stress-dependent section has
-c    been successfully tested with a simple shear problem. Constant and 
-c    Temperature-dependent viscosity sections yield the same results as 
-c    previous versions of this subroutine. (SSS 6/93)
-c
-c  Stress-dependent section assumes that stress exponent n = 3.
-c
-c  Viscosity scaling for non_Newtonian section:
-c       low stress => Newtonian rheology
-c       high stress => non-Newtonian rheology
+      subroutine rheol( xl , vl , tl , iel , evisc)  
 c
 c----------------------------------------------------------------------
+c  This routine calculates the viscosities per each element unit 
+c  (Changyeol Lee Sept. 06)
+c  
+c  input tl is non-dimensonalized with a temperature unit of Kelvin (K)
+c----------------------------------------------------------------------
 c
+      use materials
+      use fe
+
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
+      include 'common.h'
 c
-#include<common.h>
-#include<materials.h>
-#include<fe.h>
-c
-      dimension  x(nsd,*)     , v(ndof,*)        , t(*)       ,
-     &           evisc(5) 
-      dimension xl(4) , tl(4)
-c
+      dimension xl(2,4), vl(2,4), tl(4), evisc(5), tll(4)
+      dimension evisc1(5), evisc2(5) 
+
+      do i = 1, 4
+       tll(i) = zero
+      enddo
+      
+c********************************************************************
 c..... constant viscosity - Newtonian fluid
 c
       if ( ntimvs .eq. 0 ) then
         do intp = 1, nipt
-          evisc(intp) = visc(mat(ivel))
+          evisc(intp) = visc(mat(iel))
         enddo
-        return
-      endif
 c
-c..... temperature dependent rheology
+c********************************************************************
+c      temperature dependent rheology (Blackenbach et al. 1989)
+c      case2a 
+c      
+      elseif ( ntimvs .eq. 1 ) then 
+c                                 
+c..... add adiabatic temperature profile to tl 
 c
-      if ( ntimvs .eq. 1 ) then
-c
-        do n = 1, nen
-          tl(n) = t(    ien(ivel,n) ) 
-          xl(n) = x( 2, ien(ivel,n) ) 
+        do i = 1, 4
+          tll(i) = tl(i) - T0 / diff_T ! for Blankenbach scale   
         enddo
+c
+        do intp = 1, nipt 
+          tq = tll(1) * shl(1,intp) + tll(2) * shl(2,intp)
+     &       + tll(3) * shl(3,intp) + tll(4) * shl(4,intp)     
+          zq = xl(2,1) * shl(1,intp) + xl(2,2) * shl(2,intp)
+     &       + xl(2,3) * shl(3,intp) + xl(2,4) * shl(4,intp)
+          xq = xl(1,1) * shl(1,intp) + xl(1,2) * shl(2,intp)
+     &       + xl(1,3) * shl(3,intp) + xl(1,4) * shl(4,intp)
+ 
+c.... calculation of exponent term for creep laws
+          bconst = 6.907755279d0     ! for case2a 
+          cconst = 0.000000000d0
+c
+c.... viscosity
+c
+          evisc(intp) = visc(mat(iel)) 
+     &                * exp( -bconst*tq+cconst*(1.0d0-zq) )
+        enddo
+c
+c********************************************************************
+c      temperature dependent rheology (Blackenbach et al. 1989)
+c      case2b 
+c
+      elseif ( ntimvs .eq. 2 ) then
+c
+c..... add adiabatic temperature profile to tl 
+c
+        do i = 1, 4
+          tll(i) = tl(i) - T0 / diff_T ! for Blankenbach scale   
+        enddo
+c
         do intp = 1, nipt
-          tq = shl(1,intp) * tl(1)
-     &       + shl(2,intp) * tl(2)
-     &       + shl(3,intp) * tl(3)
-     &       + shl(4,intp) * tl(4)
-          zq = shl(1,intp) * xl(1)
-     &       + shl(2,intp) * xl(2)
-     &       + shl(3,intp) * xl(3)
-     &       + shl(4,intp) * xl(4)
-          power = visexp(tq, tcon(1,mat(ivel)),
-     &                   zq, tcon(2,mat(ivel)) )
-c         evisc(intp) = 1.0e-9*exp ( power ) 
-          evisc(intp) = exp ( power ) 
-          if (evisc(intp) .gt. tcon(3,mat(ivel))) 
-     &           evisc(intp) = tcon(3,mat(ivel))
-          if (evisc(intp) .lt. 1.0e-1) evisc(intp) = 1.0e-1
-          evisc(intp) = visc(mat(ivel))*evisc(intp)
+          tq = tll(1) * shl(1,intp) + tll(2) * shl(2,intp)
+     &       + tll(3) * shl(3,intp) + tll(4) * shl(4,intp)     
+          zq = xl(2,1) * shl(1,intp) + xl(2,2) * shl(2,intp)
+     &       + xl(2,3) * shl(3,intp) + xl(2,4) * shl(4,intp)
+          xq = xl(1,1) * shl(1,intp) + xl(1,2) * shl(2,intp)
+     &       + xl(1,3) * shl(3,intp) + xl(1,4) * shl(4,intp)
+ 
+c.... calculation of exponent term for creep laws
+          bconst = 9.704060528d0     ! for case2b 
+          cconst = 4.158883083d0
+c
+c.... viscosity
+c
+          evisc(intp) = visc(mat(iel)) 
+     &                * exp( -bconst*tq+cconst*(1.0d0-zq) )
         enddo
-        return
-      end if
+c
+c********************************************************************
+c      temperature dependent rheology 
+c      Arrhenius law (diffusion creep)
+c      
+      elseif ( ntimvs .eq. 3 ) then
+c                                 
+c..... add adiabatic temperature profile to tl 
+c
+         do i = 1, 4
+           tll(i) = tl(i) - T0 / diff_T ! for Blankenbach scale   
+         enddo
+c 
+        do intp = 1, nipt   
+          tq = tll(1) * shl(1,intp) + tll(2) * shl(2,intp)
+     &       + tll(3) * shl(3,intp) + tll(4) * shl(4,intp)     
+          zq = xl(2,1) * shl(1,intp) + xl(2,2) * shl(2,intp)
+     &       + xl(2,3) * shl(3,intp) + xl(2,4) * shl(4,intp)
+          xq = xl(1,1) * shl(1,intp) + xl(1,2) * shl(2,intp)
+     &       + xl(1,3) * shl(3,intp) + xl(1,4) * shl(4,intp)
+c
+c.... viscosity
+c
+          power = visexp(tq, tcon(1,mat(iel)),
+     &                   zq, tcon(2,mat(iel)) )
+c
+          power0 = visexp(one, tcon(1,mat(iel)),
+     &                   zero, tcon(2,mat(iel)) )
+          evisc(intp) = visc(mat(iel)) * (exp(power - power0))
+        enddo
+      elseif (ntimvs .eq. 4) then
+
+c      
+c********************************************************************      
+c..... combination of diffusion and dislocation creeps with
+c      temperature and pressure dependent rheology
+
+       vismin = 1.0d-5  ! viscosity minimum cut
+       vismax = 1.0d5   ! viscosity maximum cut
+c.... strain rate conversion paramters   
+       pkappa = 1.0d-6   ! thermal diffusivity 
+       bottom = 2.8900d6  ! depth of domain
+c.... constants for creeps
+       ! Karato and Wu, 1993 (wet Olivine)
+c       p_grain = 2.5d0    ! grain size exponent
+c       grain_size  = 1.0d-3 ! grain size
+c      a_dis  =  3.9 * 1.0d-15  ! constant of dislocation creep
+c       a_dif   =  3.7 * 1.0d-19  ! constant of diffusion creep
+c       xn = 3.0d0   ! stress exponent for dislocation creep
+
+       ! Karato and Wu, 1993 (dry Olivine)
+       p_grain = 2.5d0    ! grain size exponent
+       grain_size  = 1.0d-3 ! grain size
+       a_dis  =  2.4 * 1.0d-16  ! constant of dislocation creep
+       a_dif   =  6.1 * 1.0d-19  ! constant of diffusion creep
+       xn = 3.5d0   ! stress exponent for dislocation creep
+
+       visrat = one / ( a_dis ** (one/xn) ) 
+     &             / ( (grain_size ** p_grain) / a_dif )  ! viscosity ratio
+
+       rate_conv = pkappa / (bottom * bottom)  ! strain rate conversion factor   6.25e-18
+c
+c..... add adiabatic temperature profile to tl 
+c
+        do i = 1, nipt
+          tll(i) = tl(i) - T0 / diff_T 
+        enddo
+
+        do intp = 1, nipt   
+          tq = tll(1) * shl(1,intp) + tll(2) * shl(2,intp)
+     &       + tll(3) * shl(3,intp) + tll(4) * shl(4,intp)
+          zq = xl(2,1) * shl(1,intp) + xl(2,2) * shl(2,intp)
+     &       + xl(2,3) * shl(3,intp) + xl(2,4) * shl(4,intp)
+          xq = xl(1,1) * shl(1,intp) + xl(1,2) * shl(2,intp)
+     &       + xl(1,3) * shl(3,intp) + xl(1,4) * shl(4,intp)
+
+c.... calculation of exponent term for diffusion creep 
+
+c         call ve1(tq, tcon(1,mat(iel)),
+c    &            zq, tcon(2,mat(iel)), power1)
+
+          estar = 300.0
+          vstar = 6.0
+          power = visexp(tq, estar,
+     &                   zq, vstar )
+          power0 = visexp(one, estar,
+     &                   zero, vstar )
+          evisc1(intp) = visc(mat(iel)) * (exp(power - power0))
+          if (evisc1(intp) .gt. 1e6) evisc1(intp) = 1.0e6
+
+c.... calculation of exponent term for dislocation creep 
+
+c.... find velocity gradient at element centers 
+
+c  normal gradient toward x (Vx,x)
+          edotxx = 
+     &            (shdx(iel,1,5)*vl(1,1) + shdx(iel,2,5)*vl(1,2)
+     &           + shdx(iel,3,5)*vl(1,3) + shdx(iel,4,5)*vl(1,4) )
+
+c  normal gradient toward y (Vy,y)
+          edotyy = 
+     &            (shdy(iel,1,5)*vl(2,1) + shdy(iel,2,5)*vl(2,2)
+     &           + shdy(iel,3,5)*vl(2,3) + shdy(iel,4,5)*vl(2,4) )
+
+c  shear gradient toward x or y (Vx,y = Vy,x)
+          edotxy = pt5 * 
+     &            (shdx(iel,1,5)*vl(2,1) + shdx(iel,2,5)*vl(2,2)
+     &           + shdx(iel,3,5)*vl(2,3) + shdx(iel,4,5)*vl(2,4)
+     &           + shdy(iel,1,5)*vl(1,1) + shdy(iel,2,5)*vl(1,2)
+     &           + shdy(iel,3,5)*vl(1,3) + shdy(iel,4,5)*vl(1,4))
+
+c.... second invariant of the strain rate
+
+          edot2 = edotxx * edotxx + edotyy * edotyy
+     &            +  two * edotxy * edotxy
+
+          secinv = dsqrt(pt5 * edot2)
+
+          secinv = rate_conv * secinv * 1.0e-1 +1.0e-17  ! conversion edot to real value (/s) 
+
+          evisc2(intp) = evisc1(intp) *
+     &                * ( secinv ** ( (one - xn) / xn ) )
+
+c.... total viscosity (1/diff_creep + 1/disloc_creep)^(-1)
+
+          evisc(intp) = one/(one/evisc1(intp) + one/evisc2(intp)) 
+
+c.... set the viscous cut 
+c vismax = 1e5, vismin = 1e-5
+
+         if (evisc(intp) .gt. vismax) then
+           evisc(intp) = vismax
+         endif
+
+         if (evisc(intp) .lt. vismin) then
+           evisc(intp) = vismin
+         endif
+
+       enddo
+      elseif (ntimvs .eq. 5) then
+c********************************************************************      
+c  Stein and Hansen Rheology
+c
+c..... add adiabatic temperature profile to tl
+c
+        do i = 1, nipt
+         tll(i) = tl(i) - T0 / diff_T
+        enddo
+
+        do intp = 1, nipt
+          tq = tll(1) * shl(1,intp) + tll(2) * shl(2,intp)
+     &       + tll(3) * shl(3,intp) + tll(4) * shl(4,intp)
+          zq = xl(2,1) * shl(1,intp) + xl(2,2) * shl(2,intp)
+     &       + xl(2,3) * shl(3,intp) + xl(2,4) * shl(4,intp)
+          xq = xl(1,1) * shl(1,intp) + xl(1,2) * shl(2,intp)
+     &       + xl(1,3) * shl(3,intp) + xl(1,4) * shl(4,intp)
+
+c this is natural log of 10^5
+          const1 = 11.512925
+          evisc1(intp) = exp(-const1*tq+tcon(1,mat(iel))*(one-zq))
+
+c.... find velocity gradient at element centers 
+
+c  normal gradient toward x (Vx,x)
+          edotxx = 
+     &            (shdx(iel,1,5)*vl(1,1) + shdx(iel,2,5)*vl(1,2)
+     &           + shdx(iel,3,5)*vl(1,3) + shdx(iel,4,5)*vl(1,4) )
+
+c  normal gradient toward y (Vy,y)
+          edotyy = 
+     &            (shdy(iel,1,5)*vl(2,1) + shdy(iel,2,5)*vl(2,2)
+     &           + shdy(iel,3,5)*vl(2,3) + shdy(iel,4,5)*vl(2,4) )
+
+c  shear gradient toward x or y (Vx,y = Vy,x)
+          edotxy = pt5 * 
+     &            (shdx(iel,1,5)*vl(2,1) + shdx(iel,2,5)*vl(2,2)
+     &           + shdx(iel,3,5)*vl(2,3) + shdx(iel,4,5)*vl(2,4)
+     &           + shdy(iel,1,5)*vl(1,1) + shdy(iel,2,5)*vl(1,2)
+     &           + shdy(iel,3,5)*vl(1,3) + shdy(iel,4,5)*vl(1,4))
+
+c.... second invariant of the strain rate
+
+          edot2 = edotxx * edotxx + edotyy * edotyy
+     &            +  two * edotxy * edotxy
+
+          secinv = dsqrt(pt5 * edot2) + 1.0e-9
+
+          eta_star = 1.0e-5
+          sigma_y = tcon(2,mat(iel))
+          evisc2(intp) = eta_star + sigma_y/secinv
+
+c.... total viscosity (1/diff_creep + 1/disloc_creep)^(-1)
+
+          evisc(intp) = two/(one/evisc1(intp) + one/evisc2(intp)) 
+        enddo
+c********************************************************************      
+
+
+      endif
+c********************************************************************      
+      return
 c
       end
 c
-c****************************************************************
+c********************************************************************      
 c
       double precision function visexp( t, estar, z, vstar )
 c
@@ -84,34 +305,36 @@ c to make more sense for viscosity laws.
 c sdk 9/19/93
 c
 c  Input Estar in kJ/mol and Vstar in cm**3/mol
-c  and this is scaled s.t. at T=1 and depth = 150 km visexp = 1.0
 c
       implicit double precision(a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
       include 'common.h'
 c
-      tn   = 1100.0d0*t
-      Tmin = 773.0d0
-      R    = 8.3154d0
+c     Kelvin
+      Tmin = 273.0d0
+      tn = t * 2000.0
+c     Joules/(mole*kelvin)
+      R    = 8.3144d0
+c     kg/m^3
       rho  = 3.3d3
+c     m/s^2      
       g    = 9.8
-c 1.0d-6 converts cm**3 to m**3
+c     1.0d-6 converts cm**3 to m**3
       dscale = rho * g * 1.0d-6
-c
-c     depth = (600.0 - z) * dscale * 2.89d6 
-      depth = (1.0 - z) * dscale * 2.89d6 
+      press = (one - z) * dscale * 2.89d6 
       d0    = dscale * 2.89e6 
 c
+c This is scaled s.t. at T=1 and depth = 2890 km visexp = 1.0
 c 1.0d3 converts kJ/mole to J/mole 
 c
-      visexp = (estar*1.e3 + vstar*depth)/(R*(tn+Tmin))
-     &       - (estar*1.e3 + vstar*depth)/(R*(1100.0+Tmin))
+c values corresponding to estar and vstar from Karato & Wu (1993) table 1
+c wet diffusive olivine (vals next line)
+c A 5.3e15 (s^-1) ; n 1.0; m 2.5; estar 240 (kJ/mol); vstar 5 (cm^3/mol);
+c dry diffusive olivine (vals next line)
+c A 8.7e15 (s^-1) ; n 1.0; m 2.5; estar 300 (kJ/mol); vstar 6 (cm^3/mol);      
 c
-c     if (visexp .gt. 10.0) visexp = 10.0
+      visexp = (estar*1.e3 + vstar*press)/(R*(tn+Tmin))
+c
       return
       end
-c
-c****************************************************************
-c
+

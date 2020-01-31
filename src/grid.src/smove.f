@@ -16,10 +16,7 @@ c
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
-c
-      dimension destin(1),source(1)
+      dimension destin(*),source(*)
 c
       do 100 i = 1, n
         destin(i) = source(i)

@@ -13,12 +13,15 @@ c
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
-      include '../common.h'
+      include 'common.h'
 c
       dimension temp(12,*), ninc(*), inc(*), dest(ndest,*), sh(20)
 c
+c.... initialization
+      do i = 1, 20
+        sh(i) = zero
+      enddo
+
       iopt = 3
       if (ninc(3) .eq. 0) iopt = 2
       if (ninc(2) .eq. 0) iopt = 1
@@ -27,9 +30,9 @@ c
       ds = zero
       dt = zero
 c
-      if (ninc(1) .ne. 0) dr = two / float(ninc(1))
-      if (ninc(2) .ne. 0) ds = two / float(ninc(2))
-      if (ninc(3) .ne. 0) dt = two / float(ninc(3))
+      if (ninc(1) .ne. 0) dr = two / dble(ninc(1))
+      if (ninc(2) .ne. 0) ds = two / dble(ninc(2))
+      if (ninc(3) .ne. 0) dt = two / dble(ninc(3))
 c
       ii = ninc(1) + 1
       jj = ninc(2) + 1
@@ -84,10 +87,7 @@ c
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
-      include '../common.h'
-c
+      include 'common.h'
       dimension sh(*)
 c
 c.... jump to the right option

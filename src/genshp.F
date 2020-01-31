@@ -1,4 +1,4 @@
-        subroutine genshp ( x )
+        subroutine genshp (shldx,shldy)
 c
 c----------------------------------------------------------------------
 c
@@ -14,25 +14,30 @@ c
 c        shl  (nen,nipt)
 c        shdx (numel,nen,nipt)
 c        shdy (numel,nen,nipt)
-c        det  (numel,nipt)
-c        eval (numel,6)
+c        det  (numel,nipt)   (X)
+c        eval (numel,6)      (X)
 c
 c Note: the last five arrays are setup with element as the first index.
 c       This should facilitate vectorization.
 c
 c----------------------------------------------------------------------
 c
-c
+      use fe
+
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
+      include 'common.h'
 c
-#include<common.h>
-#include<fe.h>
-c
-      dimension x(nsd,*)   
-c
-      common /temp1 / sa(4),ta(4),sg(5),tg(5), xl(2,4)
+      dimension sa(4), ta(4), sg(5), tg(5)  
+      dimension shldx(nen,nipt), shldy(nen,nipt)
+
+      do i = 1, nen
+        sa(i) = zero ; ta(i) = zero
+      enddo
+
+      do i = 1, nipt
+        sg(i) = zero ; tg(i) = zero
+      enddo 
 c
 c.... set up parameters
 c
@@ -46,9 +51,8 @@ c
       ta(3) =  pt5
       ta(4) =  pt5 
 c
-      guass = one / sqrt(three)
+      guass = one / dsqrt(three)
 c
-
       sg(1) = -one * guass
       sg(2) =  one * guass
       sg(3) =  one * guass
@@ -63,12 +67,12 @@ c
 c       
 c   generate the generic shape functions
 c
-      do intp = 1,5
-        do node = 1,4
+      do intp = 1,nipt
+        do node = 1,nen
           shl(node,intp)   = (pt5 + sa(node) * sg(intp) ) 
      &                     * (pt5 + ta(node) * tg(intp) )
-          shldx(node,intp) = sa(node)*(pt5 + ta(node) * tg(intp) )
-          shldy(node,intp) = ta(node)*(pt5 + sa(node) * sg(intp) )
+          shldx(node,intp) = sa(node)*(pt5 + ta(node) * tg(intp))
+          shldy(node,intp) = ta(node)*(pt5 + sa(node) * sg(intp))
         enddo
       enddo
 c

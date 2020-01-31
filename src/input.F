@@ -8,14 +8,15 @@ c
 c----------------------------------------------------------------------
 c
 c
+      use bc
+      use mstres
+      use materials
+      use solver
+      use variables
+
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
-#include<common.h>
-#include<stress.h>
-#include<variables.h>
-#include<bc.h>
+      include 'common.h'
 c
 c.... Start the cpu timer
 c
@@ -24,167 +25,270 @@ c
 c.... -------------------->  Global Information  <--------------------
 c
 c.... Input the global information
-c
+
       read (iin,1000) ititle
 c
 c.... Append the date to ititle
-c
+
       call mydate()
+
+1     read (iin,*,err=1,end=999) numnp , nelx  , nelz  , iflow , 
+     &                           necho , inrstr, iorstr, nodebn, 
+     &                           ntimvs, nwrap , itype , isolve
+      write (iout,1100) ititle , numnp , nelx  , nelz  , iflow , 
+     &                           necho , inrstr,iorstr , nodebn, 
+     &                           ntimvs, nwrap , itype , isolve
 c
-1     read (iin,*,err=1,end=999) numnp , nsd   , ndof , nelx  ,nelz  ,
-     &                           mprec , iflow , necho, inrstr,iorstr,
-     &                           nodebn, ntimvs, ntseq, numeg ,
-     &                           isky  , nwrap 
-      write (iout,1100) ititle , numnp ,  nsd  , ndof , nelx  ,nelz  ,
-     &                           mprec , iflow , necho, inrstr,iorstr,
-     &                           nodebn, ntimvs, ntseq, numeg ,
-     &                           isky  , nwrap 
+c ConMan is always 2D
+c
+      nsd = 2
+      ndof = 2
 c
 c.... Allocate memory and set up the global arrays
 c
       ntotal = 0
-      call mmgetblk('x     ','mm', ipx   ,numnp*nsd , 2 , icode)
-      call mmgetblk('v     ','mm', ipv   ,numnp*ndof, 2 , icode)
-      call mmgetblk('t     ','mm', ipt   ,  numnp   , 2 , icode)
-      call mmgetblk('tdot  ','mm', iptdot,  numnp   , 2 , icode)
-      ntotal = ntotal + numnp*(nsd+ndof+2)*2
+      allocate (x(nsd,numnp), v(ndof,numnp), t(numnp), tdot(numnp), 
+     &          STAT = IERR)
+      if (IERR .ne. 0) then
+        write(*,*) 'allocation of x, v, t and/or tdot fails'
+        STOP      
+      endif
+      do j = 1, numnp
+        t(j) = zero ; tdot(j) = zero
+        do i = 1, nsd
+          x(i,j) = zero
+        enddo
+      enddo
+      do i = 1, ndof
+        do j = 1, numnp
+          v(i, j) = zero
+        enddo
+      enddo
+c
+c.... if itype = 5, then set wedge to true and use BA
+c
+      is_wedge_benchmark = 0
+      if (itype .eq. 5) then
+        itype = 4
+        is_wedge_benchmark=1
+      endif
+        
+      ntotal = ntotal + numnp * (nsd+ndof+2)*2     
 c
 c.... Read the time integration information
-c
+
       time = zero
-      if (ntseq .ne. 1) call error('input   ','ntseq   ', ntseq)
-2     read (iin,*,err=2,end=999) nstep ,niter, alpha, accel, epstol
-      write (iout,1200) ititle,  nstep ,niter, alpha, accel, epstol
+2     read (iin,*,err=2,end=999) nstep ,accel
+c
+c.... automatically pick the correct parameters based on the temp solver
+c
+      niter=1
+      alpha=1.0
+      if (isolve .eq. 1) then
+         niter=2
+         alpha=0.5
+      endif
+      write (iout,1200) ititle,  nstep ,niter, alpha, accel
 c
 c.... Read output information card
 c
-3      read (iin,*,err=3,end=999) nsdprt , nsvprt , nstprt , nsmprt 
-       write (iout,1400) ititle,  nsdprt , nsvprt , nstprt , nsmprt 
+3     read (iin,*,err=3,end=999) nstprt ,  tmax  , datasv , tsave , 
+     &                           tmovis
+      write (iout,1400) ititle,  nstprt ,  tmax  , datasv , tsave , 
+     &                           tmovis
 c
 c.... -------------------->  Nodal Information  <--------------------
 c
 c.... Read the coordinates
-c
+
       call genfl (x, nsd)
-c
+
       if (necho .eq. 1) then
         do 200 n = 1, numnp
           if (mod(n,50) .eq. 1) write (iout,1500) ititle,(j,j=1,nsd)
 c this is freaken weird...
-          write (iout,*) n, x(1,n), x(2,n)
-c         write (iout,1600) n, x(1,n), x(2,n)
+c         write (iout,*) n, x(1,n), x(2,n)
+          write (iout,1600) n, x(1,n), x(2,n)
 200     continue
       endif
 c
 c.... Read the Boundary Codes in BC array
-c
-      call mmgetblk('idv   ','mm', ipidv ,numnp*ndof, 1 , icode)
-      call mmgetblk('idt   ','mm', ipidt , numnp    , 1 , icode)
+
+      allocate (idv(ndof,numnp), idt(numnp), STAT = IERR)
+      if (IERR .ne. 0) then
+        write(*,*) 'allocation of idv and/or idt fails'
+        STOP      
+      endif
+      do j = 1, numnp
+        idt(j) = 0
+        idv(1,j) = 0
+        idv(2,j) = 0
+      enddo 
+          
       ntotal = ntotal + numnp*(ndof+1)
       call geniBC (idv,ndof,numnp,neqv,necho)
-      call geniBC (idt,1   ,numnp,neqt,necho)
+      ione=1
+      call geniBC (idt,ione,numnp,neqt,necho)
 c
 c.... Read the boundary conditions
 c
-      call mmgetblk('vbc   ','mm', ipvbc ,numnp*ndof, 2 , icode)
-      call mmgetblk('tbc   ','mm', iptbc , numnp    , 2 , icode)
+      allocate (vbc(ndof,numnp), tbc(numnp), STAT = IERR)
+      if (IERR .ne. 0) then
+        write(*,*) 'allocation of vbc and/or tbc fails'
+        STOP      
+      endif
+      do j = 1, numnp
+        tbc(j) = zero
+        vbc(1,j) = zero
+        vbc(2,j) = zero
+      enddo 
+
       ntotal = ntotal + numnp*(ndof+1)*2
-      call genBC (vbc,ndof,numnp,1,necho,zero,x,idv)
-      call genBC (tbc, 1  ,numnp,2,necho,zero,x,idv)
-c     call genBC (vbc,ndof,numnp,1,necho,zero)
-c     call genBC (tbc, 1  ,numnp,2,necho,zero)
+      call genBC (vbc,ndof,numnp,1,necho,x,idv)
+      call genBC (tbc,ione,numnp,2,necho,x,idv)
 c
 c.... Read the boundary nodes for the nusselt number smoother
 c
-      call mmgetblk('nb    ','mm', ipnb  , nodebn*2 , 1 , icode)
+      allocate (nb(2,nodebn), STAT = IERR)
+      if (IERR .ne. 0) then
+        write(*,*) 'allocation of nb fails'
+        STOP      
+      endif
+      do i = 1, nodebn
+        nb(1, i) = 0 ; nb(2, i) = 0
+      enddo
+
       ntotal = ntotal + nodebn*2
+c
+c.... elements and nodes for Nusselt Number calculation
+c
       call genNBC (nb) 
 c
-c.... set the initial temperature and bouyancy field if applicable
+c.... read initial temperature 
 c
-      call intemp(x, t, tdot)
+4     read (iin,*,err=4,end=999) pert , xsize , zsize  
+      write(iout,1800) ititle, pert, xsize, zsize
+c
+c.... read equation of state info
+c
+5     read (iin,*,err=5,end=999) Di, T0, diff_T, cgamma, rho0
+      write(iout,1900) ititle, Di, T0, diff_T, cgamma, rho0
+
 c
 c
 c.... --------------->  Element Group Information  <---------------
 c
 c.... Read ELEMENT GROUP data
+
+6     read (iin,*,err=6,end=999) numat , numsuf 
 c
-4     read (iin,*,err=4,end=999) ntype , numel ,    nen , nenl ,
-     &                           numat , nedof , numsuf , nipt
+c.... these used to be read in but never change
 c
-       nEGdf = ndof * numnp
-c temporary definition
-       nEGnp = numnp
+      numel = nelx*nelz
+      nen = 4
+      nipt = 5
 c
 c.... print the element control parameter
 c
-      write (iout,1700) ititle, ntype, numel, numat , numsuf , nen, 
-     &                  nipt  , nEGnp, nEGdf
+      write (iout,1700) ititle, numel, numat , numsuf 
+
 c
-      call EGlib ('input   ')
+c.... input element data
+c
+        call elminp()
+c
+c.... calculate parent shape element, global shape elements
+c     are now calculated on the fly, to save memory.
+
+        call genshg(x)
+c
+c.... calculate equation of state
+c
+        call deos(x, t, dens, tref)
+c
+c.... set the initial temperature and bouyancy field if applicable
+c
+        call intemp(x, t, tdot)
+c
+        if (isolve .eq. 1) then              ! Explicit only
+c.... from the thermal mass lumped matrix
+         call form_temp_mass_matrix( x , tlhs )          
+        endif
 c
 c.... Read surface force / flux boundary conditions
 c
       if (numsuf .gt. 0) then
-        call mmgetblk('isuf  ','mm', ipisuf, numsuf*2 , 1,icode)
-        call mmgetblk('suf   ','mm', ipsuf , numsuf*3 , 2,icode)
+        allocate (isuf(numsuf,2), suf(numsuf,3), STAT = IERR)
+        do i = 1, numsuf
+          isuf(i,1) = 0    ; isuf(i,2) = 0
+          suf(i,1)  = zero ; suf(i,2)  = zero ; suf(i,3) = zero
+        enddo
+        if (IERR .ne. 0) then
+          write(*,*) 'allocation of isuf and/or suf fails'
+          STOP      
+        endif      
         call rdflux()
       end if          
 c
 c.... return
-c
+
       return
 c
 c.... end of file error handling
-c
+
 999   call error ('input   ','end file',iin)
-c
+
 1000    format(80a1)
 1100    format(' ',80a1,//,
-     & ' C o n t r o l   I n f o r m a t i o n                ',  //,
-     & ' number of nodal points  . . . . . . . . . . (numnp )=',i10//,
-     & ' number of space dimensions  . . . . . . . . (nsd   )=',i10//,
-     & ' number of degrees of freedom per node . . . (ndof  )=',i10//,
-     & ' number of elements in the x1 direction. . . (nelx  )=',i10//,
-     & ' number of elements in the x2 direction. . . (nelz  )=',i10//,
-     & ' single or double precision  . . . . . . . . (mprec )=',i10//,
-     & ' execution code  . . . . . . . . . . . . . . (iflow )=',i10//,
-     & '    eq. 0, data check only                            ',  // ,
+     & ' C o n t r o l__ I n f o r m a t i o n                ',  //,
+     & ' number_of_nodal_points .....................(numnp_)=',i10//,
+     & ' number_of_elements_in_the_x1_direction......(nelx__)=',i10//,
+     & ' number_of_elements_in_the_x2_direction......(nelz__)=',i10//,
+     & ' execution_code..............................(iflow_)=',i10//,
+     & '    eq. 0, data_check_only                            ',  // ,
      & '    eq. 1, execution                                  ',  // ,
-     & ' input echo parameter  . . . . . . . . . . . (necho )=',i10//,
-     & ' input restart parameter   . . . . . . . . . (inrstr)=',i10//,
-     & ' output restart parameter  . . . . . . . . . (iorstr)=',i10//,
-     & ' number of boundary nodes for nusselt smooth (nodebn)=',i10//,
-     & ' temperature dependent viscosity . . . . . . (ntimvs)=',i10//,
-     & ' number of time sequences  . . . . . . . . . (ntseq )=',i10//,
-     & ' number of element groups  . . . . . . . . . (numeg )=',i10//,
-     & ' flag for skyline or frontal solve . . . . . (isky  )=',i10//,
-     & ' number of nodes for wrap around boundary. . (nwrap )=',i10//)
+     & ' input_echo_parameter........................(necho_)=',i10//,
+     & ' input_restart_parameter.....................(inrstr)=',i10//,
+     & ' output_restart_parameter....................(iorstr)=',i10//,
+     & ' number_of_boundary_nodes_for_nusselt_smooth.(nodebn)=',i10//,
+     & ' temperature_dependent_viscosity.............(ntimvs)=',i10//,
+     & ' number_of_nodes_for_wrap_around_boundary....(nwrap_)=',i10//,
+     & ' form(5=BC+wedge,4=BC,3=EBA,2=TALA,1=ALA)....(itype_)=',i10//,
+     & ' temp solver(1=explicit,3=Picard,2=implicit).(isolve)=',i10//)
 
 1200  format(' ',80a1,//,
-     & ' T i m e   I n t e g r a t i o n   I n f o r m a t i o n',//,
-     & '       Nstep    Niter    Alpha     accel         Eps-tol',//,
-     &     1x,i10,i8,2x,f10.5,2x,1p,e15.5,1x,e15.5,//)
+     & ' T i m e__I n t e g r a t i o n__I n f o r m a t i o n',//,
+     & '______Nstep______Niter______Alpha______accel',//,
+     &     1x,i10,i8,2x,f10.5,2x,1p,e15.5,//)
 1400  format(' ',80a1,//,
-     & ' O u t p u t   I n f o r m a t i o n                  ',1p,//,
-     & ' number of time steps per output disk. . . . (nsdout)=',i10//,
-     & ' number of time steps per output velocity. . (nsvprt)=',i10//,
-     & ' number of time steps per output temperature (nstprt)=',i10//,
-     & ' number of time steps per output mean. . . . (nsmprt)=',i10//)
+     & ' O u t p u t___I n f o r m a t i o n                  ',1p,//,
+     & ' number_of_time_steps_per_output_............(nstprt)=',i10//,
+     & ' time_of_the_experiment_runs.................(tmax__)=',e14.8//,
+     & ' interval_for_flux_and_compressible data.....(datasv)=',e14.8//,
+     & ' interval_of_time_output_for_GMT_processing..(tsave_)=',e14.8//,
+     & ' interval_for_movie_generation...............(tmovis)=',e14.8//
+     &      )
+
 1500  format(' ',80a1,//,
-     & ' N o d a l   C o o r d i n a t e s                  ',//,
+     & ' N o d a l__C o o r d i n a t e s                  ',//,
      & '    Node     ',12x,3('x',i1,:,17x))
 1600  format(1p,2x,i5,13x,3(1pe12.5,7x))
-1700      format(' ',80a1,//,
-     &  ' E l e m e n t   G r o u p   C o n t r o l   P a r a m ',//,
-     &  ' element type  . . . . . . . . . . . . . . . (ntype )=',i10//,
-     &  '    eq. 2, 2D element                                 ',  / ,
-     &  '    eq. 3, 3D element                                 ',  //,
-     &  ' number of elements  . . . . . . . . . . . . (numel )=',i10//,
-     &  ' number of materials . . . . . . . . . . . . (numat )=',i10//,
-     &  ' number of surface forces  . . . . . . . . . (numsuf)=',i10//,
-     &  ' number of element nodes . . . . . . . . . . (nen   )=',i10//,
-     &  ' number of integration points  . . . . . . . (nipts )=',i10//,
-     &  ' number of group nodal points  . . . . . . . (nEGnp )=',i10//,
-     &  ' number of group dofS  . . . . . . . . . . . (nEGdf )=',i10//)
+1700  format(' ',80a1,//,
+     & ' E l e m e n t__G r o u p__C o n t r o l__P a r a m ',//,
+     & ' number_of_elements..........................(numel_)=',i10//,
+     & ' number_of_materials.........................(numat_)=',i10//,
+     & ' number_of_surface_forces....................(numsuf)=',i10//)
+1800  format(' ',80a1,//,
+     & ' I n i t i a l__T e m p e r a t u r e__P a r a m    ',//,
+     & ' perturbation...............................(pert__)=',e14.8//,
+     & ' horizontal dimension.......................(xsize_)=',e14.8//,
+     & ' vertical dimension.........................(zsize_)=',e14.8//)
+1900      format(' ',80a1,//,
+     & ' E q u a t i o n__o f__S t a t e__P a r a m e t e r s ',//,
+     & ' Dissipation number.........................(Di____)=',e14.8//,
+     & ' Surface Temperature (dimensional kelvin)...(T0____)=',e14.8//,
+     & ' Temperature difference (dimensional kelvin)(diff_T)=',e14.8//,
+     & ' Gruneisen parameter (non-dimensional)......(cgamma)=',e14.8//,
+     & ' Reference Density (non-dimensional)........(rho0__)=',e14.8//)
+
       end

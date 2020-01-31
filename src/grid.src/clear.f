@@ -1,12 +1,8 @@
       subroutine clear (clr, n)
 c
-c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
 c----------------------------------------------------------------------
-c
 c  program to clear a floating point array
 c
 c input:

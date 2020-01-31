@@ -5,10 +5,7 @@ c
 c        a(i):  coefficient matrix stored in compacted column form;
 c               after factorization contains d and u
 c
-c
       implicit double precision (a-h,o-z)
-c
-c.... deactivate above card(s) for single precision operation
 c
       dimension a(*),idiag(*),temp(*)
       common /const /zero  , pt25,    pt33,   pt5,     pt66,   one,

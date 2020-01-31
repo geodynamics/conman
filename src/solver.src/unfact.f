@@ -1,6 +1,7 @@
       SUBROUTINE UNFACT(A,C,IDIAG,NEQ)
       IMPLICIT REAL*8 (A-H,O-Z)
       DIMENSION A(*),C(*),IDIAG(*)
+ 
       JR=0
       DO 300 J=1,NEQ
       JD=IDIAG(J)

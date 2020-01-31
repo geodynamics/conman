@@ -1,5 +1,4 @@
-c     subroutine genBC(f,ndof,numnp,j,necho,time)
-      subroutine genBC(f,ndof,numnp,j,necho,time, x, idv)
+      subroutine genBC(f,ndof,numnp,j,necho, x, idv)
 c
 c.... program to read, generate and write nodal input data
 c
@@ -9,17 +8,14 @@ c                             =        temperatures(j=2)
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single-precision operation
-c
       logical lzero
-      dimension f(ndof,numnp), x(ndof,numnp), idv(ndof,numnp)
-c     dimension f(ndof,numnp)
-      common /const / zero  ,   pt25,     pt33,   pt5,     pt66,   one,
-     &               onept5 ,   two ,    three,  four,   sixten,  eps7
-      common /io    / iin  , igeom, iout, itsout, itout , imout , 
-     &                irsin, irsout
+      dimension f(ndof,numnp), x(2,numnp), idv(ndof,numnp)
 
-c
+      common /const /zero  , pt25,    pt33,   pt5,     pt66,   one,   
+     &               onept5, two ,   three,  four,   sixten,  eps7
+      common /io    / iin,    igeom, iout , itsout , itout , imout, 
+     &             irsin , irsout, icomp, igeoid
+
       call clear(f,numnp*ndof)
 c
       call genfl(f,ndof)
@@ -76,9 +72,7 @@ c.... program to determine if an array contains only zero entries
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
-c
-      dimension a(1)
+      dimension a(*)
       common /const / zero  ,   pt25,     pt33,   pt5,     pt66,   one,
      &               onept5 ,   two ,    three,  four,   sixten,  eps7
       logical lzero
@@ -86,7 +80,7 @@ c
       lzero = .true.
 c
       do 100 i=1,n
-      if (a(i).ne.zero) then
+      if (a(i).gt.eps7) then
          lzero = .false.
          return
       endif

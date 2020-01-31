@@ -1,0 +1,10 @@
+in.bm2a200
+geom.200
+out.bm2a200
+r.12out
+r.outbm2a200
+tser.bm2a200
+temp.bm2a200
+stress.bm2a200
+comp.bm2a200
+geoid.bm2a200

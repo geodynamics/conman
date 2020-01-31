@@ -1,11 +1,5 @@
-#ifdef IMPLICIT
-         subroutine genien (ien   , idiag ,
-     &                      mat   , lmv    , lmt   , id    ,
-     &                      idiagt, idt)
-#else
          subroutine genien (ien   , idiag ,
      &                      mat   , lmv    , lmt   , id    )
-#endif
 c
 c----------------------------------------------------------------------
 c this program reads and generates the ien,idaig arrays
@@ -23,18 +17,13 @@ c
 c
       implicit double precision (a-h,o-z)
 c
-c.... deactivate above card(s) for single precision operation
+      include 'common.h'
+      
 c
-#include<common.h>
-c
-      common /temp1 / itemp(8)
-c
-      dimension ien (numel,*) ,
+      dimension ien (numel,*) , itemp(8) ,
      &          idiag(*)      , mat(*)   , 
      &          lmv(numel,*)  , lmt(numel,*)  , id(2,*)  
-#ifdef IMPLICIT
-      dimension idiagt(*)     , idt(*)
-#endif
+
 c.... -------------------->  Generate IEN  <--------------------
 c
 c.... read element nodal data card
@@ -95,6 +84,7 @@ c
 c
 c.... create the lm arrays from array
 c
+
       do 700 ivel  = 1, numel
         lmv(ivel,1)  = id(1, ien(ivel,1) )
         lmv(ivel,2)  = id(2, ien(ivel,1) )
@@ -104,17 +94,10 @@ c
         lmv(ivel,6)  = id(2, ien(ivel,3) )
         lmv(ivel,7)  = id(1, ien(ivel,4) )
         lmv(ivel,8)  = id(2, ien(ivel,4) )
-#ifdef IMPLICIT
-        lmt(ivel,1)  = idt(  ien(ivel,1) )
-        lmt(ivel,2)  = idt(  ien(ivel,2) )
-        lmt(ivel,3)  = idt(  ien(ivel,3) )
-        lmt(ivel,4)  = idt(  ien(ivel,4) )
-#else
         lmt(ivel,1)  = ien(ivel,1)
         lmt(ivel,2)  = ien(ivel,2)
         lmt(ivel,3)  = ien(ivel,3)
         lmt(ivel,4)  = ien(ivel,4)
-#endif
 700   continue
 c
 c.... if wrap around condition let the left side nodes of
@@ -122,135 +105,62 @@ c     the first elements equal the right side nodes of the last
 c     elements
 c
       if (nwrap .ne. 0) then
-         do 800 iel = 1, nwrap
-           iwrap = nel - nwrap + iel
-           lmv(iwrap,3) = lmv(iel,1)          
-           lmv(iwrap,4) = lmv(iel,2)          
-           lmv(iwrap,5) = lmv(iel,7)          
-           lmv(iwrap,6) = lmv(iel,8)          
-           lmt(iwrap,2) = lmt(iel,1)          
-           lmt(iwrap,3) = lmt(iel,4)          
+c         do 800 iel = 1, (nwrap-1)        ! element # increases vertically
+c           iwrap = numel - (nwrap-1) + iel
+c           lmv(iwrap,3) = lmv(iel,1)          
+c           lmv(iwrap,4) = lmv(iel,2)          
+c           lmv(iwrap,5) = lmv(iel,7)          
+c           lmv(iwrap,6) = lmv(iel,8)          
+c           lmt(iwrap,2) = lmt(iel,1)          
+c           lmt(iwrap,3) = lmt(iel,4)          
+
+          do 800 iell = 1, (nwrap-1)      ! element # increases horizontally
+           iwrapR = iell * nelx           ! right edge elements
+           iwrapL = (iell-1) * nelx + 1   ! left edge elements
+           lmv(iwrapR,3) = lmv(iwrapL,1)          
+           lmv(iwrapR,4) = lmv(iwrapL,2)          
+           lmv(iwrapR,5) = lmv(iwrapL,7)          
+           lmv(iwrapR,6) = lmv(iwrapL,8)          
+           lmt(iwrapR,2) = lmt(iwrapL,1)          
+           lmt(iwrapR,3) = lmt(iwrapL,4)    
 800      continue
       end if
 c
 c     find column hts
 c     
-      if (isky .eq. 1) then
-        do 2600 k=1,numel
-        min = neqv 
+      do 2600 k=1,numel
+      n_min = neqv 
 c 
-        do 2100 j=1,8
+      do 2100 j=1,8
 c 
-          num = lmv(k,j)
-          if (num.gt.0) min = min0(min,num)
- 2100   continue 
-c
-        do 2400 j=1,8
-c
-          num = lmv(k,j)
-          if (num.gt.0) then
-             m = num - min
-             if (m.gt.idiag(num)) idiag(num) = m   
-          endif 
-c  
- 2400   continue
-c  
- 2600   continue 
-c 
-c
-c.... convert column height to diagonal index
-c
-        n = 1
-        idiag(1) = 1 
-        if (neqv .eq. 1) return
-c
-        do 2700 i=2,neqv
-        idiag(i) = idiag(i) + idiag(i-1) + 1
- 2700   continue
-c
-      nsize = idiag(neqv)
-      else
-c
-        do 3600 k=1,numel 
-        max = 0   
-c   
-        do 3100 j=1,8
-c                 
         num = lmv(k,j)
-        if (num.gt.0) max = max0(max,num)
- 3100 continue 
-c            
-        do 3400 j=1,8 
-c    
+        if (num.gt.0) n_min = min0(n_min,num)
+ 2100 continue 
+c
+      do 2400 j=1,8
+c
         num = lmv(k,j)
         if (num.gt.0) then
-         m = max - num  
-         if (m.gt.idiag(num)) idiag(num) = m
-        endif  
-c
- 3400 continue
-c    
- 3600 continue
-c
-c
-c.... convert column height to diagonal index
-c
-        long = 0
-        do 3700 i = 1, neqv
-          long = max0(long,idiag(i))
- 3700   continue
-        idiag(1) = 1
-        if (neqv .eq. 1) return
-        do 3800 i = 2, neqv
-          ltemp = i + long - 1
-          if (ltemp .gt. neqv ) then
-            ntemp = neqv - i + 1
-          else
-            ntemp = long
-          end if
-          idiag(i) = ntemp + idiag(i-1) + 1
- 3800   continue
-        nsize= idiag(neqv)
-      end if
-#ifdef IMPLICIT
-c
-c find idiag for temperature equation
-c
-      do 5600 k=1,numel
-        min = neqt 
-c 
-        do 5100 j=1,4
-c 
-          num = lmt(k,j)
-          if (num.gt.0) min = min0(min,num)
- 5100   continue 
-c
-        do 5400 j=1,4
-c
-          num = lmt(k,j)
-          if (num.gt.0) then
-             m = num - min
-             if (m.gt.idiagt(num)) idiagt(num) = m   
-          endif 
+           m = num - n_min
+           if (m.gt.idiag(num)) idiag(num) = m   
+        endif 
 c  
- 5400   continue
+ 2400 continue
 c  
- 5600   continue 
+ 2600 continue 
 c 
 c
 c.... convert column height to diagonal index
 c
-        n = 1
-        idiagt(1) = 1 
-        if (neqt .eq. 1) return
+      n = 1
+      idiag(1) = 1 
+      if (neqv .eq. 1) return
 c
-        do 5700 i=2,neqt
-        idiagt(i) = idiagt(i) + idiagt(i-1) + 1
- 5700   continue
-c
-      nsizet = idiagt(neqt)
-#endif
-c
+      do 2700 i=2,neqv
+        idiag(i) = idiag(i) + idiag(i-1) + 1
+ 2700 continue
+c       
+      nsize = idiag(neqv)
 c
 c.... return
 c
@@ -261,8 +171,8 @@ c
 998      call error ('genien  ','end file',igeom)
 c
 5000      format(' ',80a1,//,
-     &  ' E l e m e n t   N o d a l   C o n n e c t i v i t y',//,
+     &  ' E l e m e n t___N o d a l___C o n n e c t i v i t y',//,
      &  '   Elem ',/,
-     &  '  Number  ',5x,' mat ',8x,8('Node',i1,:,3x))
-5101      format(2x,i5,6x,i5,6x,8i8)
+     &  '  Number__ ',5x,' mat__',8x,8('Node_',i1,:,3x))
+5101      format(2x,i7,6x,i5,6x,8i8)
       end

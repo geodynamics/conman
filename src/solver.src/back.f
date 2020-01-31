@@ -4,8 +4,6 @@ c.... program to perform forward reduction and back substitution
 c
       implicit double precision (a-h,o-z)
 c
-c.... remove above card for single-precision operation
-c
       dimension a(*),b(*),idiag(*)
       common /const /zero  , pt25,    pt33,   pt5,     pt66,   one,    
      &               onept5, two ,   three,  four,   sixten,  eps7
