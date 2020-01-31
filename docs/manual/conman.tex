@@ -169,12 +169,34 @@ The authors would appreciate any information regarding bugs or potential problem
 \section{Changes Since Version 2.0}
 
 There are several significant differences that the user familiar with past versions of ConMan will find in the 3.0 version.  
-First, we removed the clunky memory manager library (a set of routines wrapped around the c function malloc) and replaced them with FORTRAN 90's allocate and deallocate functions.  
+First, we removed the clunky memory manager library (a set of routines wrapped around the c function malloc) and replaced them with FORTRAN 90's allocate and deallocate functions.
 This eliminates many of the compilation problems people experienced with the 2.0 version. 
-Second, Picard iteration is now a runtime option as opposed to a compiler option. 
+Most of these routines were in files subroutines input and elminp. 
+
+As part of a general clean up, we replaced the separate input and elminp (both input subroutines) and created a new input subroutine.
+As part of this we removed the `element library' function (eglib.F and eg2.F) which was a structure originally designed for different formulations 2D Cartesian, 3D Cartesian, spherical axysymmetric, ...).
+Because these were never fully developed, it made on sense to retain the cumbersome structure.
+We also moved all out the subroutines associated with output, into new output subroutine.
+The user does not need to hunt through the time\_driver subroutine to find out where the specific output subroutines are called.
+Thus, subroutines geoid, fluxke, masflx, print, output\_rheol, print\_compbm\_data, and stress are all in subroutine output.
+
+We also changed the names of many of the subroutines to take advantage of longer subroutine names allowed by modern FORTRAN.  
+Thus f\_tlhs has become form\_temp\_matrix, f\_vres has become form\_vel-ocity\_rhs, f\_vstf has become form\_velocity\_stiffness\_matrix.  
+Similarly, subroutine timdrv has become time\_driver. 
+As you look through the code there are examples where this could have been carried further.
+
+Second, Picard iteration for the temperature equation is now a runtime option as opposed to a compiler option.
+This necessitated specifying both implicit and explicit subroutines for the temperature right hand side, form\_temp\_rhs\_implicit and form\_temp\_rhs\_explicit
+As well as a form\_temp\_matrix.F for the implicit temperature matrix and form\_temp\_mass\_matrix for the lumped mass matrix that has traditionally been used for the explicit version of the temperature solver.
+
 Third, we added the EBA, TALA, and ALA formulations as described in \citet{king10}.  
 The compressible formulation is described in Chapter \ref{chap:compress}. 
-We provide a test suite that runs a subset of the problems from \citet{king10} that can be used to verify the installation version 3.0.  Finally, we have added a cookbook of subduction wedge problems based on problems from the subduction zone benchmark paper \citep{vanKeken08} and one based on the compressible convection benchmark paper \citep{king10}.
+This required a number of changes throughout the form\_temperature and form\_velocity subroutines.
+We provide a test suite that runs a subset of the problems from \citet{king10} that can be used to verify the installation version 3.0.  
+
+Finally, we have added a cookbook of subduction wedge problems based on problems from the subduction zone benchmark paper \citep{vanKeken08} and one based on the compressible convection benchmark paper \citep{king10}.
+This required adding a new 'fault' subroutine and a subroutine to implement the Batchelor corner flow boundary conditions.
+These can be found in the subduct.src directory.
 
 \section{Introduction}
 
@@ -207,6 +229,10 @@ in the Earth's mantle, \emph{Phys. Earth Planet. Int., 59,} 195-208.
 
 \begin{itemize}
 \item King S. D., C. Lee, P. E. van Keken, W. Leng, S. Zhong, E. Tan, E., M. Gurnis, N. Tosi, and M. C. Kameyama (2010) A community benchmark for 2D Cartesian compressible convection in the Earth's mantle, \emph{Geophys. J. Int., 180,} 73-87, 2010. doi:10.1111/j.1365-246X.2009.04413.x 
+\end{itemize}
+
+\begin{itemize}
+\item King, S. D., A. Raefsky, and B.H. Hager (2020), ConMan v3.0.0 [software], doi:10.5281/zenodo.3633152.
 \end{itemize}
 
 \section{Support}
