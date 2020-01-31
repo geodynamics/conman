@@ -11,6 +11,9 @@ The project is supported by CIG (http://geodynamics.org).
 
 For more information about citation, installation, and usage please see the included [pdf manual](https://github.com/geodynamics/conman/blob/master/docs/conman.pdf).
 
+Please cite the current version of ConMan using:
+King, S. D., A. Raefsky, and B.H. Hager (2020), ConMan v3.0.0 [software], doi:10.5281/zenodo.3633152.
+
 License
 -------
 
