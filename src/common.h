@@ -8,7 +8,7 @@ c
 c----------------------------------------------------------------------
 c
 ccccccccc1ccccccccc2ccccccccc3ccccccccc4ccccccccc5ccccccccc6ccccccccc7cc
-c       real*4  cpunew, cpuold, cpu(20)
+        real*4  a, cpunew, cpuold, cpu(20)
         character*1 ititle
 c
         common a(1)
@@ -19,6 +19,7 @@ c
         common /elmpar/ numel , nen   , 
      &                  numsuf, nipt  , nsize  ,
      &                  nsizet, nodebn, ntotal
+   
 c
         common /glbpar/ numnp  ,  nsd    , ndof   , nelx    , nelz , 
      &                  necho  ,  inrstr , iorstr , iflow   , 
@@ -26,9 +27,11 @@ c
      &                  neqt   ,  neqv   , ipad    ,
      &                  iistep ,  itype  , isolve,
      &                  Di     ,  diff_T , cgamma  , rho0    , T0
+     
 c
         common /io    / iin,    igeom, iout , itsout , itout , imout, 
      &                  irsin , irsout, icomp, igeoid
+     
         common /ioc   / name5
 c
         common /title / ititle(80)
@@ -46,4 +49,5 @@ c
 c
         common /fswtch/ FACSTW, restart, itrec
         common /timer1/ cpu  ,cpunew,  cpuold, icode
-        common /wedge / is_wedge_benchmark
+c       
+c       parameter (ireg = 0)
