@@ -1,0 +1,17 @@
+\select@language {english}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces The bilinear shape function for a single element (top) and the four elements whose shape functions combine to form the global shape function for node A (bottom). Figure taken from Hughes, Section 3.2.\relax }}{15}{figure.caption.4}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces The mapping between the global domain (right) and the parent element domain (left) using the shape functions. Figure taken from Hughes, Section 3.2.\relax }}{16}{figure.caption.5}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces An example illustrating the relationship between global nodes and equation numbers for a 2 degree of freedom problem using the id array. An equation number of zero denotes a boundary condition. Figure taken from Hughes, Section 3.2.\relax }}{18}{figure.caption.6}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces An example illustrating the relationship between global node numbers and local element numbers using the ien array. Local nodes are numbered counterclockwise from the bottom left-hand corner.\relax }}{19}{figure.caption.7}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Thermal structure for the mantle wedge problem in Cookbook 2 example for 330 by 300 element grid with imposed Batchelor wedge inflow/outflow boundary conditions. Compare with \citet {vanKeken08} Figure 2.\relax }}{48}{figure.caption.14}
+\contentsline {figure}{\numberline {9.2}{\ignorespaces Temperature along the top of the slab for the calculations in Table~\ref {tab:slab}. Solid lines are for `a' cases, dotted lines are for `b' cases and dashed lines are for `c' cases. The red lines are 66x60 element grids, the green lines are 132x120 element grids, the blue lines are 198x180 element grids, the orange lines are 264x240 element grids, and the black lines are for 330x300 element grids.\relax }}{50}{figure.caption.16}
+\addvspace {10\p@ }
