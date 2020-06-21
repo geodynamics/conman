@@ -1270,6 +1270,15 @@ and $\eta_E$, is the viscoplastic form
 where $\eta^*$ is the plastic rheology, $\sigma_y$ is the yield stress rheology, and $\dot{e}_2$ is the second invarient of the strain-rate tensor.
 In this formulation, $\eta^*$ is hard-wired to $10^{-5}$ and $b$ is hard-wired to $11.512925 = \ln 10^5$. $c$ is set from the input file (tcon(1)) and $\sigma_y$ is set from the input file (tcon(2)).
 
+If \textit{ntimvs} = 6, the rheology is simple Frank Kaminetskii
+approximation as above, but non-dimensionalized $b$ and $c$ are read
+in when activation energy and volume cards are read ($z$ and $tq$ non-dimensional):
+\begin{equation}
+    \eta_{PT} = \exp \left [ -b (0.5-tq(intp)) + c ( 1-z(intp) ) \right ].
+\end{equation}
+
+
+
 The user can easily modify the existing or add new rheology options for specific problems of interest.
 Using \textit{ntimvs} = 4 or 5 one should add an iteration loop within each time step in subroutine \textbf{time\_drive.F} to allow the change in velocity each step to come to consistency with the rheology.
 Experience has shown that after the first step, which may require 10-20 iterations, 2-3 iterations per step is all that is needed to converge \citep{king90a}.

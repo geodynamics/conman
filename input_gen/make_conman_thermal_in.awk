@@ -18,21 +18,23 @@ BEGIN{
 	heating=0;
     if(viscosityE=="")		# non-dimensional activation energy
 	viscosityE=0.0;
+    if(ntimestep=="")
+	ntimestep = 1000;		# total timestep
+    if(nprintstep=="")
+	nprintstep=   100;		# output every nprintstep steps
 
+    
     viscosityP=0.0;		# depth dependece
 
     if(print_geom=="")		# print
 	print_geom=0;		# general input or geometry
     
-    ntimestep = 10000;		# total timestep
-    nprintstep=   100;		# output every nprintstep steps
 
 
     tmax = 10.0;			# maxium time (in diffusion time)
-    dt_out = 0.1;		# for time series
+    dt_out = 0.01;		# for time series
     tsave=1.0;			# time controlled output
     
-
     nelz = nel;
     nelx = nel*aspect;
     
@@ -42,7 +44,9 @@ BEGIN{
     numnp=nodex*nodez;
 
     iflow=1;			# 1: execute
-    necho=0;			# 0: terse
+
+    necho=0;			# 0: terse 1: verbose
+
     inrstr=0;			# 0: conductive start 1: restart fro unit 16
     iorstr=0;			# 0: no restart 1: restart
 
@@ -53,13 +57,16 @@ BEGIN{
     # number of edge nodes for nusselt smoother (top and bottom)
     nodebn=nodex*2;
 
-    ntimvs=6;			# 0: const visc 3: Arrheinius 4: diff/disl 5: Stein & Hansen 6: Frank Kaminetskii
+    # rheology
+    ntimvs=6;			# 0: const visc 3: Arrheinius 4: diff/disl
+                                # 5: Stein & Hansen 6: Frank Kaminetskii
 
     nwrap=0;			# for periodic BC
 
     itype=4;			# 1: ALA 2: TALA 3: EBA 4: Boussinesq approx
 
-    isolve=1;			# 1: explicit 2: implicit 3: Picard
+    #isolve=1;			# 1: explicit 2: implicit 3: Picard
+    isolve=2;			# 1: explicit 2: implicit 3: Picard
 
 
     numat=1;
@@ -68,6 +75,9 @@ BEGIN{
     ecut[1]=1e6;
 
     if(!print_geom){
+	#
+	# print general input file
+	# 
 	printf("%i by %i element thermal convection problem\n",nelx,nelz);
 	print("#Nds   X   Z  ck echo rrst wrst nus tdvf  wr");
 	print(numnp,nelx,nelz,iflow,necho,inrstr,iorstr,nodebn,ntimvs,nwrap,itype,isolve);
@@ -103,10 +113,13 @@ BEGIN{
 	print(2,nelx*nodez+2,nodez);	# bottom+1
 	print(nodez-1,(nelx+1)*nodez-1,nodez);	# top-1
 	print(0,0,0);
+	
 	print("initial condition information");
 	print(Tpert,1.0,aspect);
+
 	print("equation of state information")
 	print(0.0, 273.0,  1000.0, 1.0, 1.0);
+
 	print("element information")
 	print(numat, 0);
 	print("viscosity")
@@ -123,31 +136,32 @@ BEGIN{
 	    printf("%e\n",ra[i]);
 	print("internal heating parameter")
 	for(i=1;i<=numat;i++)
-	    printf("%e\n",dmhu[i]);
+	    printf("%g\n",dmhu[i]);
 	print("activation energy")
 	for(i=1;i<=numat;i++)
-	    printf("%e\n",viscE[i]);
+	    printf("%g\n",viscE[i]);
 
 	print("activation volume")
 	for(i=1;i<=numat;i++)
-	    printf("%e\n",viscV[i]);
+	    printf("%g\n",viscV[i]);
 
 	
-    }else{			# geom
+    }else{
+	# print geometry
+        # geom
 	print("coordinates");
-	print(1,4,0.0,0.0)	# BL
-
-	print(nelx*nodez+1,1,  aspect,0.0)	# BR
-	print((nelx+1)*nodez,1,aspect,0.0)	# TR
-	print(nodez,1,0.0,1.0)	# TL
+	printf("%i\t%i\t%.1f %.1f\n",1,4,0,0)	# BL
+	printf("%i\t%i\t%.1f %.1f\n",nelx*nodez+1,1,  aspect,0)	# BR
+	printf("%i\t%i\t%.1f %.1f\n",(nelx+1)*nodez,1,aspect,1)	# TR
+	printf("%i\t%i\t%.1f %.1f\n",nodez,1,0,1)	# TL
 	# generation
 	print(nodex-1,nodez,nodez-1,1) # 
 	print(0,0,0,0);
 	print("velocity boundary conditions (non-zero)");
 	print(0,0,0,0);
 	print("temperature boundary conditions (non-zero)");
-	print(1,    2,  Tbot);	# bottom temperature
-	print(nelx*nodez+1,0,Tbot);
+	printf("%i\t%i\t%.1f\n",1,    2,  Tbot);	# bottom temperature
+	printf("%i\t%i\t%.1f\n",nelx*nodez+1,0,Tbot);
 	print(nodex-1,nodez);
 	print(0,    0, 0.0);	# should be 0,0 to end group?
 	print("element connectivity and material groups");

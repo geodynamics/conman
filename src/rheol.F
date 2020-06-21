@@ -4,7 +4,10 @@ c----------------------------------------------------------------------
 c  This routine calculates the viscosities per each element unit 
 c  (Changyeol Lee Sept. 06)
 c  
-c  input tl is non-dimensonalized with a temperature unit of Kelvin (K)
+c     input tl is non-dimensonalized with a temperature unit of Kelvin (K)
+c
+c     tl = t-non-dim + T0/diff_T (so we have to take that factor out for non-dim...)
+c      
 c----------------------------------------------------------------------
 c
       use materials
@@ -16,7 +19,12 @@ c
 c
       dimension xl(2,4), vl(2,4), tl(4), evisc(5), tll(4)
       dimension evisc1(5), evisc2(5) 
+      
+      vismin = 1.0d-5           ! viscosity minimum cut
+      vismax = 1.0d5            ! viscosity maximum cut
 
+      Tfac = T0 / diff_T
+      
       do i = 1, 4
        tll(i) = zero
       enddo
@@ -38,7 +46,7 @@ c
 c..... add adiabatic temperature profile to tl 
 c
         do i = 1, 4
-          tll(i) = tl(i) - T0 / diff_T ! for Blankenbach scale   
+          tll(i) = tl(i) - Tfac ! for Blankenbach scale   
         enddo
 c
         do intp = 1, nipt 
@@ -68,7 +76,7 @@ c
 c..... add adiabatic temperature profile to tl 
 c
         do i = 1, 4
-          tll(i) = tl(i) - T0 / diff_T ! for Blankenbach scale   
+          tll(i) = tl(i) - Tfac ! for Blankenbach scale   
         enddo
 c
         do intp = 1, nipt
@@ -98,7 +106,7 @@ c
 c..... add adiabatic temperature profile to tl 
 c
          do i = 1, 4
-           tll(i) = tl(i) - T0 / diff_T ! for Blankenbach scale   
+           tll(i) = tl(i) - Tfac ! for Blankenbach scale   
          enddo
 c 
         do intp = 1, nipt   
@@ -125,8 +133,6 @@ c********************************************************************
 c..... combination of diffusion and dislocation creeps with
 c      temperature and pressure dependent rheology
 
-       vismin = 1.0d-5  ! viscosity minimum cut
-       vismax = 1.0d5   ! viscosity maximum cut
 c.... strain rate conversion paramters   
        pkappa = 1.0d-6   ! thermal diffusivity 
        bottom = 2.8900d6  ! depth of domain
@@ -153,7 +159,7 @@ c
 c..... add adiabatic temperature profile to tl 
 c
         do i = 1, nipt
-          tll(i) = tl(i) - T0 / diff_T 
+          tll(i) = tl(i) - Tfac 
         enddo
 
         do intp = 1, nipt   
@@ -234,7 +240,7 @@ c
 c..... add adiabatic temperature profile to tl
 c
         do i = 1, nipt
-         tll(i) = tl(i) - T0 / diff_T
+         tll(i) = tl(i) - Tfac
         enddo
 
         do intp = 1, nipt
@@ -285,7 +291,43 @@ c.... total viscosity (1/diff_creep + 1/disloc_creep)^(-1)
         enddo
 c********************************************************************      
 
+      elseif ( ntimvs .eq. 6 ) then
+c
+c..... Frank Kamenetskii type appoximation
+c
+         do intp = 1, nipt
+            tq = 0.d0
+            zq = 0.d0
+            do i = 1,4
+C     make non-dimensional again
+               tq = tq + (tl(i) - tfac)   * shl(i,intp)
+c     depth
+               zq = zq + xl(2,i) * shl(i,intp)
+            enddo
+c
+c.... viscosity \eta = visc_0 *exp(E(0.5-T) + V(1-z)
+c     where T and z are non-dimensionalized and
+c
+c     E  = tcon(1,*)
+c     V  = tcon(2,*)
+c
 
+            evisc(intp) = visc(mat(iel)) *
+     &           exp( tcon(1,mat(iel)) * (0.5d0 - tq) +
+     &                tcon(2,mat(iel)) * (1.0d0 - zq) )
+
+            if (evisc(intp) .gt. vismax) then
+               evisc(intp) = vismax
+            endif
+            
+            if (evisc(intp) .lt. vismin) then
+               evisc(intp) = vismin
+            endif
+c            if((zq.gt.0.45).and.(zq.lt.0.55))then
+c               print *,tcon(1,mat(iel)),tq,tcon(2,mat(iel)),zq,
+c     &              evisc(intp)
+c             endif
+         enddo
       endif
 c********************************************************************      
       return

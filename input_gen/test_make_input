@@ -4,15 +4,21 @@
 #
 # example for how to run the make_conman_thermal_in.awk script to generate simple input decks
 #
-aspect=1
+nel=${1-50}			# number of elements with depth
+aspect=${2-1}			# aspect ratio
+viscosityE=${3-0}		# FK E pre factor for temp dep visc
+ra=${4-1e7}			# rayleigh number
 
-for nel in 50;do
+name=test.$nel.$aspect.$ra.$viscosityE
 
-    name=test.$nel.$aspect
-    opt="-v nel=$nel -v aspect=$aspect -v ntimestep=100 -v nprintstep=10"
-    gawk $opt                 -f make_conman_thermal_in.awk > in.$name
-    gawk $opt -v print_geom=1 -f make_conman_thermal_in.awk > geom.$name
-    cat <<EOF > run.$name
+opt="-v nel=$nel -v aspect=$aspect"
+opt="$opt -v ntimestep=5000 -v nprintstep=50"
+opt="$opt -v rayleigh=$ra -v viscosityE=$viscosityE"
+
+gawk $opt                 -f make_conman_thermal_in.awk > in.$name
+gawk $opt -v print_geom=1 -f make_conman_thermal_in.awk > geom.$name
+
+cat <<EOF > run.$name
 in.$name
 geom.$name
 out.$name
@@ -24,11 +30,11 @@ stress.$name
 comp.$name
 geoid.$name
 EOF
-    echo $0: running $name test
-    echo
-    ../conman < run.$name
-    echo 
-    echo $0: plotting
-    echo 
-    plot_simple $name
-done
+echo $0: running $name test
+echo
+../conman < run.$name
+echo 
+echo $0: plotting
+echo 
+plot_simple $name
+
