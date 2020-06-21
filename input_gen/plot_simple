@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# plot a simple conman convection model run with GMT (version 4 syntax)
+#
+name=${1-test.50.1}
+
+tmpn=x0
+
+if [ ! -s temp.$name ];then
+    echo $0: temp.$name not found
+    exit
+else
+    head -1 temp.$name > tmp.$$
+    read ndof nelx nelz numnp ntstep time < tmp.$$; rm tmp.$$
+    ((nx=nelx+1))		# nodes
+    ((nz=nelz+1))
+    ((numnp2=numnp+2))
+    echo $0: working on temp.$name, numnp $numnp nelx $nelx nelz $nelz nodex $nx nodesz $nz
+fi
+
+split  -a 8 -l $numnp2 -d temp.$name
+
+nstep=`ls $tmpn* | wc -l`
+echo $0: extracted $nstep timesteps
+
+proj=-Jx6
+makecpt -T0/1/.05 -Cpolar > $tmpn.cpt
+
+i=0;fs="";fs_gif=""
+while [ $i -lt $nstep ];do
+    file=`echo $i | gawk '{printf("x%08i",$1)}'` # split file
+    if [ ! -s $file ];then
+	echo $file not found
+
+    else
+	head -1 $file | gawk '{printf("%i %12.3e\n",$5,$6)}' > tmp.$$
+	read tstep tactual < tmp.$$; rm tmp.$$
+	
+	tail -n +3 $file > $tmpn.v	# 
+	if [ $i -eq 0 ];then
+	    # do like this because some -1e-15 instead of zero
+	    gawk '{printf("%.1f %.1f\n",$2,$3)}' $tmpn.v | minmax -C > tmp.$$
+	    read xmin xmax zmin zmax < tmp.$$ ; rm tmp.$$
+	    dx=`echo $xmin $xmax $nelx | gawk '{print(($2-$1)/$3)}'`
+	    dz=`echo $zmin $zmax $nelz | gawk '{print(($2-$1)/$3)}'`
+	    reg=-R$xmin/$xmax/$zmin/$zmax
+	    echo $0: $name $reg dx $dx $dz
+	fi
+	#_ node_____x1__________x2___________v1____________v2______tempature___temp+adiaba
+	opt="$reg -I$dx/$dz "
+	
+	gawk '{printf("%.4f %.4f %.5e\n",$2,$3,$4)}' $tmpn.v | xyz2grd -G$tmpn.vx.grd $opt 
+	gawk '{printf("%.4f %.4f %.5e\n",$2,$3,$5)}' $tmpn.v | xyz2grd -G$tmpn.vz.grd $opt & 
+	gawk '{printf("%.4f %.4f %.5e\n",$2,$3,$6)}' $tmpn.v | xyz2grd -G$tmpn.t.grd  $opt &
+	wait
+	ofile=$file.ps
+	
+	#grdinfo -C $tmpn.t.grd
+	grdimage $tmpn.t.grd $reg $proj -C$tmpn.cpt -Ba0.5f.05:"x":/a0.5f.05:"z":wESn:."t = $tactual": -P -K > $ofile
+	psscale -D-.75/3/4/.2 -Ba0.25/:"T": -C$tmpn.cpt -O >> $ofile
+	modifybb $ofile
+	/usr/bin/convert -background white -flatten -trim +repage -density 100 $ofile $file.gif & 
+
+	
+	fs="$fs $ofile"
+	fs_gif="$fs_gif $file.gif"
+	echo $0: $name tstep $tstep tactual $tactual
+    fi
+    ((i=i+1))
+done
+wait
+
+
+gifsicle -d 30 $fs_gif > $name.mov.gif
+
+rm $tmpn*
+

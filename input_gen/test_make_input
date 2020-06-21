@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+#
+# example for how to run the make_conman_thermal_in.awk script to generate simple input decks
+#
+aspect=1
+
+for nel in 50;do
+
+    name=test.$nel.$aspect
+    opt="-v nel=$nel -v aspect=$aspect -v ntimestep=100 -v nprintstep=10"
+    gawk $opt                 -f make_conman_thermal_in.awk > in.$name
+    gawk $opt -v print_geom=1 -f make_conman_thermal_in.awk > geom.$name
+    cat <<EOF > run.$name
+in.$name
+geom.$name
+out.$name
+r.in
+r.$name
+tser.$name
+temp.$name
+stress.$name
+comp.$name
+geoid.$name
+EOF
+    echo $0: running $name test
+    echo
+    ../conman < run.$name
+    echo 
+    echo $0: plotting
+    echo 
+    plot_simple $name
+done
