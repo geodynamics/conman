@@ -65,8 +65,8 @@ BEGIN{
 
     itype=4;			# 1: ALA 2: TALA 3: EBA 4: Boussinesq approx
 
-    #isolve=1;			# 1: explicit 2: implicit 3: Picard
-    isolve=2;			# 1: explicit 2: implicit 3: Picard
+    isolve=1;			# 1: explicit 2: implicit 3: Picard
+    #isolve=2;			# 1: explicit 2: implicit 3: Picard
 
 
     numat=1;

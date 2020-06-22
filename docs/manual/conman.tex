@@ -1270,8 +1270,9 @@ and $\eta_E$, is the viscoplastic form
 where $\eta^*$ is the plastic rheology, $\sigma_y$ is the yield stress rheology, and $\dot{e}_2$ is the second invarient of the strain-rate tensor.
 In this formulation, $\eta^*$ is hard-wired to $10^{-5}$ and $b$ is hard-wired to $11.512925 = \ln 10^5$. $c$ is set from the input file (tcon(1)) and $\sigma_y$ is set from the input file (tcon(2)).
 
-If \textit{ntimvs} = 6, the rheology is simple Frank Kaminetskii
-approximation as above, but non-dimensionalized $b$ and $c$ are read
+If \textit{ntimvs} = 6, the rheology is a simple Frank Kaminetskii
+approximation, as above, but non-dimensionalized $b$ and $c$ constants
+are now read
 in when activation energy and volume cards are read ($z$ and $tq$ non-dimensional):
 \begin{equation}
     \eta_{PT} = \exp \left [ -b (0.5-tq(intp)) + c ( 1-z(intp) ) \right ].
