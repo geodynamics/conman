@@ -6,6 +6,7 @@ c        f(ndof,numnp) = prescribed forces/kinematic data
 c                             =       l velocities (j=1)
 c                             =        temperatures(j=2)
 c
+      use sub_bench
       implicit double precision (a-h,o-z)
 c
       logical lzero
@@ -16,6 +17,9 @@ c
       common /io    / iin,    igeom, iout , itsout , itout , imout, 
      &             irsin , irsout, icomp, igeoid
 
+
+
+      
       call clear(f,numnp*ndof)
 c
       call genfl(f,ndof)
@@ -27,7 +31,8 @@ c
       do n=1,numnp
         do i=1,ndof
           if (idv(i,n) .eq. -1) then
-              call batchelor(x(1,n),x(2,n),f(1,n),f(2,n))
+             call batchelor(x(1,n),x(2,n),f(1,n),f(2,n),
+     &            sb_box_height, sb_plate_thickness, sb_uplate)
 c             write(iout,*) i,n,idv(i,n), idv(2,n)
               idv(i,n) = 0
           endif

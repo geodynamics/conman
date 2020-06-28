@@ -11,6 +11,7 @@ c
       use fe
       use bc
       use materials
+      use sub_bench
       implicit double precision (a-h,o-z)
 c
       include 'common.h'
@@ -119,7 +120,8 @@ c
      &              +tlr(3) *shdy(iel,3,intp)+tlr(4) *shdy(iel,4,intp) 
         enddo
         is_a_fault = 0
-        call fault (v, xl, uq, vq, is_a_fault)
+        call fault (v, xl, uq, vq, is_a_fault, sb_box_height,
+     &       sb_plate_thickness)
 c
 c...for PG shape functions (see Brooks Thesis)
 c

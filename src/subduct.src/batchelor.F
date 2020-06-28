@@ -1,4 +1,10 @@
-      subroutine batchelor(xorig, yorig, u, v)
+c
+c     box height (600)
+c     plate thickness (50)
+c     plate velocity (2.1637467D+0)
+c      
+      subroutine batchelor(xorig, yorig, u, v, box_height,
+     &     plate_thickness, Uplate)
 c
 c  A program to implement the Batchelor cornerflow solution
 c  See Batchelor (1967) pp. 224-225
@@ -9,13 +15,18 @@ c  constants
 c
       implicit double precision (a-h,o-z)
 c
+      double precision box_height, plate_thickness, Uplate, poff
+      
       two = 2.0D+0
       four = 4.0D+0
       pi = four*atan(1.0D+0)
+
+C     offset, typically 600-50 = 550
+      poff = box_height - plate_thickness;
 c
 c velocity of the downgoing slab
 c Uplate is not x and y components
-      Uplate  = 2.1637467D+0 
+c      Uplate  = 2.1637467D+0 
       visc = 1.0D+3
 c
 c the general expression for the streamfunction is given by:
@@ -35,10 +46,12 @@ c
       D = -Uplate*sqrt(two)*(two-pi/two)/(two-(pi**2)/four)
 c
 c correct for undeformed grid
-      x = 1.0D+0*(xorig-50.000000D+0)
+c     x = 1.0D+0*(xorig-50.000000D+0)
+      x = 1.0D+0*(xorig - plate_thickness)
+      
 c correct for deformed grid
 c     x = 1.0D+0*(610.0D+0-xorig)
-      y = 1.0D+0*(550.0D+0-yorig)
+      y = 1.0D+0*(poff - yorig)
       press = -2.0D+0*visc*(C*x + D*y)/((x**2)+(y**2))
       psi   = A*x + B*y + (C*x + D*y)*atan2(y,x)
       u     = -B - x*(C*x + D*y)/((x**2)+(y**2)) 

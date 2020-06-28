@@ -2,9 +2,9 @@
 #
 # plot a simple conman convection model run with GMT (version 4 syntax)
 #
-name=${1-test.50.1.1e7.10}
-add_visc=1
-smooth_plot=0			# 1: make plot look nicer by smoothing 0: original resolution
+name=${1-tests.C.10.0}
+add_visc=${2-0}
+smooth_plot=${3-0}			# 1: make plot look nicer by smoothing 0: original resolution
 owd=`pwd`
 
 tmpd=`mktemp -d`
@@ -37,8 +37,8 @@ nstep=`ls x0*.temp | wc -l`	# based on temp
 
 echo $0: extracted $nstep timesteps
 
-proj=-Jx6
-makecpt -T0/1/.05 -Cpolar > tmp.cpt
+proj=-Jx.02
+makecpt -T0/1/.05 -D -Cpolar > tmp.cpt
 makecpt -T-2/2/.2 -Chot -I -D > tmp.e.cpt
 
 i=0;fs="";fs_gif=""
@@ -82,46 +82,53 @@ while [ $i -lt $nstep ];do
 	yprof=0.5		# mean T at this depth
 	Tmean=`gawk -v xmin=$xmin -v xmax=$xmax -v y=$yprof 'BEGIN{for(x=xmin;x<=xmax;x+=0.01)print(x,y)}' | grdtrack -Ql -Gtmp.t.grd -Z | gawk -f mean.awk | gawk '{printf("%.3f",$1)}'`
 
-	
-	ofile=$vel_file.ps
-       
-	if [ $smooth_plot -eq 1 ];then
-	    grdsample -Ql tmp.t.grd -Gtmp.t.plot.grd -I0.005
-	    if [ -s tmp.e.grd ];then
-		grdsample -Ql tmp.e.grd -Gtmp.e.plot.grd -I0.005
-	    fi
-	else
-	    cp tmp.t.grd tmp.t.plot.grd
-	    if [ -s tmp.e.grd ];then
-		cp tmp.e.grd tmp.e.plot.grd
-	    fi
-	fi
 
-	if [ $add_visc -eq 1 ];then
-	    grdimage tmp.t.plot.grd $reg $proj -Ctmp.cpt \
-		     -Ba0.5f.05:"x":/a0.5f.05:"z":wEsN:."t'=$tactual, @~\341@~T@~\361@~@-$yprof@-=$Tmean": \
-		     -P -K -Y7 > $ofile
-	    psscale -D-.75/3/4/.2 -Ba0.25/:"T": -Ctmp.cpt -O -K >> $ofile
-	    grdmath tmp.e.plot.grd LOG10 = tmp.grd
-	    grdimage tmp.grd $reg $proj -Ctmp.e.cpt -Ba0.5f.05:"x":/a0.5f.05:"z":wESn -O -K -Y-6.25 >> $ofile
-	    psscale -D-.75/3/4/.2 -Ba1/:"log@-10@-(@~h@~)": -Ctmp.e.cpt -E -O >> $ofile
-	else
-	    grdimage tmp.t.plot.grd $reg $proj -Ctmp.cpt -Ba0.5f.05:"x":/a0.5f.05:"z":wESn:."t = $tactual": -P -K > $ofile
-	    psscale -D-.75/3/4/.2 -Ba0.25/:"T": -Ctmp.cpt -O >> $ofile
+	if [ $i -eq 1 ];then	# only plot second time step
+	    
+	    ofile=$vel_file.ps
+	    
+	    if [ $smooth_plot -eq 1 ];then
+		grdsample -Ql tmp.t.grd -Gtmp.t.plot.grd -I1
+		if [ -s tmp.e.grd ];then
+		    grdsample -Ql tmp.e.grd -Gtmp.e.plot.grd -I1
+		fi
+	    else
+		cp tmp.t.grd tmp.t.plot.grd
+		if [ -s tmp.e.grd ];then
+		    cp tmp.e.grd tmp.e.plot.grd
+		fi
+	    fi
+	    
+	    if [ $add_visc -eq 1 ];then
+		grdimage tmp.t.plot.grd $reg $proj -Ctmp.cpt \
+			 -Ba100f10:"x":/a100f10:"z":wEsN:."t'=$tactual, @~\341@~T@~\361@~@-$yprof@-=$Tmean": \
+			 -P -K -Y7 > $ofile
+		psscale -Ef -D-.75/3/4/.2 -Ba0.25/:"T": -Ctmp.cpt -O -K >> $ofile
+		grdmath tmp.e.plot.grd LOG10 = tmp.grd
+		grdimage tmp.grd $reg $proj -Ctmp.e.cpt -Ba0.5f.05:"x":/a0.5f.05:"z":wESn -O -K -Y-6.25 >> $ofile
+		psscale -D-.75/3/4/.2 -Ba1/:"log@-10@-(@~h@~)": -Ctmp.e.cpt -E -O >> $ofile
+	    else
+		grdimage tmp.t.plot.grd $reg $proj -Ctmp.cpt -Ba100f10:"x":/a100f10:"z":wESn:."": -P -K > $ofile
+		grdvector tmp.vx.grd tmp.vz.grd $reg $proj -Q0.04/0.25/0.06n.5 -Ggray -W0.5 -I50 -S2 -O -K >> $ofile
+		psscale -Ef -D-.75/3/4/.2 -Ba0.25/:"T": -Ctmp.cpt -O >> $ofile
+	    fi
+	    #gv $ofile;exit
+	    modifybb $ofile
+	    
+	    fs="$fs $ofile"
+	    fs_gif="$fs_gif $vel_file.gif"
+	    echo $0: $name tstep $tstep tactual $tactual Tmean at $yprof $Tmean eta_mean $eta_mean
+	    rm tmp.*grd tmp.v tmp.str 2> /dev/null
 	fi
-	#gv $ofile;exit
-	#modifybb $ofile
-	/usr/bin/convert -background white -flatten -trim +repage -density 70 $ofile $vel_file.gif & 
-	
-	fs="$fs $ofile"
-	fs_gif="$fs_gif $vel_file.gif"
-	echo $0: $name tstep $tstep tactual $tactual Tmean at $yprof $Tmean eta_mean $eta_mean
-	rm tmp.*grd tmp.v tmp.str 2> /dev/null
     fi
     ((i=i+1))
 done
 wait
 
-gifsicle --colors 256 -d 30 $fs_gif > $owd/$name.mov.gif
+mv $fs tmp.ps
+epstopdf tmp.ps
+cp tmp.pdf  $owd/$name.pdf
+echo $0: written to $name.pdf
+
 
 

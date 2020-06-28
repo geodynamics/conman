@@ -13,6 +13,7 @@ c
       use materials
       use solver
       use variables
+      use sub_bench
 
       implicit double precision (a-h,o-z)
 c
@@ -43,6 +44,14 @@ c ConMan is always 2D
 c
       nsd = 2
       ndof = 2
+
+
+c
+c     set defaults for subduction problem benchmark
+c
+      sb_box_height = 600.d0
+      sb_plate_thickness = 50.d0
+      sb_uplate = 2.1637467D0
 c
 c.... Allocate memory and set up the global arrays
 c
@@ -111,6 +120,15 @@ c         write (iout,*) n, x(1,n), x(2,n)
           write (iout,1600) n, x(1,n), x(2,n)
 200     continue
       endif
+
+c
+c     check on the box height
+c
+      if(x(2,1).gt.x(2,nelz+1))then
+         sb_box_height = x(2,1)
+      else
+         sb_box_height = x(2,nelz+1)
+      end if
 c
 c.... Read the Boundary Codes in BC array
 

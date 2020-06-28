@@ -87,6 +87,13 @@ c Declaration of global variables
        pointer :: tdot(:)    ! tdot(numnp)
       end module variables
 
+
+      module sub_bench
+       double precision sb_box_height ! typically 600 (km)
+       double precision sb_plate_thickness ! typically 50 (km)
+       double precision sb_uplate  ! typically 2.1637467D+0
+      end module sub_bench 
+      
 c *********************************************************************
 
       program conman

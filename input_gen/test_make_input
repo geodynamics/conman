@@ -1,6 +1,6 @@
 #!/bin/bash
-
-
+#
+# generate a thermal convection problem input
 #
 # example for how to run the make_conman_thermal_in.awk script to generate simple input decks
 #
