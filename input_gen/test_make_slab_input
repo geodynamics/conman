@@ -3,7 +3,7 @@
 # generate a  Cookbook 2 subduction type model, van Keken et al. benchmark
 #
 #
-sub_types=${1-"A B C"}			# A, B, or C type benchmark
+sub_types=${1-"A B C"}			# A, B, or C type benchmark or Ac, Bb and Cb for bigger box
 dx=${2-10}			# resolution in km (out of 660x600km)
 viscE=${3-0}			# exp(E(T-T0)) type visc dependent viscosity
 plate_age=${4-50}		# plate age in Myr
@@ -15,10 +15,23 @@ for sub_type in $sub_types;do
     
     name=tests.$sub_type.$dx.$viscE.$plate_age
 
-    # from benchmark
-    #geom="-v width=660 -v height=600"
-    # bigger
-    geom="-v width=1000 -v height=800"
+    if [[ $sub_type = A  || $sub_type = B ||  $sub_type = C ]];then
+	# from benchmark
+	geom="-v width=660 -v height=600"
+    elif [ $sub_type = Ab ];then # like A, but bigger
+	sub_type=A
+	geom="-v width=1000 -v height=800"
+    elif [ $sub_type = Bb ];then # like B, but bigger
+	sub_type=B
+	geom="-v width=1000 -v height=800"
+    elif [ $sub_type = Cb ];then # like C, but bigger
+	sub_type=C
+	geom="-v width=1000 -v height=800"
+    else
+	echo $0: error, sub_type $sub_type undefined
+	exit
+    fi
+       
     opt="-v dx=$dx -v sub_type=$sub_type -v viscosityE=$viscE  -v plate_age=$plate_age $geom"
     
     gawk $opt                 -f make_conman_subduction_in.awk > in.$name
