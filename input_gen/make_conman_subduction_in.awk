@@ -33,11 +33,16 @@ BEGIN{
 
     if(vplate=="")		# plate velocity in cm/yr
 	vplate=5;
+
+
     
     lid_thick=50;		# thickness of frozen lid on top
 
-    slab_thick=140;		# for case D, sqrt(2)*plate thickness NOT WORKIGN YET
-    
+    slab_thick=140;		# for case D, sqrt(2)*plate thickness NOT WORKING YET
+
+    #
+    # derived parameters
+    #
     nelz = height/dx;		# elements in z
     nelx = width/dx;		# elements in x
 
@@ -54,10 +59,8 @@ BEGIN{
     v0 = vplate_nd/sqrt(2.);	# componenet velocity, v_x, v_z - comes out to 1.540626
     #v0 =    1.538560;		# component velocity, slightly off in orignal test from the original vplate_nd
 
-#    printf("%.15f %.15f\n",vplate_nd,v0);
 
     age_s = plate_age * 1.e6 * sec_per_year; # age of plate in s 
-
 
     
     erf_scale = 2.*sqrt(kappa*age_s)/1e3;		# error function scale in km
@@ -65,25 +68,35 @@ BEGIN{
     nlid =  lid_thick/dx+1;	# nodex in lis 
     nslab = slab_thick/dx+1;	# 
 
-    print("using: nelx ",nelx,"nelz ",nelz,"nlid ",nlid,"age ",plate_age) > "/dev/stderr";
+    print("using: nelx ",nelx,"nelz ",nelz,"nlid ",nlid,"age ",plate_age, "speed ",vplate) > "/dev/stderr";
+
+
+    tsave=0.6;			# time controlled output
+    tmax = 0.61;			# maxium time (in diffusion time)
     
-    rayleigh = 0;
+    if(vplate == 5){		# default speed, no change needed 
+	itype=4;			# 1: ALA 2: TALA 3: EBA 4: Boussinesq approx 5: 6: use tmovis for v_
+	tmovis = tsave;
+    }else{
+	# need to change the Batchelor solution velocity 
+	itype = 6;
+	tmovis = vplate_nd;
+    }
+    
+    rayleigh = 0;		# for subduction problem Ra should be zero
     heating=0;
     viscosityP=0.0;		# depth dependece
     
     ntimestep = 30;		# total timestep
     nprintstep= 30;		# output every nprintstep steps
 
-    tmax = 0.61;			# maxium time (in diffusion time)
+
 
     if(sub_type=="A")
 	dt_out = 0.6;		# for whatever reason
     else 			
 	dt_out = 0.01;		# 
 
-    
-
-    tsave=0.6;			# time controlled output
     
     nox=nelx+1;
     noz=nelz+1;
@@ -113,7 +126,6 @@ BEGIN{
 
     nwrap=0;			# for periodic BC
 
-    itype=4;			# 1: ALA 2: TALA 3: EBA 4: Boussinesq approx
 
     #isolve=1;			# 1: explicit 2: implicit 3: Picard
     #isolve=2;			# 1: explicit 2: implicit 3: Picard
@@ -134,18 +146,18 @@ BEGIN{
 #	print("time step information")
 	print(ntimestep,1.0);
 #	print("output information")
-	print(nprintstep,tmax, dt_out, tsave,tsave);
+	print(nprintstep,tmax, dt_out, tsave,tmovis);
 #	print("velocity boundary condition flags: IFCMT,DELNXTLN")
 #	print("bnode   enode   incr bcf1 bcf2")
 	if(sub_type == "A"){
 	    # all velocities prescribed
 	    print("set every node to the Batchelor Solution");
-	    print(1,numnp,1,2,2);
+	    printf("%8i %8i %5i %2i %2i\n",1,numnp,1,2,2);
 	}
 		  
 	print("frozen lid")	# top layer, all no slip
 	for(i=0;i < nlid;i++)
-	    print(noz-i,(nelx+1)*noz-i,noz,1,1);
+	    printf("%8i %8i %5i %2i %2i\n",noz-i,(nelx+1)*noz-i,noz,1,1);
 
 	if(sub_type == "D"){
 	    #
@@ -157,14 +169,14 @@ BEGIN{
 	    for(plen=noz;plen>0;plen--){
 		lower = j+plen-nslab;
 		if(lower>0)
-		    print(lower,j+plen-1,1,1,1);
+		    printf("%8i %8i %5i %2i %2i\n",lower,j+plen-1,1,1,1);
 		j+=noz;
 	    }
 	    print("left side below slab free");
-	    print(1,noz-nslab,1,0,0);
+	    printf("%8i %8i %5i %2i %2i\n",1,noz-nslab,1,0,0);
 	    print("bottom up until slab free");
 	    # slab top hits bottom at node (noz-1)*noz+1
-	    print(1,(noz-1-nslab)*noz+1,1,0,0);
+	    printf("%8i %8i %5i %2i %2i\n",1,(noz-1-nslab)*noz+1,1,0,0);
 	}else{
 	    #
 	    # triangular push part
@@ -172,7 +184,7 @@ BEGIN{
 	    print("driven slab (left side)")
 	    j=1;
 	    for(plen=noz;plen>0;plen--){
-		print(j,j+plen-1,1,1,1);
+		printf("%8i %8i %5i %2i %2i\n",j,j+plen-1,1,1,1);
 		j+=noz;
 	    }
 	}
@@ -180,32 +192,32 @@ BEGIN{
 	
 	print("bottom of the box (right side)"); 
 	if((sub_type == "C")||(sub_type == "D")){
-	    print(j,(nelx*noz)+1,noz,0,0);# free on bottom
+	    printf("%8i %8i %5i %2i %2i\n",j,(nelx*noz)+1,noz,0,0);# free on bottom
 	}else{
-	    print(j,(nelx*noz)+1,noz,2,2); # batchelor
+	    printf("%8i %8i %5i %2i %2i\n",j,(nelx*noz)+1,noz,2,2); # batchelor
 	}
 
 	print("arc side boundary")
 	if((sub_type == "C")||(sub_type=="D")){
-	    print((nelx*noz)+1,(nelx+1)*noz-nlid,1,0,0);# free on right
+	    printf("%8i %8i %5i %2i %2i\n",(nelx*noz)+1,(nelx+1)*noz-nlid,1,0,0);# free on right
 	}else{
-	    print((nelx*noz)+1,(nelx+1)*noz-nlid,1,2,2);# Batchelor on right
+	    printf("%8i %8i %5i %2i %2i\n",(nelx*noz)+1,(nelx+1)*noz-nlid,1,2,2);# Batchelor on right
 	}
 	print(0,0,0,0,0);		   # end VBC
 
 	print("fixed left hand side (plate side) temperature boundary")
-	print(1,noz,1,1);
+	printf("%8i %8i %5i %2i\n",1,noz,1,1);
 	print("fixed right hand side (arc side) temperature boundary");
-	print(nelx*noz+1,(nelx+1)*noz,1,1);
+	printf("%8i %8i %5i %2i\n",nelx*noz+1,(nelx+1)*noz,1,1);
 	print("fixed top temperature boundary")
-	print(noz,(nelx+1)*noz,noz,1);
+	printf("%8i %8i %5i %2i\n",noz,(nelx+1)*noz,noz,1);
 	print(0,0,0,0)
-	print(1,(nelx*noz)+1,noz); # bottom row
-	print(noz,(nelx+1)*noz,noz);# top tow
+	printf("%8i %8i %5i\n",1,(nelx*noz)+1,noz); # bottom row
+	printf("%8i %8i %5i\n",noz,(nelx+1)*noz,noz);# top tow
 	print(0,0,0,0);
 	#print("bndy info (2nd from top - 2nd from bottom rows)");
-	print(2,nelx*noz+2,noz);	# bottom+1
-	print(noz-1,(nelx+1)*noz-1,noz);	# top-1
+	printf("%8i %8i %5i\n",2,nelx*noz+2,noz);	# bottom+1
+	printf("%8i %8i %5i\n",noz-1,(nelx+1)*noz-1,noz);	# top-1
 	print(0,0,0,0);
 	#print("initial condition information");
 	print(Tpert,width,height);
@@ -243,12 +255,12 @@ BEGIN{
 	# print geometry
         # geom
 	#print("coordinates");
-	printf("%i\t%i\t%.1f %.1f\n",1,4,0,0)	# BL
-	printf("%i\t%i\t%.1f %.1f\n",nelx*noz+1,1,  width,0)	# BR
-	printf("%i\t%i\t%.1f %.1f\n",(nelx+1)*noz,1,width,height)	# TR
-	printf("%i\t%i\t%.1f %.1f\n",noz,1,0,height)	# TL
+	printf("%8i\t%8i\t%15.4f %15.4f\n",1,4,0,0)	# BL
+	printf("%8i\t%8i\t%15.4f %15.4f\n",nelx*noz+1,1,  width,0)	# BR
+	printf("%8i\t%8i\t%15.4f %15.4f\n",(nelx+1)*noz,1,width,height)	# TR
+	printf("%8i\t%8i\t%15.4f %15.4f\n",noz,1,0,height)	# TL
 	# generation
-	print(nox-1,noz,noz-1,1) # 
+	printf("%6i %6i %6i %6i\n",nox-1,noz,noz-1,1) # 
 	print(0,0,0,0);
 
 	#print("velocity boundary conditions (slab vlocity)");
@@ -257,7 +269,7 @@ BEGIN{
 	    for(plen = noz;plen > 0;plen--){
 		for(j=i;j < i+plen;j++){
 		    if(i+plen-j-1 < nslab)
-			print(j,0,v0,-v0);
+			printf("%8i %8i %20.10f %20.10f\n",j,0,v0,-v0);
 		}
 		i+=noz;
 	    }
@@ -265,7 +277,7 @@ BEGIN{
 	    i=1;
 	    for(plen = noz;plen > 0;plen--){
 		for(j=i;j < i+plen;j++){
-		    print(j,0,v0,-v0);
+		    printf("%8i %8i %20.10f %20.10f\n",j,0,v0,-v0);
 		}
 		i+=noz;
 	    }
@@ -278,15 +290,15 @@ BEGIN{
 	    nn = nelx*noz+i;
 	    depth=(noz-i)*dx;	# depth from top
 	    if(depth <= lid_thick){ # in lid
-		print(nn,0,Ttop + (Tbot-Ttop)*depth/lid_thick);
+		printf("%8i %2i %20.10f\n",nn,0,Ttop + (Tbot-Ttop)*depth/lid_thick);
 	    }else{		# below
-		print(nn,0,Tbot);
+		printf("%8i %2i %20.10f\n",nn,0,Tbot);
 	    }
 	}
 	# left hand side, half space cooling
 	for(i=noz;i>=1;i--){
 	    depth=(noz-i)*dx;	# depth from top
-	    printf("%i 0 %.10f\n",i,Ttop + (Tbot-Ttop)*erf(depth/erf_scale));
+	    printf("%8i %2i %20.10f\n",i,0,Ttop + (Tbot-Ttop)*erf(depth/erf_scale));
 	}
 
 	print(0,    0, 0.0);	# should be 0,0 to end group?
