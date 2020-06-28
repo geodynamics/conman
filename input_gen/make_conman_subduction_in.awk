@@ -30,24 +30,37 @@ BEGIN{
 
     if(plate_age=="")		# plate age in Myr
 	plate_age=50;
+
+    if(vplate=="")		# plate velocity in cm/yr
+	vplate=5;
     
     lid_thick=50;		# thickness of frozen lid on top
 
-    slab_thick=140;		# for case D, sqrt(2)*plate thickness
+    slab_thick=140;		# for case D, sqrt(2)*plate thickness NOT WORKIGN YET
     
     nelz = height/dx;		# elements in z
     nelx = width/dx;		# elements in x
 
-    vplate = 2.1637467;		# that's how it's set in batchelor
-    #v0 = vplate/sqrt(2.);	# which is 1.52999996434001, but not the v0 below?
-    
-    v0 =    1.538560;		# component velocity
-
-    age_ma = plate_age * 1.e6 * 365.25*60*60*24; # age of plate in s 
+    sec_per_year = 365.25*24.*60.*60.; # seconds per year
     kappa = 0.7272e-6;		# diffusivity
 
+    # characteristic velocity based on diffusion time
+    vc = kappa/1000.;		# characteristic velocity based on conversion from km (as used input) to m
+
+    vplate_nd = (vplate/100./sec_per_year)/vc;# this comes out to 2.178773914605951
+    #vplate_nd = 2.1637467;	# that's how it was set in batchelor
+
     
-    erf_scale = 2.*sqrt(kappa*age_ma)/1e3;		# error function scale in km
+    v0 = vplate_nd/sqrt(2.);	# componenet velocity, v_x, v_z - comes out to 1.540626
+    #v0 =    1.538560;		# component velocity, slightly off in orignal test from the original vplate_nd
+
+#    printf("%.15f %.15f\n",vplate_nd,v0);
+
+    age_s = plate_age * 1.e6 * sec_per_year; # age of plate in s 
+
+
+    
+    erf_scale = 2.*sqrt(kappa*age_s)/1e3;		# error function scale in km
     
     nlid =  lid_thick/dx+1;	# nodex in lis 
     nslab = slab_thick/dx+1;	# 

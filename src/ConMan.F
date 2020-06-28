@@ -87,11 +87,20 @@ c Declaration of global variables
        pointer :: tdot(:)    ! tdot(numnp)
       end module variables
 
-
+C     subduction benchmark parameters
       module sub_bench
-       double precision sb_box_height ! typically 600 (km)
-       double precision sb_plate_thickness ! typically 50 (km)
-       double precision sb_uplate  ! typically 2.1637467D+0
+       integer :: sb_use_tmovis_for_uplate = 0 ! use tmovis to replace sb_uplate
+       double precision :: sb_box_height = 600.d0 ! default value for
+                                                  ! box heigh, will get
+                                                  ! adjusted
+       double precision :: sb_plate_thickness = 50.d0 ! stagnant lid
+                                                      ! thickness
+       double precision :: sb_uplate= 2.178773914605951d0  ! 5
+                                                           ! cm/yr/v_c,
+                                                           ! v_c =
+                                                           ! kappa/1000
+                                                           ! (for km->m
+                                                           ! conversion)
       end module sub_bench 
       
 c *********************************************************************

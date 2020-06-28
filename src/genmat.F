@@ -7,7 +7,8 @@ c
 c----------------------------------------------------------------------
 c
       use materials
-
+      use sub_bench
+      
       implicit double precision (a-h,o-z)
 c
 #include<common.h>

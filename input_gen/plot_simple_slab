@@ -2,6 +2,8 @@
 #
 # plot a simple conman convection model run with GMT (version 4 syntax)
 #
+# this assumes output files are gzipped
+#
 name=${1-tests.C.10.0}
 add_visc=${2-0}
 smooth_plot=${3-0}			# 1: make plot look nicer by smoothing 0: original resolution
@@ -13,11 +15,11 @@ trap "rm -rf $tmpd" EXIT	# temporary directory
 cd $tmpd
 
 
-if [ ! -s $owd/temp.$name ];then
-    echo $0: $owd/temp.$name not found
+if [ ! -s $owd/temp.$name.gz ];then
+    echo $0: $owd/temp.$name.gz not found
     exit
 else
-    head -1 $owd/temp.$name > tmp.$$
+    zcat $owd/temp.$name.gz | head -1 > tmp.$$
     read ndof nelx nelz numnp ntstep time < tmp.$$; rm tmp.$$
     ((nx=nelx+1))		# nodes
     ((nz=nelz+1))
@@ -26,11 +28,11 @@ else
 fi
 
 # split velocities and temperatures into timesteps
-split  -a 8 -l $numnp2 --additional-suffix=.temp -d $owd/temp.$name
+zcat $owd/temp.$name.gz | split  -a 8 -l $numnp2 --additional-suffix=.temp -d 
 
 if [ $add_visc -eq 1 ];then
     # split stress and viscosity
-    split  -a 8 -l $numnp2 --additional-suffix=.str -d $owd/stress.$name
+    zcat $owd/stress.$name.gz | split  -a 8 -l $numnp2 --additional-suffix=.str -d 
 fi
 
 nstep=`ls x0*.temp | wc -l`	# based on temp

@@ -45,13 +45,6 @@ c
       nsd = 2
       ndof = 2
 
-
-c
-c     set defaults for subduction problem benchmark
-c
-      sb_box_height = 600.d0
-      sb_plate_thickness = 50.d0
-      sb_uplate = 2.1637467D0
 c
 c.... Allocate memory and set up the global arrays
 c
@@ -81,7 +74,14 @@ c
         itype = 4
         is_wedge_benchmark=1
       endif
-        
+c
+c     don't want to mess with the 5 switch, though this could probably be combined
+c
+      if(itype.eq.6)then
+         sb_use_tmovis_for_uplate = 1 ! whatever is read in for tmovic will be Batchelor speed
+         itype=4
+      endif
+      
       ntotal = ntotal + numnp * (nsd+ndof+2)*2     
 c
 c.... Read the time integration information
@@ -105,7 +105,11 @@ c
      &                           tmovis
       write (iout,1400) ititle,  nstprt ,  tmax  , datasv , tsave , 
      &                           tmovis
-c
+      if(sb_use_tmovis_for_uplate.eq.1)then
+         sb_uplate=tmovis
+         tmovis = tsave
+      endif
+c     
 c.... -------------------->  Nodal Information  <--------------------
 c
 c.... Read the coordinates
@@ -122,7 +126,7 @@ c         write (iout,*) n, x(1,n), x(2,n)
       endif
 
 c
-c     check on the box height
+c     check on the box height for the subduction problem 
 c
       if(x(2,1).gt.x(2,nelz+1))then
          sb_box_height = x(2,1)

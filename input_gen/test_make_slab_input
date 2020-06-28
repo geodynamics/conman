@@ -3,17 +3,17 @@
 # generate a  Cookbook 2 subduction type model, van Keken et al. benchmark
 #
 #
-sub_types=${1-"A B C"}			# A, B, or C type benchmark or Ac, Bb and Cb for bigger box
-dx=${2-10}			# resolution in km (out of 660x600km)
-viscE=${3-0}			# exp(E(T-T0)) type visc dependent viscosity
-plate_age=${4-50}		# plate age in Myr
-
+sub_types=${1-"A B C"}			# A, B, or C type benchmark (660x600) or Ac, Bb and Cb for bigger box (1000x800)
+dxs=${2-"10"}			# resolution in km (out of 660x600km)
+viscEs=${3-"0"}			# exp(E(T-T0)) type visc dependent viscosity, major benchmarks use E=0
+plate_ages=${4-"50"}		# plate age in Myr (benchmark uses 50)
+vplate=${5-5}			# subduction velocity in cm/yr (benchmark uses 5)
 
 make				# for erf function
 
 for sub_type in $sub_types;do
     
-    name=tests.$sub_type.$dx.$viscE.$plate_age
+
 
     if [[ $sub_type = A  || $sub_type = B ||  $sub_type = C ]];then
 	# from benchmark
@@ -31,13 +31,19 @@ for sub_type in $sub_types;do
 	echo $0: error, sub_type $sub_type undefined
 	exit
     fi
-       
-    opt="-v dx=$dx -v sub_type=$sub_type -v viscosityE=$viscE  -v plate_age=$plate_age $geom"
+    for dx in $dxs;do
+	for viscE in $viscEs;do
+	    for plate_age in $plate_ages;do
+		
+		name=tests.$sub_type.$dx.$viscE.$plate_age.$vplate       
+		opt="     -v dx=$dx             -v sub_type=$sub_type"
+		opt="$opt -v viscosityE=$viscE  -v plate_age=$plate_age $geom"
+		opt="$opt -v vplate=$vplate"
     
-    gawk $opt                 -f make_conman_subduction_in.awk > in.$name
-    gawk $opt -v print_geom=1 -f make_conman_subduction_in.awk > geom.$name
+		gawk $opt                 -f make_conman_subduction_in.awk > in.$name
+		gawk $opt -v print_geom=1 -f make_conman_subduction_in.awk > geom.$name
     
-    cat <<EOF > run.$name
+		cat <<EOF > run.$name
 in.$name      
 geom.$name
 out.$name
@@ -49,12 +55,18 @@ stress.$name
 comp.$name
 geoid.$name
 EOF
-    echo $0: running $name test
-    echo
-    ../conman < run.$name
-    echo 
-    echo $0: plotting
-    echo 
-    plot_simple_slab $name
+		echo $0: running $name test
+		echo
+		time ../conman < run.$name
+		for t in r stress tser temp;do
+		    gzip -f $t.$name
+		done
+		echo 
+		echo $0: plotting
+		echo 
+		plot_simple_slab $name
+	    done
+	done
+    done
 done
 
