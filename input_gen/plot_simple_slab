@@ -113,7 +113,7 @@ while [ $i -lt $nstep ];do
 		psscale -Ef -D-.75/3/4/.2 -Ba0.25/:"T": -Ctmp.cpt -O >> $ofile
 	    fi
 	    #gv $ofile;exit
-	    modifybb $ofile
+	    #modifybb $ofile
 	    
 	    fs="$fs $ofile"
 	    fs_gif="$fs_gif $vel_file.gif"
