@@ -12,9 +12,8 @@ vplate=${5-5}			# subduction velocity in cm/yr (benchmark uses 5)
 make				# for erf function
 
 for sub_type in $sub_types;do
-    
 
-
+    sub_type_orig=$sub_type
     if [[ $sub_type = A  || $sub_type = B ||  $sub_type = C ]];then
 	# from benchmark
 	geom="-v width=660 -v height=600"
@@ -31,11 +30,15 @@ for sub_type in $sub_types;do
 	echo $0: error, sub_type $sub_type undefined
 	exit
     fi
+
+    
     for dx in $dxs;do
 	for viscE in $viscEs;do
 	    for plate_age in $plate_ages;do
+
 		
-		name=tests.$sub_type.$dx.$viscE.$plate_age.$vplate       
+		
+		name=tests.$sub_type_orig.$dx.$viscE.$plate_age.$vplate       
 		opt="     -v dx=$dx             -v sub_type=$sub_type"
 		opt="$opt -v viscosityE=$viscE  -v plate_age=$plate_age $geom"
 		opt="$opt -v vplate=$vplate"
