@@ -79,6 +79,7 @@ c     don't want to mess with the 5 switch, though this could probably be combin
 c
       if(itype.eq.6)then
          sb_use_tmovis_for_uplate = 1 ! whatever is read in for tmovic will be Batchelor speed
+         is_wedge_benchmark=1
          itype=4
       endif
       
