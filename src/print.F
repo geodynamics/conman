@@ -24,8 +24,8 @@ c
 
       return
 c
- 1000 format(5i10,e15.6)
+ 1000 format(5i10,f15.6)
  1500 format('___ node_____x1__________x2___________v1____________v2',
      &       '______tempature___temp+adiabat')
- 2000 format(1x,i7,1x,2(e12.5,1x),4(e12.5,1x))
+ 2000 format(1x,i7,1x,2(1pe11.5,1x),4(1pe12.5,1x))
       end
