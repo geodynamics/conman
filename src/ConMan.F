@@ -90,6 +90,7 @@ c Declaration of global variables
 C     subduction benchmark parameters
       module sub_bench
        integer :: sb_use_tmovis_for_uplate = 0 ! use tmovis to replace sb_uplate
+       integer :: sb_is_wedge_benchmark = 0 ! should we check if in fault etc.
        double precision :: sb_box_height = 600.d0 ! default value for
                                                   ! box heigh, will get
                                                   ! adjusted

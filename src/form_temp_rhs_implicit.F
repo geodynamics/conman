@@ -120,8 +120,10 @@ c
      &              +tlr(3) *shdy(iel,3,intp)+tlr(4) *shdy(iel,4,intp) 
         enddo
         is_a_fault = 0
-        call fault (v, xl, uq, vq, is_a_fault, sb_box_height,
-     &       sb_plate_thickness)
+        if(sb_is_wedge_benchmark.eq.1)then
+           call fault (v, xl, uq, vq, is_a_fault, sb_box_height,
+     &          sb_plate_thickness)
+        endif
 c
 c...for PG shape functions (see Brooks Thesis)
 c

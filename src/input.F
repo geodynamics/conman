@@ -69,17 +69,17 @@ c
 c
 c.... if itype = 5, then set wedge to true and use BA
 c
-      is_wedge_benchmark = 0
+      sb_is_wedge_benchmark = 0
       if (itype .eq. 5) then
         itype = 4
-        is_wedge_benchmark=1
+        sb_is_wedge_benchmark=1
       endif
 c
 c     don't want to mess with the 5 switch, though this could probably be combined
 c
       if(itype.eq.6)then
          sb_use_tmovis_for_uplate = 1 ! whatever is read in for tmovic will be Batchelor speed
-         is_wedge_benchmark=1
+         sb_is_wedge_benchmark=1
          itype=4
       endif
       

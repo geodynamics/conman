@@ -51,10 +51,11 @@ c a hack to implement a fault in the to 50 km of the grid for
 c the 2008 subduction benchmark paper
 c 
       is_a_fault = 0
-      
-      call fault (v, xl, uq, vq, is_a_fault, sb_box_height,
-     &     sb_plate_thickness)
-      if (is_wedge_benchmark .eq. 0 .or. is_a_fault.eq.0) then
+      if(sb_is_wedge_benchmark.eq.1)then
+         call fault (v, xl, uq, vq, is_a_fault, sb_box_height,
+     &        sb_plate_thickness)
+      endif
+      if (sb_is_wedge_benchmark .eq. 0 .or. is_a_fault.eq.0) then
 c
 c default case: no fault
 c

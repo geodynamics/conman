@@ -300,7 +300,7 @@ c
             zq = 0.d0
             do i = 1,4
 C     make non-dimensional again
-               tq = tq + (tl(i) - tfac)   * shl(i,intp)
+               tq = tq + (tl(i) - Tfac)   * shl(i,intp)
 c     depth
                zq = zq + xl(2,i) * shl(i,intp)
             enddo
