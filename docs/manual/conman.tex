@@ -130,7 +130,7 @@
 \title{ConMan}
 
 \author{
-Version 3.0 \\
+Version 3.0.1 \\
 \\
 \\
  Scott King\\
@@ -166,7 +166,26 @@ The authors would appreciate any information regarding bugs or potential problem
 
 \section{Changes Since Version 2.0}
 
-There are several significant differences that the user familiar with past versions of ConMan will find in the 3.0 version.  
+\subsection{Version 3.0.1}
+
+Thorsten Becker generalized the fault formulation for the subduction wedge benchmark (Cookbook2).
+There are new input files generated from awk scripts he created.
+One can now specify the size of the domain (previously assumed to be 660x600 km as per the benchmark description), the thickness of the frozen lid (previously 50 km), the age of the incoming plate (previously 50 km), the plate velocity (previously 5 cm/yr). 
+See the awk script in the directory `input\_gen'.  
+The script is envoked by typing `awk -f make\_conman\_subduction\_in.awk'.
+
+There is a similar script, make\_conman\_thermal\_in.awk in the same directory. 
+Both are fairly well commented within the top of the script.
+
+We made some minor corrections to the input files in Cookbook2 that fixed errors in the driven slab boundary conditions, this particularly improved the 264x240 case which did not follow the monotomic trend in the output.
+
+Minor changes were made to a few routines to accomodate the improved fault geometry, specifically input.F, rheol.F, form\_temp\_matrix.F, form\_temp\_rhs\_implicit.F, subduct.src/batchelor.F, and \\ subduct.src/fault.F 
+
+The results of all the Cookbooks still agree with the values given in the manual.
+
+\subsection{Version 3.0.0}
+
+There are several significant differences that the user familiar with past versions of ConMan will find in the 3.0.0 version.  
 First, we removed the clunky memory manager library (a set of routines wrapped around the c function malloc) and replaced them with FORTRAN 90's allocate and deallocate functions.
 This eliminates many of the compilation problems people experienced with the 2.0 version. 
 Most of these routines were in files subroutines input and elminp. 
@@ -1495,7 +1514,7 @@ flag
 
 4 - composite dislocation/diffusion creep (code does not currently support non-Newtonian dislocation creep)
 
-5 - rheology based on Stein and Hansen (20xx?) (currently code does not currently support non-Newtonian dislocation creep)
+5 - rheology based on \citet{stein08} (currently code does not currently support non-Newtonian dislocation creep)
 
 6 - Frank-Kaminetskii with variable constants
 
@@ -1516,9 +1535,9 @@ numbered increasing fastest in vertical direction)
 
 4 - BA
 
-5 - subduction benchmark, wedge test, use BA
+5 - subduction benchmark, wedge test, uses BA
 
-6 - subduction benchmark, wedge test, interpret tmovis as $v_p$ for Batchelor, use BA
+6 - subduction benchmark, wedge test, interpret tmovis as $v_p$ for Batchelor, uses BA
 
 \item [{{{{isolve}}}}] . . . . . .  temperature solver (integer)
 
