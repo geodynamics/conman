@@ -1,6 +1,6 @@
 #!/bin/csh -f
 # Set for GMT5
-gmtset FONT_TITLE 24 FONT_LABEL 18 PS_PAGE_ORIENTATION PORTRAIT PS_MEDIA letter PROJ_LENGTH_UNIT inch
+gmt gmtset FONT_TITLE 24 FONT_LABEL 18 PS_PAGE_ORIENTATION PORTRAIT PS_MEDIA letter PROJ_LENGTH_UNIT inch
 
 # set to the size of the domain
 set opts = "-K -P -O"
@@ -38,32 +38,32 @@ awk '{if(NR>2) print ($2,$3,$6) }' $1 > temp.xyz
 
 set reg = "-R$xmin/$xmax/$zmin/$zmax"
 
-surface temp.xyz -Gtemp.grd $reg -I5/5 
+gmt surface temp.xyz -Gtemp.grd $reg -I5/5 
 
 #grd2cpt temp.grd -Cgray -L0/1.1 -S0.0/1.1/0.1 -Z > temp.cpt
 # color scale as in van Keken et al., 2008
 #grd2cpt temp.grd -Cpolar -L0/1.1 -S0.0/1.1/0.1 -Z > temp.cpt
 # more colorblind friendly color scale
-grd2cpt temp.grd -C../graphics/vik.cpt -L0/1.1 -S0.0/1.1/0.1 -Z > temp.cpt
+gmt grd2cpt temp.grd -C../graphics/vik.cpt -L0/1.1 -T0.0/1.1/0.1 -Z > temp.cpt
 
 awk '{if(NR>2) print ($2,$3,$4) }' $1 > vx.xyz
 awk '{if(NR>2) print ($2,$3,$5) }' $1 > vz.xyz
 
-surface vx.xyz -Gvx.grd $reg -I$ix/$iz
-surface vz.xyz -Gvz.grd $reg -I$ix/$iz
+gmt surface vx.xyz -Gvx.grd $reg -I$ix/$iz 
+gmt surface vz.xyz -Gvz.grd $reg -I$ix/$iz 
 
-grdsample vx.grd -Gvx1.grd -I22/20 -r
-grdsample vz.grd -Gvz1.grd -I22/20 -r
+gmt grdsample vx.grd -Gvx1.grd -I22/20 -r 
+gmt grdsample vz.grd -Gvz1.grd -I22/20 -r 
 
-set arrows = "-S5. -Q0.1i+e+n0.25i -G0"
+set arrows = "-S5. -Q0.1i+e+n0.25i+h0.5 -Gblack -W1p"
 
 # for color
-#pscontour temp.xyz $size -B50:"Distance ":/50:"Depth ":WSen $reg -Ctemp.cpt -X4.0c -Y6.0c -K -P -I > plot.ps
 
-grdimage temp.grd $size $reg -Ctemp.cpt -B50:"Distance ":/50:"Depth ":WSen -P -K -X4.0c -Y6.0c > plot.ps
+gmt grdimage temp.grd $size $reg -Ctemp.cpt -Bxa50+l"Distance" -Bya50+l"Depth" -BWSen -P -K -X4.0c -Y6.0c  > plot.ps
 
-grdvector vx1.grd vz1.grd $size $reg $arrows -X0.0 -Y0.0 $opts >> plot.ps
+gmt grdvector vx1.grd vz1.grd $size  $arrows -X0.0 -Y0.0 $opts -V >> plot.ps
+#gmt grdvector vx1.grd vz1.grd $size -S5.0 -Gblack $reg -X0.0 -Y0.0 $opts -V >> plot.ps
 
-psscale   -Ctemp.cpt -D3.0i/-0.75i/6.0i/0.3h -P -O >> plot.ps
+gmt psscale   -Ctemp.cpt -D3.0i/-0.75i/6.0i/0.3h -P -O  >> plot.ps
 
 \rm vx.xyz vz.xyz vx.grd vz.grd vx1.grd vz1.grd
