@@ -1,5 +1,5 @@
 a 132 by 120 grid for the batchelor test problem            
- 16093  132 120  1   0   0   1  266   0   0   4   3
+ 16093  132 120  1   0   0   1  266   0   0   5   3
   30  1.0
   30  0.6100 0.600 0.600 0.600
 frozen lid
@@ -137,9 +137,9 @@ driven slab (left side)
  14400 14401 1 1 1
  14521 14521 1 1 1
 bottom of the box (right side)
-  14521   15973     121       2  2
+  14642   15973     121       2  2
 arc side boundary (batchelor)
-  15973   16083       1       2  2
+  15973   16082       1       2  2
       0     0     0        0  0
 fixed left hand side (plate side) temperature boundary
       1    121       1      1 

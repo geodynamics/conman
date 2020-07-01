@@ -1,5 +1,5 @@
 a 330 by 300 grid for the batchelor test problem            
- 99631  330 300   1   0   0   1  662   0   0   4   3   
+ 99631  330 300   1   0   0   1  662   0   0   5   3   
   30  1.0
   30  0.6100 0.010 0.600 0.600
 frozen lid
@@ -332,9 +332,9 @@ driven slab (left side)
  90000 90001 1 1 1
  90301 90301 1 1 1
 bottom of the box (right side)
-  90301     99331     301       0  0
+  90602     99331     301       0  0
 arc side boundary (batchelor)
-  99331     99606      1       0  0
+  99331     99605      1       0  0
       0     0     0        0  0
 fixed left hand side (plate side) temperature boundary
       1    301       1      1 
