@@ -34,17 +34,15 @@ BEGIN{
     if(vplate=="")		# plate velocity in cm/yr
 	vplate=5;
 
-
     
     lid_thick=50;		# thickness of frozen lid on top
-
-    slab_thick=140;		# for case D, sqrt(2)*plate thickness NOT WORKING YET
+    
 
     #
     # derived parameters
     #
-    nelz = height/dx;		# elements in z
-    nelx = width/dx;		# elements in x
+    nelz = int(height/dx);		# elements in z
+    nelx = int(width/dx);		# elements in x
 
     sec_per_year = 365.25*24.*60.*60.; # seconds per year
     kappa = 0.7272e-6;		# diffusivity
@@ -64,10 +62,14 @@ BEGIN{
 
     
     erf_scale = 2.*sqrt(kappa*age_s)/1e3;		# error function scale in km
-    
-    nlid =  lid_thick/dx+1;	# nodex in lis 
-    nslab = slab_thick/dx+1;	# 
 
+    slab_thick = 1.15 * erf_scale * sqrt(2.); # TBL (2.23/2) times sqrt(2) for case D
+
+    
+    nlid =  int(lid_thick/dx+.5)+1;	# nodex in lis 
+    nslab = int(slab_thick/dx+.5)+1;	# slab "depth" for case D
+
+    
     print("using: nelx ",nelx,"nelz ",nelz,"nlid ",nlid,"age ",plate_age, "speed ",vplate) > "/dev/stderr";
 
 
@@ -75,7 +77,8 @@ BEGIN{
     tmax = 0.61;			# maxium time (in diffusion time)
     
     if(vplate == 5){		# default speed, no change needed 
-	itype=4;			# 1: ALA 2: TALA 3: EBA 4: Boussinesq approx 5: 6: use tmovis for v_
+	itype=5;			# 1: ALA 2: TALA 3: EBA 4: Boussinesq approx
+	                                # 5: wedge benchmark 6: use tmovis for v_plate
 	tmovis = tsave;
     }else{
 	# need to change the Batchelor solution velocity 
@@ -91,17 +94,16 @@ BEGIN{
     nprintstep= 30;		# output every nprintstep steps
 
 
-
     if(sub_type=="A")
 	dt_out = 0.6;		# for whatever reason
     else 			
 	dt_out = 0.01;		# 
 
     
-    nox=nelx+1;
-    noz=nelz+1;
+    nox = nelx+1;
+    noz = nelz+1;
 
-    numnp=nox*noz;
+    numnp = nox*noz;
 
     iflow=1;			# 1: execute
     necho=0;			# 0: terse 1: verbose
@@ -114,7 +116,7 @@ BEGIN{
     Ttop=0.0;
     
     # number of edge nodes for nusselt smoother (top and bottom)
-    nodebn=nox*2;
+    nodebn = nox*2;
 
     if(viscosityE == 0){
 	# rheology
@@ -161,9 +163,9 @@ BEGIN{
 
 	if(sub_type == "D"){
 	    #
-	    # NOT WORKING YET
 	    #
 	    # only push in slab
+	    # 
 	    print("driven slab (only in slab)")
 	    j=1;
 	    for(plen=noz;plen>0;plen--){
@@ -172,11 +174,14 @@ BEGIN{
 		    printf("%8i %8i %5i %2i %2i\n",lower,j+plen-1,1,1,1);
 		j+=noz;
 	    }
-	    print("left side below slab free");
-	    printf("%8i %8i %5i %2i %2i\n",1,noz-nslab,1,0,0);
-	    print("bottom up until slab free");
+	    printf("%8i %8i %5i %2i %2i\n",1,1,1,1,1); # pin lower left
+	    print("left side below slab ");
+	    #printf("%8i %8i %5i %2i %2i\n",1,noz-nslab,1,0,0);
+	    printf("%8i %8i %5i %2i %2i\n",2,noz-nslab,1,0,0);
+	    print("bottom up until slab");
 	    # slab top hits bottom at node (noz-1)*noz+1
-	    printf("%8i %8i %5i %2i %2i\n",1,(noz-1-nslab)*noz+1,1,0,0);
+	    #printf("%8i %8i %5i %2i %2i\n",1,(noz-1-nslab)*noz+1,noz,0,0);
+	    printf("%8i %8i %5i %2i %2i\n",noz+1,(noz-1-nslab)*noz+1,noz,0,0);
 	}else{
 	    #
 	    # triangular push part
@@ -189,7 +194,6 @@ BEGIN{
 	    }
 	}
 
-	
 	print("bottom of the box (right side)"); 
 	if((sub_type == "C")||(sub_type == "D")){
 	    printf("%8i %8i %5i %2i %2i\n",j,(nelx*noz)+1,noz,0,0);# free on bottom
@@ -265,15 +269,18 @@ BEGIN{
 
 	#print("velocity boundary conditions (slab vlocity)");
 	if(sub_type=="D"){
-	    i=1;
-	    for(plen = noz;plen > 0;plen--){
-		for(j=i;j < i+plen;j++){
-		    if(i+plen-j-1 < nslab)
-			printf("%8i %8i %20.10f %20.10f\n",j,0,v0,-v0);
+	    # push only in slab
+	    j=1;
+	    for(plen=noz;plen>0;plen--){
+		lower = j+plen-nslab;
+		if(lower>0){
+		    for(k=lower;k<=j+plen-1;k++)
+			printf("%8i %8i %20.10f %20.10f\n",k,0,v0,-v0);
 		}
-		i+=noz;
+		j+=noz;
 	    }
 	}else{
+	    # push lower left triangle region
 	    i=1;
 	    for(plen = noz;plen > 0;plen--){
 		for(j=i;j < i+plen;j++){
