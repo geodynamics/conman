@@ -37,5 +37,5 @@ conman: $(COMMON) $(SOLVER) $(UTILS) $(GRID) $(SUBDUCT)
 	$(FC) $(LDFLAGS) -o $(PROGRAM) $(COMMON) $(SOLVER) $(UTILS) $(GRID) $(SUBDUCT)
 
 clean:
-	rm -rf core $(COMMON) $(SOLVER) $(UTILS) $(GRID) $(PROGRAM) 
+	rm -rf core $(COMMON) $(SOLVER) $(UTILS) $(GRID) $(PROGRAM) $(SUBDUCT)
 
