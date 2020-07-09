@@ -1,5 +1,5 @@
 #
-# makefile for the program conman on 
+# makefile for the program conman - Intel ifort version
 # 
 
 COMMON=ConMan.o adjust_velocity_rhs_for_bc.o elminp.o error.o \
@@ -30,11 +30,7 @@ PROGRAM=../conman
 #
 
 FC = ifort
-#
-# GNU Fortran (GCC) 9.3.1 20200408 (Red Hat 9.3.1-2)
-# WARNING: -Ofast made large runs core dump
-# -O3 seems to work...
-#
+
 FFLAGS = -Ofast -I. -r8 -double_size 64 -i8
 LDFLAGS = -I. 
 
