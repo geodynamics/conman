@@ -1,11 +1,11 @@
 a 66 by 60 grid for the batchelor test problem            
- 4087  66 60  1   0   0   1  134   0   0   4   3  
+ 4087  66 60  1   0   0   1  134   0   0   5   3  
 30  1.0
 30  0.6100 0.010 0.600 0.600
 frozen lid
     61     4087     61       1  1
     60     4086     61       1  1
-    59     4086     61       1  1
+    59     4085     61       1  1
     58     4084     61       1  1
     57     4083     61       1  1
     56     4082     61       1  1
@@ -72,9 +72,9 @@ driven slab (left side)
   3600     3601      1       1  1
   3661     3661      1       1  1
 bottom of the box (right side)
-  3661     4027     61       2  2
+  3722     4027     61       2  2
 arc side boundary (batchelor)
-  4027     4082      1       2  2
+  4027     4081      1       2  2
       0     0     0        0  0
 fixed left hand side (plate side) temperature boundary
       1    61       1      1 
