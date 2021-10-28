@@ -1,0 +1,20 @@
+name: linux
+
+on: [push, pull_request]
+
+# always only run a single (the newest) instance per PR
+concurrency:
+  group: ${{ github.actor }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  job:
+    name: build
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - name: build
+      run: |
+        sudo apt install build-essential gfortran
+        cd src
+        make
