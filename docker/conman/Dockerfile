@@ -10,8 +10,6 @@ WORKDIR /home/conman_user
 
 RUN git clone 'https://github.com/geodynamics/conman.git'
 
-WORKDIR /home/conman_user/conman/src
+ENV PATH="/home/conman_user/conman:${PATH}"
 
-RUN make
-
-WORKDIR /home/conman_user
+RUN cd conman/src; make
