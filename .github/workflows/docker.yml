@@ -1,0 +1,14 @@
+name: Docker Image CI
+
+on: [push, pull_request]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker image build -< ./docker/conman/Dockerfile --tag conman-ci:$(date +%s)
